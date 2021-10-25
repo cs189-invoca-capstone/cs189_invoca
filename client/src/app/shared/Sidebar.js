@@ -27,6 +27,10 @@ class Sidebar extends Component {
   }
 
   onRouteChanged() {
+    console.log("inside on route changed")
+    console.log(document);
+    console.log({document});
+    
     document.querySelector('#sidebar').classList.remove('active');
     Object.keys(this.state).forEach(i => {
       this.setState({[i]: false});

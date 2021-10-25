@@ -23,6 +23,7 @@ class App extends Component {
         { navbarComponent }
         <div className="container-fluid page-body-wrapper">
           { sidebarComponent }
+          {console.log("sidebar rendered")}
           <div className="main-panel">
             <div className="content-wrapper">
               <AppRoutes/>
