@@ -13,7 +13,6 @@ function App() {
         <Row>
           <Navigation />
         </Row>
-        
         <br/>
         <Row>
           <Col sm={2} >
