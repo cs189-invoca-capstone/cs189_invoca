@@ -8,7 +8,7 @@ const app = express();
 const path = require('path')
 
 // Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, '../client/public')))
+app.use(express.static(path.join(__dirname, '../client/build')))
 
 app.get("/server", (req, res) => {
     res.json({ message: "Hello from server!" });
@@ -24,5 +24,5 @@ app.listen(PORT, () => {
 
 // Anything that doesn't match what's above, send back index.html; 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../client/public/index.html'))
+  res.sendFile(path.join(__dirname + '/../client/build/index.html'))
 })

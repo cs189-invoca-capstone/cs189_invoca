@@ -10,7 +10,7 @@
     "build": "cd client && npm install && npm run build",
     "start": "cd server && npm install && node server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "cd client && npm install && npm run start"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "dependencies": {
     "concurrently": "^6.3.0",
