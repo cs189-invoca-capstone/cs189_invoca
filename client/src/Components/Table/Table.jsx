@@ -26,14 +26,14 @@ export default function Table() {
 
     return (
         <>
-        <h4 class="card-title">Placeholder Table</h4>
-        <p class="card-description">Currently using: <code>.table-hover .table-bordered</code> </p>
-        <table class="table table-hover table-bordered">
+        <h4 className="card-title">Placeholder Table</h4>
+        <p className="card-description">Currently using: <code>.table-hover .table-bordered</code> </p>
+        <table data-testid="display-table" className="table table-hover table-bordered">
             <thead>
                 <tr>
                     <th>Caller ID</th>
                     <th>Phone Number</th>
-                    <th>Summary</th>
+                    <th  data-testid="summary-table">Summary</th>
                     <th>Status</th>
                 </tr>
             </thead>
