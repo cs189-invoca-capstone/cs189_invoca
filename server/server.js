@@ -30,7 +30,7 @@ app.get("/server", (req, res) => {
   });
 
 // use callLog route for api requests related to the call log
-app.use("/api/callLogs", callLogRoute);
+app.use("/callLogs", callLogRoute);
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
