@@ -7,8 +7,8 @@ export default function Table() {
     const data = [
         {callerID: "Koki Narimoto", phone: "(660) 660-6600", summary: "Team Lead duties", status: "Pending"},
         {callerID: "Bryan Xu", phone: "(408) 408-4080", summary: "Duties? hehe", status: "In progress"},
-        {callerID: "Adarsh Garg", phone: "(510) 510-5101", summary: "Big peepee", status: "Fixed"},
-        {callerID: "Shaurye Mahajan", phone: "(626) 626-6262", summary: "Small poopoo", status: "Completed"},
+        {callerID: "Adarsh Garg", phone: "(510) 510-5101", summary: "Big changes", status: "Fixed"},
+        {callerID: "Shaurye Mahajan", phone: "(626) 626-6262", summary: "Small steps", status: "Completed"},
         {callerID: "Sydney Lim", phone: "(420) 420-6969", summary: "Woohoo", status: "In progress"},
         {callerID: "Zion Wang", phone: "(805) 805-8050", summary: "HooWoo", status: "Completed"},
     ]
