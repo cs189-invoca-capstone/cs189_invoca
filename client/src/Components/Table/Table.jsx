@@ -26,8 +26,8 @@ export default function Table() {
 
     return (
         <>
-        <h4 className="card-title">Placeholder Table</h4>
-        <p className="card-description">Currently using: <code>.table-hover .table-bordered</code> </p>
+        <h1>Call Summarizations</h1>
+        <p className="card-description">Made by: <code>#Koki's Kookies</code> </p>
         <table data-testid="display-table" className="table table-hover table-bordered">
             <thead>
                 <tr>
