@@ -1,13 +1,15 @@
+// Dependencies
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+const path = require('path')
+const dotenv = require("dotenv").config();
+const { auth } = require('express-openid-connect');
 
-const callLogRoute = require('./routes/callLog');
+// api routes
+const callLogsRoute = require('./routes/callLogs');
+const usersRoute = require('./routes/users');
 
-dotenv.config();
-
-const PORT = process.env.PORT || 3001;
-
+// mongodb connection
 mongoose 
  .connect(process.env.MONGO_URL)   
  .then(() => console.log("Database connected!"))
@@ -15,23 +17,28 @@ mongoose
 
 const app = express();
 
-
-const path = require('path')
-
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, '../client/build')))
 
-app.get("/server", (req, res) => {
-    res.json({ message: "Hello from server!" });
-  });
+// AUTH0 Config
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: process.env.AUTH_0_SECRET,
+  baseURL: process.env.AUTH_0_BASE_URL,
+  clientID: process.env.AUTH_0_CLIENT_ID,
+  issuerBaseURL: process.env.AUTH_0_ISSUER_BASE_URL
+};
 
-  app.get("/", (req, res) => {
-    res.json({ message: "Welcome to server" });
-  });
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
 
-// use callLog route for api requests related to the call log
-app.use("/api/callLogs", callLogRoute);
+// route api endpoints used
+app.use("/callLogs", callLogsRoute);
+app.use("/users", usersRoute);
 
+// listen to port specified
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
