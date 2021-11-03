@@ -1,10 +1,11 @@
 // import logo from './logo.svg';
 import './App.css';
 import './App.scss';
-import Dashboard from './Components/Dashboard/Dashboard';
+// import Dashboard from './Components/Dashboard/Dashboard';
 import Navigation from './Components/Navigation/Navigation';
 import Sidebar from './Components/Sidebar/Sidebar';
 import {Container, Row, Col} from 'react-bootstrap';
+import Table from './Components/Table/Table'
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
             <Sidebar />
           </Col>
           <Col sm={10} > 
-            <Dashboard />
+            {/* <Dashboard /> */}
+            <Table />
           </Col>
         </Row>
       </Container>
