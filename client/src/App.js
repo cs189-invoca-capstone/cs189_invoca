@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import './App.scss';
-import Dashboard from './Components/Dashboard/Dashboard';
+// import Dashboard from './Components/Dashboard/Dashboard';
 import Navigation from './Components/Navigation/Navigation';
 import Sidebar from './Components/Sidebar/Sidebar';
 import {Container, Row, Col} from 'react-bootstrap';
