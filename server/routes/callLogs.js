@@ -43,33 +43,33 @@ router.get('/:id', async (req, res)=>{
 // update the call log
 router.put('/:id', async (req, res)=>{
     console.log("Inside Update/Put");
-
     try {
         await CallLog.exists({ _id: req.params.id }, (error, result) => {
             if(error || !result){
                 console.log("Error!");
+                res.status(400);
                 throw new Error("ID does not exist in Call Log Database.");
             }
-            else{
-                let userId = req.query.userId ? req.query.userId : "";
-                let phoneNumber = req.query.phoneNumber ? req.query.phoneNumber : "";
-                let entireCall = req.query.entireCall ? req.query.entireCall : "";
-                let callSummary = req.query.callSummary ? req.query.callSummary : "";
-                let sentimentAnalysis = req.query.sentimentAnalysis;
-
-                const filter = { _id: req.params.id };
-                const update = { userId: userId, phoneNumber: phoneNumber, entireCall: entireCall, callSummary: callSummary, sentimentAnalysis: sentimentAnalysis };
-                const opts = { new: true };
-                let updatedRecord = CallLog.findOneAndUpdate(filter, update, opts);
-
-                res.status(200);
-                console.log(updatedRecord);
-            }
         }); // Check if Id exists
+        const filter = { _id: req.params.id };
+        const opts = { new: true };
+        let update = {};
+        if("userId" in req.body) update.userId = req.body.userId;
+        if("phoneNumber" in req.body) update.phoneNumber = req.body.phoneNumber;
+        if("entireCall" in req.body) update.entireCall = req.body.entireCall;
+        if("callSummary" in req.body) update.callSummary = req.body.callSummary;
+        if("sentimentAnalysis" in req.body) update.sentimentAnalysis = req.body.sentimentAnalysis;
+    
+        let updatedRecord = await CallLog.findOneAndUpdate(filter, update, opts);
+
+        res.status(200);
+        console.log(updatedRecord);
     }
     catch(err){
         console.log(err);
     }
+
+    res.end();
 });
 
 
@@ -81,24 +81,24 @@ router.delete('/:id', async (req, res)=>{
         await CallLog.exists({ _id: req.params.id }, (error, result) => {
             if(error || !result){
                 console.log("Error!");
+                res.status(400);
                 throw new Error("ID does not exist in Call Log Database.");
             }
-            else{
-                CallLog.findOneAndRemove({_id: req.params.id}, (err, deletedRecord) => {
-                    if(!err){
-                        console.log("Deleted Record: ", deletedRecord);
-                        res.status(200);
-                    }
-                    else{
-                        throw new Error(err);
-                    }
-                }).clone().catch(function(err){ console.log(err)});
-            }
         }); // Check if Id exists
+        await CallLog.findOneAndRemove({_id: req.params.id}, (err, deletedRecord) => {
+            if(!err){
+                console.log("Deleted Record: ", deletedRecord);
+                res.status(200);
+            }
+            else{
+                throw new Error(err);
+            }
+        }).clone().catch(function(err){ console.log(err)});
     }
     catch(err){
         console.log(err);
     }
+    res.end();
 });
 
 
