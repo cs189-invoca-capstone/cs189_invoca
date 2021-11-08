@@ -18,44 +18,52 @@ router.get('/all/:userId', async (req, res)=>{
         });
         res.status(200).json(allCallLogs);
     }catch(err){
-        res.status()
-            console.log(err);
-        // access too many records at same time, 503
-        // 500 for generic internal server error
-
-        // 400 bad req 
-        // 404 not found 
-        // 401 user is not authorized
-        // 408 time out for request
+        console.log(err);
+        res.send(err);
     }
 });
 
 // post a call logs that a user wants to upload
 router.post('/', async (req, res)=>{
 
-    console.log("in post");
-    let call = new CallLog();
-    console.log(req.query.userId);
-    call.userId = req.query.userId;
-    call.phoneNumber = req.query.phoneNumber;
-    call.entireCall = req.query.entireCall;
-    call.callSummary = req.query.callSummary;
-    call.sentimentAnalysis = req.query.sentimentAnalysis;
+    try{
+        console.log("in post");
+        let call = new CallLog();
+        console.log(req.query.userId);
+        call.userId = req.query.userId;
+        call.phoneNumber = req.query.phoneNumber;
+        call.entireCall = req.query.entireCall;
+        call.callSummary = req.query.callSummary;
+        call.sentimentAnalysis = req.query.sentimentAnalysis;
 
-    call.save(function(err, data){
-        if(err){
-            console.log(err);
-        }
-        else{
-            res.send("Data inserted");
-        }
-    });
+        call.save(function(err, data){
+            if(err){
+                console.log(err);
+            }
+            else{
+                res.send("Data inserted");
+            }
+        });
+    }
+    catch(err){
+        console.log(err);
+        res.send(err);
+    }
   
 
 });
 
 // get a specific call log info
 router.get('/:id', async (req, res)=>{
+
+    try{
+        const call = await CallLog.findById(req.params.id);
+        res.send(call);
+    }
+    catch(err){
+        console.log("error");
+        res.send(err);
+    }
 
     
 });
