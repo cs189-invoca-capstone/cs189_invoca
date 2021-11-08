@@ -21,8 +21,8 @@ class Navbar extends Component{
                         </div>
                     </button>
                     <div class="dropdown-content">
-                        <a href="#">Login</a>
-                        <a href="#">Profile</a>
+                        <a href="login">Login</a>
+                        <a href="profile">Profile</a>
                     </div>
                 </div>
             </nav>
