@@ -11,13 +11,14 @@ class Navbar extends Component{
                     <img
                         src={image1}
                         height = '60'
+                        alt="Invoca Logo"
                     />
                 </div>
                 <div class='dropdown'>
                     <button class="dropbtn">
                         <div class="dashrect">Dashboard
                             <div class="weight1"/>
-                            <img src={downarrow} class="downarrow"/>
+                            <img src={downarrow} alt="down" class="downarrow"/>
                         </div>
                     </button>
                     <div class="dropdown-content">
