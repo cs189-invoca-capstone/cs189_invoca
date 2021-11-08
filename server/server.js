@@ -17,6 +17,9 @@ mongoose
 
 const app = express();
 
+// Allow incoming data to be of type json
+app.use(express.json());
+
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, '../client/build')))
 
