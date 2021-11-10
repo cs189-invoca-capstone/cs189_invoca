@@ -68,7 +68,6 @@ export default function Table() {
             }
         };
         deleteLog();
-        // console.log("delete button pressed for caller: " + data.callerID);
     }
 
 
