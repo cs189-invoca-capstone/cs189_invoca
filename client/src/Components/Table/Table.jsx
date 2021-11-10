@@ -131,7 +131,7 @@ export default function Table() {
                         <th>Phone Call ID #</th>
                         <th>Phone Number</th>
                         <th  data-testid="summary-table">Summary</th>
-                        <th>Full Log</th>
+                        <th>Call Transcript</th>
                         <th>Delete?</th>
                     </tr>
                 </thead>
