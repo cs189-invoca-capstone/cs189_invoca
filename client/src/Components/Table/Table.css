@@ -1,5 +1,5 @@
 /* Tables */
-
+/* 
 .table {
     margin-bottom: 0;
 
@@ -157,11 +157,13 @@
             }
         }
     }
-}
+} */
 
 .tableStyle {
     white-space: nowrap; 
     text-overflow:ellipsis; 
     overflow: hidden; 
-    max-width:10px;
+    max-width:350px;
 };
+
+
