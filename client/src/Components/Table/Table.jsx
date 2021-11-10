@@ -40,7 +40,7 @@ export default function Table() {
                 <td onClick={() => handleTableClick(data)} className='tableStyle'>{data.summary}</td>
                 <td onClick={() => handleTableClick(data)}>{data.status}</td>
                 <td onClick={() => handleDelete(data)}>    
-                <Button variant="danger">
+                <Button variant="outline-danger">
                     Delete
                 </Button>
                 </td>
