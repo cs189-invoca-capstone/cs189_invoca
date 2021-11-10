@@ -27,7 +27,7 @@ router.get('/admin', requiresAuth(), (req, res) =>
   res.send(`Hello ${req.oidc.user.sub}, this is the admin section.`)
 );
 
-router.put('/setPhone', requiresAuth(), async (req, res) => {
+router.put('/setPhone', async (req, res) => {
   try{
     const filter = { 'email' : req.oidc.user.email };
     const update = { invocaPhone: req.body.invocaPhone };
