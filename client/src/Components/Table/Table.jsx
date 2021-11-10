@@ -39,7 +39,6 @@ export default function Table() {
             }
         };
         getLogs();
-        
     }, [])
 
     const handleTableClick = (data) => {
@@ -48,8 +47,30 @@ export default function Table() {
     }
 
     const handleDelete = (data) => {
-        console.log("delete button pressed for caller: " + data.callerID);
+        const deleteLog = async () => {
+            try{
+                // swap 0 with actual call id once we extract it from login
+                // and once the databse actually stores the user ID
+                async function deletePost() {
+                    await axios.delete('callLogs/' + data._id)
+                    .then(response => console.log('Delete successful'))
+                    .catch(error => {
+                        console.error('There was an error!', error);
+                    });
+                }
+            
+                deletePost();
+
+                const newLogs = await axios("callLogs/all/0");
+                setCallLogs(newLogs.data);
+            }catch(err){
+                console.log(err);
+            }
+        };
+        deleteLog();
+        // console.log("delete button pressed for caller: " + data.callerID);
     }
+
 
     const renderData = (data, index) => {
         return(
@@ -62,6 +83,22 @@ export default function Table() {
                 <Button variant="outline-danger">
                     Delete
                 </Button>
+                </td>
+            </tr>
+        )
+    }
+
+    const renderLogs = (callLogs, index) => {
+        return(
+            <tr key={index}>
+                <td onClick={() => handleTableClick(callLogs)}>{callLogs._id}</td>
+                <td onClick={() => handleTableClick(callLogs)}>{callLogs.phoneNumber}</td>
+                <td onClick={() => handleTableClick(callLogs)}>{callLogs.callSummary}</td>
+                <td onClick={() => handleTableClick(callLogs)}className='tableStyle'>{callLogs.entireCall}</td>
+                <td onClick={() => handleDelete(callLogs)}>    
+                    <Button variant="outline-danger">
+                        Delete
+                    </Button>
                 </td>
             </tr>
         )
@@ -85,24 +122,47 @@ export default function Table() {
                     {data.map(renderData)}
                 </tbody>
             </table>
-            <div>
-                {callLogs.map((p) => (
-                    <div key = {p._id}>
-                        <h2>User # {p.userId}</h2>
-                        <h3>Post # {p._id}</h3>
-                        <h3>{p.callSummary}</h3>
-                        <h3>{p.entireCall}</h3>
-                        <h3>{p.phoneNumber}</h3>
-                        <h3>{p.sentimentAnalysis}</h3>
-                    </div>
-                ))}
-            </div>
 
-            <Modal show={show} onHide={handleClose} info={tableData}>
+
+            <h1>Database testing</h1>
+            <p className="card-description">Made by: <code>#Koki's Kookies</code> </p>
+            <table data-testid="display-table" className="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Phone Call ID #</th>
+                        <th>Phone Number</th>
+                        <th  data-testid="summary-table">Summary</th>
+                        <th>Full Log</th>
+                        <th>Delete?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {callLogs.map(renderLogs)}
+                </tbody>
+            </table>
+
+            {/* model for dummy data */}
+            {/* <Modal show={show} onHide={handleClose} info={tableData}>
                 <Modal.Header closeButton>
                 <Modal.Title><h4>{tableData.callerID}: {tableData.phone}</h4></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>{tableData.summary}</Modal.Body>
+                <Modal.Footer>
+                <Button variant="primary" onClick={handleClose}>
+                    Edit
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                </Modal.Footer>
+            </Modal> */}
+
+            {/* model for database */}
+            <Modal show={show} onHide={handleClose} info={tableData}>
+                <Modal.Header closeButton>
+                <Modal.Title><h4>{tableData._id}: {tableData.phoneNumber}</h4></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{tableData.entireCall}</Modal.Body>
                 <Modal.Footer>
                 <Button variant="primary" onClick={handleClose}>
                     Edit

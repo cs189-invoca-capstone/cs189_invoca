@@ -8,11 +8,13 @@ class Navbar extends Component{
         return (
             <nav className='NavbarItems'>
                 <div>
-                    <img
-                        src={image1}
-                        height = '60'
-                        alt="Invoca Logo"
-                    />
+                    <a href="/">
+                        <img
+                            src={image1}
+                            height = '60'
+                            alt="Invoca Logo"
+                        />
+                    </a>
                 </div>
                 <div class='dropdown'>
                     <button class="dropbtn">
