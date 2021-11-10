@@ -61,7 +61,7 @@ router.get('/:id', async (req, res)=>{
         res.send(call);
     }
     catch(err){
-        console.log(err);
+        console.log("error");
         res.send(err);
     }
 
@@ -95,7 +95,6 @@ router.put('/:id', async (req, res)=>{
     }
     catch(err){
         console.log(err);
-        res.send(err);
     }
 
     res.end();
@@ -126,7 +125,6 @@ router.delete('/:id', async (req, res)=>{
     }
     catch(err){
         console.log(err);
-        res.send(err);
     }
     res.end();
 });
