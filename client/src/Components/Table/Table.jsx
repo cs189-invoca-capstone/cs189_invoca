@@ -3,14 +3,17 @@ import React from 'react';
 
 // import ".././Style.css";
 import "./Table.css";
-import { useState } from 'react';
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
+import { useState, useEffect } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 
 export default function Table() {
     const [show, setShow] = useState(false);
     const defaultInfo = [{callerID: "Bryan", phone:"12345", summary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
+
+    const [callLogs, setCallLogs] = useState( [] );
 
     const handleClose = () => setShow(false);
 
@@ -22,6 +25,22 @@ export default function Table() {
         {callerID: "Sydney Lim", phone: "(420) 420-6969", summary: "Woohoo", status: "In progress"},
         {callerID: "Zion Wang", phone: "(805) 805-8050", summary: "HooWoo", status: "Completed"},
     ]
+
+    useEffect(() => {
+        const getLogs = async () => {
+            try{
+                // swap 0 with actual call id once we extract it from login
+                // and once the databse actually stores the user ID
+                const logs = await axios("callLogs/all/0");
+                console.log(logs.data);
+                setCallLogs(logs.data);
+            }catch(err){
+                console.log(err);
+            }
+        };
+        getLogs();
+        
+    }, [])
 
     const handleTableClick = (data) => {
         setShow(true);
@@ -50,37 +69,49 @@ export default function Table() {
 
     return (
         <>
-        <h1>Call Summarizations</h1>
-        <p className="card-description">Made by: <code>#Koki's Kookies</code> </p>
-        <table data-testid="display-table" className="table table-hover table-bordered">
-            <thead>
-                <tr>
-                    <th>Caller ID</th>
-                    <th>Phone Number</th>
-                    <th  data-testid="summary-table">Summary</th>
-                    <th>Status</th>
-                    <th>Delete?</th>
-                </tr>
-            </thead>
-            <tbody>
-                {data.map(renderData)}
-            </tbody>
-        </table>
+            <h1>Call Summarizations</h1>
+            <p className="card-description">Made by: <code>#Koki's Kookies</code> </p>
+            <table data-testid="display-table" className="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Caller ID</th>
+                        <th>Phone Number</th>
+                        <th  data-testid="summary-table">Summary</th>
+                        <th>Status</th>
+                        <th>Delete?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.map(renderData)}
+                </tbody>
+            </table>
+            <div>
+                {callLogs.map((p) => (
+                    <div key = {p._id}>
+                        <h2>User # {p.userId}</h2>
+                        <h3>Post # {p._id}</h3>
+                        <h3>{p.callSummary}</h3>
+                        <h3>{p.entireCall}</h3>
+                        <h3>{p.phoneNumber}</h3>
+                        <h3>{p.sentimentAnalysis}</h3>
+                    </div>
+                ))}
+            </div>
 
-        <Modal show={show} onHide={handleClose} info={tableData}>
-            <Modal.Header closeButton>
-            <Modal.Title><h4>{tableData.callerID}: {tableData.phone}</h4></Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{tableData.summary}</Modal.Body>
-            <Modal.Footer>
-            <Button variant="primary" onClick={handleClose}>
-                Edit
-            </Button>
-            <Button variant="secondary" onClick={handleClose}>
-                Close
-            </Button>
-            </Modal.Footer>
-        </Modal>
+            <Modal show={show} onHide={handleClose} info={tableData}>
+                <Modal.Header closeButton>
+                <Modal.Title><h4>{tableData.callerID}: {tableData.phone}</h4></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{tableData.summary}</Modal.Body>
+                <Modal.Footer>
+                <Button variant="primary" onClick={handleClose}>
+                    Edit
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }
