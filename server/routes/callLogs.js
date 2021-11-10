@@ -29,12 +29,12 @@ router.post('/', async (req, res)=>{
     try{
         console.log("in post");
         let call = new CallLog();
-        console.log(req.query.userId);
-        call.userId = req.query.userId;
-        call.phoneNumber = req.query.phoneNumber;
-        call.entireCall = req.query.entireCall;
-        call.callSummary = req.query.callSummary;
-        call.sentimentAnalysis = req.query.sentimentAnalysis;
+        console.log(req.body.userId);
+        call.userId = req.body.userId;
+        call.phoneNumber = req.body.phoneNumber;
+        call.entireCall = req.body.entireCall;
+        call.callSummary = req.body.callSummary;
+        call.sentimentAnalysis = req.body.sentimentAnalysis;
 
         call.save(function(err, data){
             if(err){
