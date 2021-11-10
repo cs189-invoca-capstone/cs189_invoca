@@ -41,7 +41,7 @@ app.use("/callLogs", callLogsRoute);
 app.use("/users", usersRoute);
 
 // listen to port specified
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
