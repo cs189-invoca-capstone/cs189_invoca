@@ -18,7 +18,7 @@ router.get('/all/:userId', async (req, res)=>{
         });
         res.status(200).json(allCallLogs);
     }catch(err){
-        console.log(err);
+        console.log("yea");
         res.status(400);
         res.send(err);
     }
@@ -31,6 +31,10 @@ router.post('/', async (req, res)=>{
         console.log("in post");
         let call = new CallLog();
         console.log(req.body.userId);
+        if(req.body.userId == undefined){
+           throw "No UserId specified";
+        }
+
         call.userId = req.body.userId;
         call.phoneNumber = req.body.phoneNumber;
         call.entireCall = req.body.entireCall;
@@ -44,7 +48,6 @@ router.post('/', async (req, res)=>{
                 res.send(err);
             }
             else{
-                console.log(data)
                 res.send("Data Inserted");
             }
         });
@@ -67,7 +70,7 @@ router.get('/:id', async (req, res)=>{
         res.send(call);
     }
     catch(err){
-        console.log("error");
+        console.log("errors");
         res.status(400);
         res.send(err);
     }

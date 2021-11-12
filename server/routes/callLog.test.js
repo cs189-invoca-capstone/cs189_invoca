@@ -13,6 +13,21 @@ describe('Post Endpoints', () => {
     expect(res2.text).toEqual("Data Inserted")
 
   })
+
+  
+})
+
+describe('Post Endpoints Edge', () => {
+  it('should return error with no UserId', async () => {
+    const res = await request(app).post('/callLogs/')
+    .send()
+    expect(res.text).toEqual("No UserId specified")
+    expect(res.status).toEqual(400)
+
+
+  })
+
+  
 })
 
 describe('Get All Endpoints', () => {
@@ -36,6 +51,16 @@ describe('Get All Endpoints', () => {
       console.log(call)
       expect(res2.status).toEqual(200)
       expect(call._id).toEqual(_id)
+    })
+
+
+  })
+
+  describe('Get All Endpoints Edge', () => {
+
+    it('should error on get', async () => {
+      const res2 = await request(app).get('/callLogs/test')
+      expect(res2.status).toEqual(400)
     })
 
   })
