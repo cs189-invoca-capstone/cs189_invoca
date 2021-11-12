@@ -22,7 +22,7 @@ function RegisterPage(){
                         <input className="filloutbars" type="text" id="gmail"/>
                     </div>
                     <div style={{padding: 20}}>
-                        <div className='smalltext'>Invoca Phone</div>
+                        <div className='smalltext'>Your Phone Number</div>
                         <input className="filloutbars" type="text" pattern="[0-9]*" id="phone"/>
                     </div>
                     <div style={{padding: 20}}>
