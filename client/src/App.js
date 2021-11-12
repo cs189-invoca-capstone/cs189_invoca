@@ -23,7 +23,7 @@ function App() {
               <Table />
             </Col>
           </Row>
-          {/* <SubmitForm /> */}
+          <SubmitForm />
         </Container>
       </div>  
     </>
