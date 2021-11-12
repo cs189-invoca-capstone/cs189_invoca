@@ -5,6 +5,7 @@ import './App.scss';
 //import Navigation from './Components/Navigation/Navigation';
 import Navbar from './Components/Navigation/Navbar'
 import LoginPage from './Components/LoginPage/LoginPage'
+import RegisterPage from './Components/RegisterPage/RegisterPage'
 // import Sidebar from './Components/Sidebar/Sidebar';
 import {Container, Row, Col} from 'react-bootstrap';
 import Table from './Components/Table/Table'
@@ -24,7 +25,7 @@ function App() {
     //     </Row>
     //   </Container>
     // </div>
-    <LoginPage/>
+    <RegisterPage/>
   );
 }
 

@@ -27,7 +27,7 @@ function LoginPage(){
                     <div className='createrow'>
                         <div className='createcolumn'>
                             <div className='newaccount'>New here?</div>
-                            <a className='newaccount' href='createprofile'>Create an Account</a>
+                            <a className='newaccount' href='registerpage'>Create an Account</a>
                         </div>
                         <div className='jankfix'>
                             <div id='circle' onClick = {() =>loginUser(document.getElementById("gmail").value,  document.getElementById('password').value)}>
