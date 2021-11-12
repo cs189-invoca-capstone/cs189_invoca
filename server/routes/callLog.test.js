@@ -24,10 +24,8 @@ describe('Post Endpoints Edge', () => {
     expect(res.text).toEqual("No UserId specified")
     expect(res.status).toEqual(400)
 
-
   })
 
-  
 })
 
 describe('Get Endpoints', () => {
@@ -42,7 +40,6 @@ describe('Get Endpoints', () => {
         
       _id = calls[0]._id;
 
-
     })
 
     it('should get specific call', async () => {
@@ -52,7 +49,6 @@ describe('Get Endpoints', () => {
       expect(res2.status).toEqual(200)
       expect(call._id).toEqual(_id)
     })
-
 
   })
 

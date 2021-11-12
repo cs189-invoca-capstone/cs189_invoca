@@ -18,7 +18,7 @@ router.get('/all/:userId', async (req, res)=>{
         });
         res.status(200).json(allCallLogs);
     }catch(err){
-        console.log("yea");
+        console.log(error);
         res.status(400);
         res.send(err);
     }
