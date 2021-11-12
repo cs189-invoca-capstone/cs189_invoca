@@ -67,9 +67,18 @@ export default function Table() {
         )
     }
 
+    async function loginPage() {
+        await axios.get('http://localhost:3001/login').then(res => {
+            console.log(res)
+         });
+    }
+
     return (
         <>
             <h1>Call Summarizations</h1>
+            <button onClick= {() =>loginPage()}>
+                Login
+            </button>
             <p className="card-description">Made by: <code>#Koki's Kookies</code> </p>
             <table data-testid="display-table" className="table table-hover table-bordered">
                 <thead>
