@@ -31,6 +31,7 @@ router.post('/', async (req, res)=>{
         console.log("in post");
         let call = new CallLog();
         console.log(req.body.userId);
+
         if(req.body.userId == undefined){
            throw "No UserId specified";
         }
