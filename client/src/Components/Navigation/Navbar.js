@@ -12,7 +12,7 @@ async function loginPage() {
 
 function Navbar(props) {
 
-    const [profile, setProfile] = useState([])
+    const [profile, setProfile] = useState('')
     const [loggedin, setLoggedin] = useState(false)
 
     // useEffect(() => {
@@ -20,9 +20,10 @@ function Navbar(props) {
     //         try{
     //             // swap 0 with actual call id once we extract it from login
     //             // and once the databse actually stores the user ID
-    //             const temp = await axios("User/email");
+    //             const temp = await axios("users/profile");
     //             console.log(temp);
-    //             setProfile(temp);
+    //             setProfile(temp.email);
+    //             console.log(profile)
     //         }catch(err){
     //             console.log(err);
     //         }
@@ -31,29 +32,29 @@ function Navbar(props) {
     //     setLoggedin(true)
     // }, [])
 
-    // if (!loggedin) return (
-    //     <nav className='NavbarItems'>
-    //         <div>
-    //             <img
-    //                 src={image1}
-    //                 height = '60'
-    //                 alt="Invoca Logo"
-    //             />
-    //         </div>
-    //         <div class='dropdown'>
-    //             <button class="dropbtn">
-    //                 <div class="dashrect">Dashboard
-    //                     <div class="weight1"/>
-    //                     <img src={downarrow} alt="down" class="downarrow"/>
-    //                 </div>
-    //             </button>
-    //             <div class="dropdown-content">
-    //                 <a href="login">Login</a>
-    //                 <a href="profile">Profile</a>
-    //             </div>
-    //         </div>
-    //     </nav>
-    // );
+    if (!loggedin) return (
+        <nav className='NavbarItems'>
+            <div>
+                <img
+                    src={image1}
+                    height = '60'
+                    alt="Invoca Logo"
+                />
+            </div>
+            <div class='dropdown'>
+                <button class="dropbtn">
+                    <div class="dashrect">Dashboard
+                        <div class="weight1"/>
+                        <img src={downarrow} alt="down" class="downarrow"/>
+                    </div>
+                </button>
+                <div class="dropdown-content">
+                    <a href="login">Login</a>
+                    <a href="profile">Profile</a>
+                </div>
+            </div>
+        </nav>
+    );
 
     return (
         <nav className='NavbarItems'>
@@ -75,7 +76,8 @@ function Navbar(props) {
                     </div>
                 </button>
                 <div class="dropdown-content">
-                    <button onClick= {() =>loginPage()}>Login</button>
+                    {/* <button onClick= {() =>loginPage()}>Login</button> */}
+                    <a href="login">Login</a>
                     <a href="profile">Profile</a>
                 </div>
             </div>
