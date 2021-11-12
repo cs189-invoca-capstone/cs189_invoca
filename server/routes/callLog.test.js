@@ -30,7 +30,7 @@ describe('Post Endpoints Edge', () => {
   
 })
 
-describe('Get All Endpoints', () => {
+describe('Get Endpoints', () => {
     let _id = 0;
     it('should get all newly made call', async () => {
       const res = await request(app).get('/callLogs/all/4')
@@ -56,14 +56,14 @@ describe('Get All Endpoints', () => {
 
   })
 
-  describe('Get All Endpoints Edge', () => {
+describe('Get Endpoints Edge', () => {
 
-    it('should error on get', async () => {
-      const res2 = await request(app).get('/callLogs/test')
-      expect(res2.status).toEqual(400)
-    })
-
+  it('should error on get', async () => {
+    const res2 = await request(app).get('/callLogs/test')
+    expect(res2.status).toEqual(400)
   })
+
+})
 
 
  
