@@ -1,8 +1,8 @@
-import React, {Component, useEffect, useState} from 'react';
+import React from 'react';
 import './LoginPage.css'
 import Navbar from '../Navigation/Navbar'
 import arrow from './arrow.svg'
-import axios from 'axios'
+// import axios from 'axios'
 
 function LoginPage(){
     function loginUser(gmail, password){
@@ -31,7 +31,7 @@ function LoginPage(){
                         </div>
                         <div className='jankfix'>
                             <div id='circle' onClick = {() =>loginUser(document.getElementById("gmail").value,  document.getElementById('password').value)}>
-                                <img src={arrow} className='ellipse'/>
+                                <img src={arrow} alt="arrow" className='ellipse'/>
                             </div>
                         </div>
                     </div>

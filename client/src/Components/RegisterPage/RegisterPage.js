@@ -1,5 +1,5 @@
 import Navbar from '../Navigation/Navbar'
-import React, {Component, useEffect, useState} from 'react';
+import React from 'react';
 import './RegisterPage.css'
 import arrow from '../LoginPage/arrow.svg'
 
@@ -36,7 +36,7 @@ function RegisterPage(){
                         </div>
                         <div className='jankfix'>
                             <div id='circle' onClick = {() =>registerUser(document.getElementById("gmail").value, document.getElementById('phone').value, document.getElementById('password').value)}>
-                                <img src={arrow} className='ellipse'/>
+                                <img src={arrow} alt="arrow" className='ellipse'/>
                             </div>
                         </div>
                     </div>
