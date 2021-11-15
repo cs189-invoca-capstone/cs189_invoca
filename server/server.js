@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const callLogRoute = require('./routes/callLog');
 const api_helper = require('./routes/API_helper')
 
+
 dotenv.config();
 
 const PORT = process.env.PORT || 3001;
@@ -16,6 +17,9 @@ mongoose
 
 const app = express();
 const path = require('path')
+const request = require('request');
+const https = require('https');
+const axios = require('axios');
 
 
 // Serve static files from the React frontend app
@@ -32,18 +36,61 @@ app.get("/server", (req, res) => {
 // use callLog route for api requests related to the call log
 app.use("/api/callLogs", callLogRoute);
 
+// getting phone numbers from ringpool api
+// axios.request({
+//   method: 'POST',
+//   url: 'https://pnapi.invoca.net/api/2013-07-01/bulk.json',
+//   data: {"requests":[
+//         {"api_suffix": "394157/allocate_number.json?ring_pool_key=-RUfssNweQERwjibfp62ARaMN7uviJDx"}
+//         ]
+//       }
+//   })
+//   .then(res => {
+//     const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+//     console.log('Status Code:', res.status);
+//     console.log('Date in Response header:', headerDate);
 
-// get response for Invoca Ringpool API
-app.get('/getAPIResponse', (req, res) => {
-  api_helper.make_API_call('https://ucsbcapstone.invoca.net/api/2021-02-11/ring_pools/394157/allocate_number.json?ring_pool_key=-RUfssNweQERwjibfp62ARaMN7uviJDx')
-  .then(response => {
-      res.json(response)
-  })
-  .catch(error => {
-      res.send(error)
-  })
-})
+//     const data = res.data;
 
+//     console.log(data);
+//   })
+//   .catch(err => {
+//     console.log('Error: ', err.message);
+//   });
+
+
+// getting data from transactions api
+//columns = [transaction_id, transaction_type, call_source_description, city, region, calling_phone_number, mobile, duration, connect_duration, start_time_local, start_time_utc, recording, complete_call_id, destination_phone_number];
+// axios.get('https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp')
+//   .then(res => {
+//     const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+//     console.log('Status Code:', res.status);
+//     console.log('Date in Response header:', headerDate);
+
+//     const data = res.data;
+
+//     for(d of data) {
+//       console.log(d);
+//     }
+//   })
+//   .catch(err => {
+//     console.log('Error: ', err.message);
+//   });
+
+// getting transcripts from call api
+axios.get('https://ucsbcapstone.invoca.net/call/transcript/D244-1B16E484A0FF?transcript_format=agent_caller_conversation&oauth_token=0EPAlIq6gUNszkE7m7pKDs1grIIPojx4')
+  .then(res => {
+    const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+    console.log('Status Code:', res.status);
+    console.log('Date in Response header:', headerDate);
+
+    const data = res.data;
+    console.log(data);
+
+  })
+  .catch(err => {
+    console.log('Error: ', err.message);
+  });  
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
