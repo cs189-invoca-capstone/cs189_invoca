@@ -5,6 +5,7 @@ const path = require('path')
 const dotenv = require("dotenv").config();
 const { auth } = require('express-openid-connect');
 const cors = require('cors');
+const axios = require('axios');
 
 // api routes
 const callLogsRoute = require('./routes/callLogs');
@@ -41,6 +42,19 @@ app.use(auth(config));
 // route api endpoints used
 app.use("/callLogs", callLogsRoute);
 app.use("/users", usersRoute);
+
+app.get('/invocaCallNum', async (req,res) => {
+  axios.get("https://ucsbcapstone.invoca.net/api/2021-02-11/ring_pools/394157/allocate_number.xml?ring_pool_key=-RUfssNweQERwjibfp62ARaMN7uviJDx")
+    .then(response => {
+      console.log(response.data.url);
+      console.log(response.data.explanation);
+      res.status(200).json(response);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json(error);
+  });
+});
 
 // listen to port specified
 const PORT = process.env.PORT || 3001;

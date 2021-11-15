@@ -1,7 +1,6 @@
 const router = require("express").Router();
 // const { requiresAuth } = require('express-openid-connect');
 const Users = require("../models/User");
-
 const bcrypt = require("bcrypt");
 
 // Register
