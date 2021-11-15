@@ -1,20 +1,86 @@
 const router = require("express").Router();
-const { requiresAuth } = require('express-openid-connect');
-const User = require("../models/User");
+// const { requiresAuth } = require('express-openid-connect');
+const Users = require("../models/User");
 
-router.get("/", (req, res) => {
-  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+const bcrypt = require("bcrypt");
+
+// Register
+router.post("/register", async (req, res) => {
+    try{
+        // generate bcrypt hashed pass
+        const salt = await bcrypt.genSalt(10);
+        const hashedPass = await bcrypt.hash(req.body.password, salt);
+        
+        // create a new user
+        const newUser = new Users({
+            email: req.body.email,
+            password: hashedPass,
+            invocaPhone: "",
+            isAdmin: false
+        });
+
+        // save user and respond
+        const user = await newUser.save();
+        res.status(200).json(user);
+    }catch(err){
+        res.status(500).json(err);
+    }
 });
 
-router.get('/profile', requiresAuth(), (req, res) => {
-  res.send(JSON.stringify(req.oidc.user));
-  // user id created by google auth0
-  // res.send(JSON.stringify(req.oidc.user.sub));
+// Login
+router.post("/login", async (req,res)=>{
+    try{
+        const user = await Users.findOne({
+            email: req.body.email,
+        });
+        if(!user){
+            res.status(404).json("user not found");
+        }
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        if(!validPassword){
+            res.status(400).json("wrong password");
+        }
+        res.status(200).json(user);
+    }catch (err){
+        res.status(500).json(err);
+    }
 });
-
-// requiresAuth checks authentication.
-router.get('/admin', requiresAuth(), (req, res) =>
-  res.send(`Hello ${req.oidc.user.sub}, this is the admin section.`)
-);
 
 module.exports = router;
+
+
+// router.get('/profile', requiresAuth(), async (req, res) => {
+//   console.log(req.oidc.user.email);
+//   try{
+//     const user = await Users.findOne({
+//       'email' : req.oidc.user.email
+//     });
+//     res.status(200).json(user);
+//     // console.log(req.oidc.user);
+//     // console.log(user);
+//     // console.log(user.invocaPhone);
+//     // console.log(user.isAdmin);
+//   }catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
+
+
+// router.put('/setPhone/:invocaPhone', async (req, res) => {
+//   console.log("endpoint hit");
+//   try{
+//     const filter = { 'email' : req.oidc.user.email };
+//     const update = { invocaPhone: req.params.invocaPhone };
+//     console.log(req.params.invocaPhone);
+//     const user = await Users.findOneAndUpdate(filter, update);
+//     res.status(200).json(user);
+//     // console.log(req.oidc.user);
+//     console.log(user);
+//     // console.log(user.invocaPhone);
+//     // console.log(user.isAdmin);
+//   }catch (error) {
+//     res.status(500).json(error);
+//   }
+// });
+
+// module.exports = router;

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const path = require('path')
 const dotenv = require("dotenv").config();
 const { auth } = require('express-openid-connect');
+const cors = require('cors');
 
 // api routes
 const callLogsRoute = require('./routes/callLogs');
@@ -16,6 +17,7 @@ mongoose
  .catch(err => console.log(err));
 
 const app = express();
+app.use(cors());
 
 // Allow incoming data to be of type json
 app.use(express.json());
@@ -42,6 +44,7 @@ app.use("/users", usersRoute);
 
 // listen to port specified
 const PORT = process.env.PORT || 3001;
+
 module.exports = app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
