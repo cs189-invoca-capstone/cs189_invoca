@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function Table() {
     const [show, setShow] = useState(false);
@@ -125,6 +126,13 @@ export default function Table() {
 
             <h1>Database testing</h1>
             <p className="card-description">Made by: <code>#Koki's Kookies</code> </p>
+            <div>
+                <Link to={"/add-new"}>
+                    <Button variant="primary">
+                        Add new call summary
+                    </Button>
+                </Link> 
+            </div>  
             <table data-testid="display-table" className="table table-hover table-bordered">
                 <thead>
                     <tr>
@@ -139,6 +147,8 @@ export default function Table() {
                     {callLogs.map(renderLogs)}
                 </tbody>
             </table>
+            
+            
 
             {/* model for dummy data */}
             {/* <Modal show={show} onHide={handleClose} info={tableData}>

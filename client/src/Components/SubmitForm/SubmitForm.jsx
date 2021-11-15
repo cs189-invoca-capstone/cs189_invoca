@@ -62,7 +62,7 @@ export default function SubmitForm() {
     //     </>
     // )
 
-
+    console.log("AM I HERE??");
     const [inputs, setInputs] = useState({});
 
     const handleChange = (event) => {
