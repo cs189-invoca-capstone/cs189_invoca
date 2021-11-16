@@ -16,14 +16,14 @@ class Navbar extends Component{
                         />
                     </a>
                 </div>
-                <div class='dropdown'>
-                    <button class="dropbtn">
-                        <div class="dashrect">Dashboard
-                            <div class="weight1"/>
-                            <img src={downarrow} alt="down" class="downarrow"/>
+                <div className='dropdown'>
+                    <button className="dropbtn">
+                        <div className="dashrect">Dashboard
+                            <div className="weight1"/>
+                            <img src={downarrow} alt="down" className="downarrow"/>
                         </div>
                     </button>
-                    <div class="dropdown-content">
+                    <div className="dropdown-content">
                         <a href="login">Login</a>
                         <a href="profile">Profile</a>
                     </div>

@@ -1,68 +1,13 @@
 import React from 'react';
 
-import { useState, useEffect } from 'react';
-import Modal from 'react-bootstrap/Modal';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 
 
 export default function SubmitForm() {
-    // const handleFormSubmit = () => {
-    //     const addLog = async () => {
-    //         try{
-    //             // add in new data
-    //             async function addPost() {
-    //                 await axios.post('callLogs/')
-    //                 .then(response => console.log('Added new log'))
-    //                 .catch(error => {
-    //                     console.error('There was an error!', error);
-    //                 });
-    //             }
-            
-    //             addPost();
-    //         }catch(err){
-    //             console.log(err);
-    //         }
-    //     };
-    //     addLog();
-    // }
-
-    // return (
-    //     <>
-            // <Form>
-            // <Form.Group className="mb-3">
-            // <Form.Label>Phone log ID</Form.Label>
-            // <Form.Control type="text" placeholder="Enter phone log ID" />
-            // <Form.Text className="text-muted">
-            //     Generally a long string of characters.
-            // </Form.Text>
-            // </Form.Group>
-
-            // <Form.Group className="mb-3">
-            // <Form.Label>Phone Number</Form.Label>
-            // <Form.Control type="text" placeholder="Enter phone number" />
-            // </Form.Group>
-
-            // <Form.Group className="mb-3">
-            // <Form.Label>Summary</Form.Label>
-            // <Form.Control type="text" placeholder="Enter call summary" />
-            // </Form.Group>
-
-            // <Form.Group className="mb-3">
-            // <Form.Label>Call Transcript</Form.Label>
-            // <Form.Control type="text" placeholder="Enter call transcript" />
-            // </Form.Group>
-
-
-            // <Button variant="primary" onClick={handleFormSubmit} type="submit">
-            //     Submit
-            // </Button>
-            // </Form>
-    //     </>
-    // )
-
-    console.log("AM I HERE??");
     const [inputs, setInputs] = useState({});
 
     const handleChange = (event) => {
@@ -71,39 +16,68 @@ export default function SubmitForm() {
         setInputs(values => ({...values, [name]: value}))
     }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        alert(inputs._id +" "+ inputs.phoneNumber + " " + inputs.callSummary + " " + inputs.entireCall);
+    const resetForm = () => { 
+        setInputs({});
+    }
+
+    const handleSubmit = async () => {
+        try{
+            // swap 0 with actual call id once we extract it from login
+            // and once the databse actually stores the user ID
+            const logs = await axios.post("callLogs/", {
+                userId: inputs._id,
+                phoneNumber: inputs.phoneNumber,
+                entireCall: inputs.entireCall,
+                callSummary: inputs.callSummary
+            });
+            console.log(logs.data);
+        }catch(err){
+            console.log(err);
+        }
+        alert("Updated!");
+        resetForm();
     }
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <>
+        <div>
+        <Form onSubmit={handleSubmit} id="submit-form">
             <Form.Group className="mb-3">
-            <Form.Label>Phone log ID</Form.Label>
-            <Form.Control type="text" name="_id" value={inputs._id || ""} onChange={handleChange} placeholder="Enter phone log ID" />
+            <Form.Label>Caller log ID</Form.Label>
+            <Form.Control type="text" name="_id" value={inputs._id} onChange={handleChange} placeholder="Enter caller log ID" />
             <Form.Text className="text-muted">
-                Generally a long string of characters.
+                Currently using 0 for testing.
             </Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-3">
             <Form.Label>Phone Number</Form.Label>
-            <Form.Control type="text" name="phoneNumber" value={inputs.phoneNumber || ""} onChange={handleChange} placeholder="Enter phone number" />
+            <Form.Control type="text" name="phoneNumber" value={inputs.phoneNumber} onChange={handleChange} placeholder="Enter phone number" />
             </Form.Group>
 
             <Form.Group className="mb-3">
             <Form.Label>Summary</Form.Label>
-            <Form.Control type="text" name="callSummary" value={inputs.callSummary || ""} onChange={handleChange} placeholder="Enter call summary" />
+            <Form.Control type="text" name="callSummary" value={inputs.callSummary} onChange={handleChange} placeholder="Enter call summary" />
             </Form.Group>
 
             <Form.Group className="mb-3">
             <Form.Label>Call Transcript</Form.Label>
-            <Form.Control type="text" name="entireCall" value={inputs.entireCall || ""} onChange={handleChange} placeholder="Enter call transcript" />
+            <Form.Control type="text" name="entireCall" value={inputs.entireCall} onChange={handleChange} placeholder="Enter call transcript" />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={!inputs._id || !inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary}>
                 Submit
             </Button>
         </Form>
+        </div>
+        <br></br>
+        <div>
+        <Link to={"/"}>
+            <Button variant="secondary">
+                Exit
+            </Button>
+        </Link> 
+        </div>
+        </>
     )
 }

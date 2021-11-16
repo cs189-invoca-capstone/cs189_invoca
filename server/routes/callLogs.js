@@ -25,7 +25,6 @@ router.get('/all/:userId', async (req, res)=>{
 
 // post a call logs that a user wants to upload
 router.post('/', async (req, res)=>{
-
     try{
         console.log("in post");
         let call = new CallLog();
