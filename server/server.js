@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const path = require('path')
 const dotenv = require("dotenv").config();
 const { auth } = require('express-openid-connect');
+const cors = require('cors');
 
 // api routes
 const callLogsRoute = require('./routes/callLogs');
@@ -16,6 +17,7 @@ mongoose
  .catch(err => console.log(err));
 
 const app = express();
+app.use(cors());
 
 // Allow incoming data to be of type json
 app.use(express.json());
@@ -34,7 +36,7 @@ const config = {
 };
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
-app.use(auth(config));
+//app.use(auth(config));
 
 // route api endpoints used
 app.use("/callLogs", callLogsRoute);
@@ -43,7 +45,7 @@ app.use("/users", usersRoute);
 // listen to port specified
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
+module.exports = app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 

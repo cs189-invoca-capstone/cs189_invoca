@@ -19,36 +19,71 @@ router.get('/all/:userId', async (req, res)=>{
         res.status(200).json(allCallLogs);
     }catch(err){
         console.log(err);
+        res.status(400);
         res.send(err);
     }
+    res.end();
+
 });
+
+router.get('/search/', async (req, res)=>{
+    console.log("in search");
+    console.log(req.body.searchType);
+    console.log(req.body.searchQuery);
+
+
+    try{
+
+        let type = req.body.searchType;
+        let query = req.body.searchQuery;
+
+        if(type == undefined || query == undefined){
+            throw "Missing Parameters";
+        }
+        if( type != "userId" && type != "phoneNumber" && type != "entireCall" && type != "callSummary" && type != "sentimentAnalysis")
+            throw "Search Type not valid";
+        const allCallLogs = await CallLog.find(
+            { [type] : { "$regex": query, "$options": "i" } }
+        );
+
+        res.status(200).send(allCallLogs);
+    }catch(err){
+        console.log(err);
+        res.status(400);
+        res.send(err);
+    }
+    res.end();
+
+});
+
 
 // post a call logs that a user wants to upload
 router.post('/', async (req, res)=>{
     try{
         console.log("in post");
         let call = new CallLog();
-        console.log(req.body.userId);
+        console.log(req.body);
+        if(req.body.userId == undefined || req.body.phoneNumber == undefined || req.body.entireCall == undefined || req.body.callSummary == undefined || req.body.sentimentAnalysis == undefined){
+           throw "Missing a required parameter";
+        }
+
         call.userId = req.body.userId;
         call.phoneNumber = req.body.phoneNumber;
         call.entireCall = req.body.entireCall;
         call.callSummary = req.body.callSummary;
         call.sentimentAnalysis = req.body.sentimentAnalysis;
 
-        call.save(function(err, data){
-            if(err){
-                console.log(err);
-            }
-            else{
-                res.send("Data inserted");
-            }
-        });
+        await call.save();
+
+        res.status(200).send("Data Inserted");
     }
     catch(err){
         console.log(err);
+        res.status(400);
         res.send(err);
     }
-  
+    res.end();
+
 
 });
 
@@ -57,12 +92,15 @@ router.get('/:id', async (req, res)=>{
 
     try{
         const call = await CallLog.findById(req.params.id);
+        res.status(200);
         res.send(call);
     }
     catch(err){
-        console.log("error");
+        console.log("errors");
+        res.status(400);
         res.send(err);
     }
+    res.end();
 
     
 });
@@ -100,6 +138,29 @@ router.put('/:id', async (req, res)=>{
 });
 
 
+// router.delete('/:userId', async (req, res)=>{
+//     console.log("Inside Delete All");
+
+//     try {
+   
+//         await CallLog.deleteMany({userId: req.params.userId}, (err, deletedRecord) => {
+//             if(!err){
+//                 console.log("Deleted All Record: ", deletedRecord);
+//                 res.status(200);
+//             }
+//             else{
+//                 throw new Error(err);
+//             }
+//         }).clone().catch(function(err){ console.log(err)});
+//     }
+//     catch(err){
+//         console.log(err);
+//         res.status(400);
+//         res.send(err);
+//     }
+//     res.end();
+// });
+
 // delete the call log
 router.delete('/:id', async (req, res)=>{
     console.log("Inside Delete");
@@ -109,7 +170,7 @@ router.delete('/:id', async (req, res)=>{
             if(error || !result){
                 console.log("Error!");
                 res.status(400);
-                throw new Error("ID does not exist in Call Log Database.");
+                throw "ID does not exist in Call Log Database.";
             }
         }); // Check if Id exists
         await CallLog.findOneAndRemove({_id: req.params.id}, (err, deletedRecord) => {
@@ -124,6 +185,8 @@ router.delete('/:id', async (req, res)=>{
     }
     catch(err){
         console.log(err);
+        res.status(400);
+        res.send(err);
     }
     res.end();
 });

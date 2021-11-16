@@ -21,11 +21,6 @@
     margin: 0; /* Important for vertical align on mobile phones */
   }
   
-  /* Add a red background color to navbar links on hover */
-  .navbar a:hover, .dropdown:hover .dropbtn {
-    background-color: red;
-  }
-  
   /* Dropdown content (hidden by default) */
   .dropdown-content {
     display: none;
@@ -76,6 +71,11 @@
     font-size: 30px;
     line-height: 37px;
     color: #000000;
+}
+
+.dashrect:hover {
+  background: rgba(7, 255, 32, 0.50);
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.20);
 }
 
 .downarrow{
