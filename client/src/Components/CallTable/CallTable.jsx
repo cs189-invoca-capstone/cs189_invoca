@@ -8,18 +8,23 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
+import Form from 'react-bootstrap/Form';
 import "./CallTable.css";
 
 
 export default function CallTable() {
     const [show, setShow] = useState(false);
+    const [readOnly, setReadOnly] = useState(true);
+    const [showEdit, setShowEdit] = useState(true);
     const defaultInfo = [{callerID: "Bryan", phone:"12345", summary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
-
     const [callLogs, setCallLogs] = useState( [] );
 
-    const handleClose = () => setShow(false);
-
+    const handleClose = () => {
+        setReadOnly(true);
+        setShow(false);
+    }
+    // fetch all call logs for table
     useEffect(() => {
         const getLogs = async () => {
             try{
@@ -35,11 +40,13 @@ export default function CallTable() {
         getLogs();
     }, [])
 
+    // displays modal with more table information
     const handleTableClick = (data) => {
         setShow(true);
-        setTableData(data)
+        setTableData(data);
     }
-
+    
+    // calls backend to delete row from table
     const handleDelete = (data) => {
         const deleteLog = async () => {
             try{
@@ -54,7 +61,7 @@ export default function CallTable() {
                 }
             
                 deletePost();
-
+                
                 const newLogs = await axios("callLogs/all/0");
                 setCallLogs(newLogs.data);
             }catch(err){
@@ -63,14 +70,15 @@ export default function CallTable() {
         };
         deleteLog();
     }
-
+        
+    // shows all logs and adds logic to clicks
     const renderLogs = (callLogs, index) => {
         return(
             <tr Style="cursor: pointer;" key={index}>
                 <td onClick={() => handleTableClick(callLogs)}>{callLogs._id}</td>
-                <td className="pointer" onClick={() => handleTableClick(callLogs)}>{callLogs.phoneNumber}</td>
-                <td className="pointer" onClick={() => handleTableClick(callLogs)}>{callLogs.callSummary}</td>
-                <td onClick={() => handleTableClick(callLogs)} className='tableStyle pointer'>{callLogs.entireCall}</td>
+                <td onClick={() => handleTableClick(callLogs)}>{callLogs.phoneNumber}</td>
+                <td onClick={() => handleTableClick(callLogs)}>{callLogs.callSummary}</td>
+                <td onClick={() => handleTableClick(callLogs)} className='tableStyle'>{callLogs.entireCall}</td>
                 <td onClick={() => handleDelete(callLogs)}>    
                     <Button variant="outline-danger">
                         Delete
@@ -78,6 +86,43 @@ export default function CallTable() {
                 </td>
             </tr>
         )
+    }
+    
+    // hides edit button, shows save button
+    const handleEdit = () => {
+        setReadOnly(false)
+        setShowEdit(false)
+    }
+
+    // refreshes the page to re-render the table
+    const refreshPage = () => {
+        window.location.reload(false);
+    }
+
+    // calls put method to save new data into database
+    const handleSave = async () => {
+        setReadOnly(true)
+        setShowEdit(true)
+        try{
+            // swap 0 with actual call id once we extract it from login
+            // and once the databse actually stores the user ID
+            const logs = await axios.put("callLogs/"+ tableData._id, {
+                entireCall: tableData.entireCall
+            });
+            console.log(logs.data);
+        }catch(err){
+            console.log(err);
+        }
+        alert("Saved!");
+        handleClose();
+        refreshPage();
+    }
+
+    // ensures that tableData.entireCall is editable
+    const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setTableData(values => ({...values, [name]: value}))
     }
 
     return (
@@ -93,9 +138,9 @@ export default function CallTable() {
             </div>  
             <br>
             </br>
-            <div>
+            {/* <div>
                 <SearchBar />
-            </div>
+            </div> */}
             <div>
                 <table data-testid="display-table" className="table table-hover table-bordered">
                     <thead>
@@ -107,23 +152,28 @@ export default function CallTable() {
                             <th>Delete?</th>
                         </tr>
                     </thead>
-                    <tbody className="pointer">
+                    <tbody>
                         {callLogs.map(renderLogs)}
                     </tbody>
                 </table>
             </div>
             
 
-            {/* model for database */}
-            <Modal show={show} onHide={handleClose} info={tableData}>
+            {/* modal for database */}
+            <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
                 <Modal.Header closeButton>
-                <Modal.Title><h4>{tableData._id}: {tableData.phoneNumber}</h4></Modal.Title>
+                <Modal.Title><h4>{tableData.phoneNumber}: {tableData.callSummary}</h4></Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{tableData.entireCall}</Modal.Body>
+                <Modal.Body>
+                    <Form.Group >
+                        <Form.Label>Call Transcript:</Form.Label>
+                        <Form.Control as="textarea" rows={5} type="text" onChange={handleChange} value={tableData.entireCall} placeholder="Call transcription" readOnly={readOnly} name="entireCall"/>           
+                    </Form.Group>
+                </Modal.Body>
                 <Modal.Footer>
-                <Button variant="primary" onClick={handleClose}>
-                    Edit
-                </Button>
+                
+                {showEdit ? <Button variant="primary" onClick={handleEdit}>Edit</Button> : <Button variant="success" onClick={handleSave}>Save</Button>}
+
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>

@@ -64,7 +64,7 @@ router.post('/', async (req, res)=>{
         let call = new CallLog();
         console.log(req.body);
         if(req.body.userId == undefined || req.body.phoneNumber == undefined || req.body.entireCall == undefined || req.body.callSummary == undefined || req.body.sentimentAnalysis == undefined){
-           throw "Missing a required parameter";
+            throw "Missing a required parameter";
         }
 
         call.userId = req.body.userId;

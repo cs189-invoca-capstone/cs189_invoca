@@ -28,7 +28,8 @@ export default function SubmitForm() {
                 userId: inputs._id,
                 phoneNumber: inputs.phoneNumber,
                 entireCall: inputs.entireCall,
-                callSummary: inputs.callSummary
+                callSummary: inputs.callSummary,
+                sentimentAnalysis: inputs.sentimentAnalysis
             });
             console.log(logs.data);
         }catch(err){
@@ -65,7 +66,15 @@ export default function SubmitForm() {
             <Form.Control type="text" name="entireCall" value={inputs.entireCall} onChange={handleChange} placeholder="Enter call transcript" />
             </Form.Group>
 
-            <Button variant="primary" type="submit" disabled={!inputs._id || !inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary}>
+            <Form.Group className="mb-3">
+            <Form.Label>Sentiment Analysis</Form.Label>
+            <Form.Control type="text" name="sentimentAnalysis" value={inputs.sentimentAnalysis} onChange={handleChange} placeholder="Enter sentiment analysis" />
+            <Form.Text className="text-muted">
+                Sentiment takes in 0 or 1 (to be updated in future).
+            </Form.Text>
+            </Form.Group>
+
+            <Button variant="primary" type="submit" disabled={!inputs._id || !inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary || !inputs.sentimentAnalysis}>
                 Submit
             </Button>
         </Form>

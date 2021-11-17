@@ -6,8 +6,7 @@ import './App.scss';
 // import Navbar from './Components/Navigation/Navbar'
 import RegisterPage from './Components/RegisterPage/RegisterPage'
 import LoginPage from './Components/LoginPage/LoginPage'
-import LandingPage from './Components/LandingPage/LandingPage'
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// import LandingPage from './Components/LandingPage/LandingPage'
 // import Sidebar from './Components/Sidebar/Sidebar';
 // import {Container, Row, Col} from 'react-bootstrap';
 // import Table from './Components/Table/Table'
