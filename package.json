@@ -13,8 +13,12 @@
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "concurrently": "^6.3.0",
     "nodemon": "^2.0.14",
+    "react-scripts": "^4.0.3",
+    "request": "^2.88.2",
+    "rest": "^2.0.0"
     "react-bootstrap": "^2.0.2"
   }
 }
