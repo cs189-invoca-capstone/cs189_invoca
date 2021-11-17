@@ -2,13 +2,6 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
     {
-        username : {
-            type : String,
-            require: true,
-            min: 3,
-            max: 15,
-            unique: true
-        },
         email:{
             type: String,
             require:true,
@@ -20,6 +13,9 @@ const UserSchema = new mongoose.Schema(
             require:true,
             min: 6,
         },
+        invocaPhone:{
+            type: String,
+        },
         isAdmin:{
             type: Boolean,
             default: false
@@ -27,4 +23,4 @@ const UserSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("Users", UserSchema);

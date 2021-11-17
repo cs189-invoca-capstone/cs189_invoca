@@ -1,0 +1,10 @@
+.backgroundlanding {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: screen;
+    height: 748px;
+
+    background-color: blue;
+}

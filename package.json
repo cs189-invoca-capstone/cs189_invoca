@@ -19,5 +19,6 @@
     "react-scripts": "^4.0.3",
     "request": "^2.88.2",
     "rest": "^2.0.0"
+    "react-bootstrap": "^2.0.2"
   }
 }
