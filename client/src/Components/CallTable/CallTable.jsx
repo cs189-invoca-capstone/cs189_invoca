@@ -23,20 +23,24 @@ export default function CallTable() {
     const handleClose = () => {
         setReadOnly(true);
         setShow(false);
+        setShowEdit(true);
     }
+
+    // fetch call logs for table
+    const getLogs = async () => {
+        try{
+            // swap 0 with actual call id once we extract it from login
+            // and once the databse actually stores the user ID
+            const logs = await axios("callLogs/all/0");
+            console.log(logs.data);                
+            setCallLogs(logs.data);
+        }catch(err){
+            console.log(err);
+        }
+    };
+
     // fetch all call logs for table
     useEffect(() => {
-        const getLogs = async () => {
-            try{
-                // swap 0 with actual call id once we extract it from login
-                // and once the databse actually stores the user ID
-                const logs = await axios("callLogs/all/0");
-                console.log(logs.data);
-                setCallLogs(logs.data);
-            }catch(err){
-                console.log(err);
-            }
-        };
         getLogs();
     }, [])
 
@@ -94,28 +98,21 @@ export default function CallTable() {
         setShowEdit(false)
     }
 
-    // refreshes the page to re-render the table
-    const refreshPage = () => {
-        window.location.reload(false);
-    }
 
     // calls put method to save new data into database
     const handleSave = async () => {
         setReadOnly(true)
         setShowEdit(true)
         try{
-            // swap 0 with actual call id once we extract it from login
-            // and once the databse actually stores the user ID
             const logs = await axios.put("callLogs/"+ tableData._id, {
                 entireCall: tableData.entireCall
             });
             console.log(logs.data);
-        }catch(err){
+        } catch(err){
             console.log(err);
         }
-        alert("Saved!");
+        getLogs();
         handleClose();
-        refreshPage();
     }
 
     // ensures that tableData.entireCall is editable

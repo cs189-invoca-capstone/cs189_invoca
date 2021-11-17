@@ -17,7 +17,6 @@ mongoose
  .catch(err => console.log(err));
 
 const app = express();
-const path = require('path')
 const request = require('request');
 const axios = require('axios');
 
