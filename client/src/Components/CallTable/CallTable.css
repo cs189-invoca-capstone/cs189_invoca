@@ -1,0 +1,6 @@
+.tableStyle {
+    white-space: nowrap; 
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    max-width:350px;
+};
