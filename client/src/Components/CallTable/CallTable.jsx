@@ -135,9 +135,9 @@ export default function CallTable() {
             </div>  
             <br>
             </br>
-            {/* <div>
+            <div>
                 <SearchBar />
-            </div> */}
+            </div>
             <div>
                 <table data-testid="display-table" className="table table-hover table-bordered">
                     <thead>

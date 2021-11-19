@@ -2,29 +2,34 @@ import React from 'react';
 import './SearchBar.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import DropdownButton from 'react-bootstrap/DropdownButton'
-import Dropdown from 'react-bootstrap/Dropdown'
+import { useState } from 'react';
 
+const SearchBar = () => {
+    const [choice, setChoice] = useState("placeholder");
 
-const SearchBar = () => (
+    const handleChange = (e) => {
+        setChoice(e.target.value);
+    }
+
+    return (
     <div>
-        <div>
-        <DropdownButton id="dropdown-basic-button" title="Dropdown button">
-            <Dropdown.Item href="">Phone Number</Dropdown.Item>
-            <Dropdown.Item href="">Call Summary</Dropdown.Item>
-            <Dropdown.Item href="">Call Transcript</Dropdown.Item>
-        </DropdownButton>
-        </div>
-        <div>
-        <Form action="/" method="get" className="mb-3"> 
+        <p>{choice}</p>
+        <Form className="mb-3"> 
             <Form.Label htmlFor="header-search"></Form.Label>
-            <Form.Control type="text" placeholder="Search call logs" name="search"/>
+            <Form.Select className="mb-3" name="type" onChange={handleChange}>
+                <option value="_id">Phone Call ID #</option>
+                <option value="phoneNumber">Phone Number</option>
+                <option value="callSummary">Summary</option>
+                <option value="entireCall">Call Transcript</option>
+                <option value="sentimentAnalysis">Sentiment</option>
+            </Form.Select>
+            <Form.Control className="mb-3" type="text" placeholder="Search call logs" name="search"/>
             <Button variant="primary" type="submit">
                     Search
             </Button>
         </Form>
-        </div>    
-    </div>
-);
+        </div>  
+    )  
+};
 
 export default SearchBar;
