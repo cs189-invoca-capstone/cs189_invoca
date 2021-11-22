@@ -1,14 +1,33 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './LoginPage.css'
 import Navbar from '../Navigation/Navbar'
 import arrow from './arrow.svg'
-// import axios from 'axios'
+import axios from 'axios'
 
-function LoginPage(){
+function LoginPage(props){
+
+    const [user, setUser] = useState([])
+    //const [loggedin, setLoggedin]  = useState(false)
+
     function loginUser(gmail, password){
-        console.log(gmail)
-        console.log(password)
+        props.loginUser(true);
+        try{
+            const res = axios.post('/users/login', {
+                email: gmail,
+                password: password
+            });
+            // localStorage.setItem('user', res.data)
+            console.log(res);
+        }catch(err){
+            console.log(err);
+        }
     }
+
+    // useEffect (() =>{
+
+    // }
+    // )
+
     return (
         <div>
         <Navbar/>
@@ -30,7 +49,7 @@ function LoginPage(){
                             <a className='newaccount' href='register'>Create an Account</a>
                         </div>
                         <div className='jankfix'>
-                            <div id='circle' onClick = {() =>loginUser(document.getElementById("gmail").value,  document.getElementById('password').value)}>
+                            <div id='circle' onClick = {() => loginUser(document.getElementById("gmail").value,  document.getElementById('password').value)}>
                                 <img src={arrow} alt="arrow" className='ellipse'/>
                             </div>
                         </div>
