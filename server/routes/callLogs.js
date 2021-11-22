@@ -59,13 +59,12 @@ router.get('/search/', async (req, res)=>{
 
 // post a call logs that a user wants to upload
 router.post('/', async (req, res)=>{
-
     try{
         console.log("in post");
         let call = new CallLog();
         console.log(req.body);
         if(req.body.userId == undefined || req.body.phoneNumber == undefined || req.body.entireCall == undefined || req.body.callSummary == undefined || req.body.sentimentAnalysis == undefined){
-           throw "Missing a required parameter";
+            throw "Missing a required parameter";
         }
 
         call.userId = req.body.userId;
