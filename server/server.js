@@ -17,7 +17,6 @@ mongoose
  .catch(err => console.log(err));
 
 const app = express();
-const path = require('path')
 const request = require('request');
 const axios = require('axios');
 
@@ -91,22 +90,22 @@ app.get('/transactions', async(request,result) => {
     });
 });
 
-// getting transcripts from call api
-// app.get('/call', async(request,result) => {
-//   axios.get('https://ucsbcapstone.invoca.net/call/transcript/D244-1B16E484A0FF?transcript_format=agent_caller_conversation&oauth_token=0EPAlIq6gUNszkE7m7pKDs1grIIPojx4')
-//     .then(res => {
-//       const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
-//       console.log('Status Code:', res.status);
-//       console.log('Date in Response header:', headerDate);
+//getting transcripts from call api
+app.get('/call', async(request,result) => {
+  axios.get('https://ucsbcapstone.invoca.net/call/transcript/D244-1B16E484A0FF?transcript_format=caller_agent_conversation&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp')
+    .then(res => {
+      const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+      console.log('Status Code:', res.status);
+      console.log('Date in Response header:', headerDate);
 
-//       const data = res.data;
-//       result.json(data);
+      const data = res.data;
+      result.json(data);
 
-//     })
-//     .catch(err => {
-//       result.json('Error: ', err.message);
-//     });  
-//   });
+    })
+    .catch(err => {
+      result.json('Error: ', err);
+    });  
+  });
 
 module.exports = app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
