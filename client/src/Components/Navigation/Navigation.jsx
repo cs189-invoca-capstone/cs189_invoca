@@ -10,6 +10,7 @@ export default function Navigation() {
                 <Navbar.Brand href="#home">
                     <img
                     src={image1}
+                    alt="Invoca-Logo"
                     width="200"
                     />
                 </Navbar.Brand>

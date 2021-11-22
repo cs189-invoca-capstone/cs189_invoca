@@ -5,9 +5,19 @@ import arrow from './arrow.svg'
 // import axios from 'axios'
 
 function LoginPage(){
-    function loginUser(gmail, password){
+    async function loginUser(gmail, password){
         console.log(gmail)
         console.log(password)
+        try{
+            const res = await axios.post('/users/login', {
+                email: gmail,
+                password: password
+            });
+            // localStorage.setItem('user', res.data)
+            console.log(res);
+        }catch(err){
+            console.log(err);
+        }
     }
     return (
         <div>
