@@ -1,7 +1,5 @@
-import Navbar from '../Navigation/Navbar'
-import React, {useState, useEffect} from 'react';
-import './ProfilePage.css'
-import axios from 'axios'
+import React from 'react';
+import './ProfilePage.css';
 
 function ProfilePage(props) {
 

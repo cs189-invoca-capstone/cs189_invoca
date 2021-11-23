@@ -1,12 +1,9 @@
-
 import React from 'react';
 
-// import ".././Style.css";
 import { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
 import Form from 'react-bootstrap/Form';
 import "./CallTable.css";

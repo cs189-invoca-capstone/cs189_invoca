@@ -1,9 +1,5 @@
-import React from 'react';
-
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
+import React, { useState } from 'react';
+import {Button, Form} from 'react-bootstrap';
 import axios from 'axios';
 
 

@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import './LoginPage.css'
-import arrow from './arrow.svg'
-import axios from 'axios'
+import React from 'react';
+import './LoginPage.css';
+import arrow from './arrow.svg';
+import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 
 function LoginPage(props){
     async function loginUser(gmail, password){
-        // props.handleLogIn(true);
-        // props.handleRouteChange('home');
         console.log("entered login User");
         try{
             const res = await axios.post('/users/login', {
@@ -38,8 +37,9 @@ function LoginPage(props){
                 <div className='createrow'>
                     <div className='createcolumn'>
                         <div className='newaccount'>New here?</div>
-                        {/* <a className='newaccount' href='register'>Create an Account</a> */}
-                        <p onClick = {() => props.handleRouteChange('register')} href="">Create an Account</p>
+                        <Button variant="secondary" onClick={() => props.handleRouteChange('register')} href="">
+                            Create an Account
+                        </Button>
                     </div>
                     <div className='jankfix'>
                         <div id='circle' onClick = {
