@@ -5,32 +5,24 @@ import arrow from './arrow.svg'
 import axios from 'axios'
 
 function LoginPage(props){
-
-    const [user, setUser] = useState([])
-    //const [loggedin, setLoggedin]  = useState(false)
-
-    function loginUser(gmail, password){
-        props.loginUser(true);
-        try{
-            const res = axios.post('/users/login', {
-                email: gmail,
-                password: password
-            });
-            // localStorage.setItem('user', res.data)
-            console.log(res);
-        }catch(err){
-            console.log(err);
-        }
+    async function loginUser(gmail, password){
+        props.handleLogIn(true);
+        console.log("entered login User");
+        // try{
+        //     const res = await axios.post('/users/login', {
+        //         email: gmail,
+        //         password: password
+        //     });
+        //     // localStorage.setItem('user', res.data)
+        //     console.log(res);
+        // }catch(err){
+        //     console.log(err);
+        // }
     }
 
-    // useEffect (() =>{
-
-    // }
-    // )
-
     return (
-        <div>
-        <Navbar/>
+        <>
+            <Navbar/>
             <div className='backgroundlogin' >
                 <div className='loginsquare'>
                     <div className='logintext'>Login</div>
@@ -49,14 +41,15 @@ function LoginPage(props){
                             <a className='newaccount' href='register'>Create an Account</a>
                         </div>
                         <div className='jankfix'>
-                            <div id='circle' onClick = {() => loginUser(document.getElementById("gmail").value,  document.getElementById('password').value)}>
+                            <div id='circle' onClick = {
+                                () => loginUser(document.getElementById("gmail").value,  document.getElementById('password').value)}>
                                 <img src={arrow} alt="arrow" className='ellipse'/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

@@ -3,7 +3,7 @@ import React from 'react';
 import './RegisterPage.css'
 import arrow from '../LoginPage/arrow.svg'
 
-function RegisterPage(){
+function RegisterPage(props){
     function registerUser(gmail, invocaPhone, password){
         console.log(gmail)
         console.log(invocaPhone)
@@ -12,7 +12,7 @@ function RegisterPage(){
 
     return (
         <div class="h-screen">
-        <Navbar/>
+            <Navbar/>
             <div className='backgroundregister'>
                 <div className='registersquare'>
                     <div className='logintext'>Register</div>

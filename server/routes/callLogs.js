@@ -6,7 +6,6 @@ const User = require("../models/User");
 router.get('/all/:userId', async (req, res)=>{
     console.log(req.params.userId);
     try{
-
         const allCallLogs = await CallLog.find({userId: req.params.userId})
 
         let callLogList = []
