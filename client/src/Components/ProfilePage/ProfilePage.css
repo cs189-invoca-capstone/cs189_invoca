@@ -1,0 +1,10 @@
+.backgroundprofile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: screen;
+    height: 748px;
+
+    background: linear-gradient(180deg, rgba(7, 255, 32, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%), linear-gradient(0deg, rgba(7, 255, 32, 0.12), rgba(7, 255, 32, 0.12));
+}
