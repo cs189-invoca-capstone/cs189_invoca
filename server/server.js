@@ -9,6 +9,7 @@ const cors = require('cors');
 // api routes
 const callLogsRoute = require('./routes/callLogs');
 const usersRoute = require('./routes/users');
+const transactionsRoute = require('./routes/transactions');
 
 // mongodb connection
 mongoose 
@@ -44,6 +45,7 @@ app.use(auth(config));
 // route api endpoints used
 app.use("/callLogs", callLogsRoute);
 app.use("/users", usersRoute);
+app.use("/transactions", transactionsRoute);
 
 // listen to port specified
 const PORT = process.env.PORT || 3001;
