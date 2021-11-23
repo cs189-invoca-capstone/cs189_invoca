@@ -41,9 +41,7 @@ function App() {
     <>
       <Navbar loggedin={loggedin} handleRouteChange = {handleRouteChange}/>
       { thisRoute === 'home'
-        ? <>
-            <CallTable handleRouteChange = {handleRouteChange}/>
-          </>
+        ? <CallTable handleRouteChange = {handleRouteChange}/>
         : ( thisRoute === 'profile' 
           ?  <ProfilePage user = {user} loggedin = {loggedin}/>
           : ( thisRoute === 'add-new' 

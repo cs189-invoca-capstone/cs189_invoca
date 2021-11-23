@@ -7,7 +7,7 @@ import axios from 'axios';
 import SearchBar from '../SearchBar/SearchBar';
 import Form from 'react-bootstrap/Form';
 import "./CallTable.css";
-
+import {Container, Row, Col} from 'react-bootstrap';
 
 export default function CallTable(props) {
     const [show, setShow] = useState(false);
@@ -123,9 +123,20 @@ export default function CallTable(props) {
             <h1>Database testing</h1>
             <p className="card-description">Made by: <code>#Koki's Kookies</code> </p>
             <div>
-                <Button variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
-                    Add new call summary
-                </Button>
+                <Container>
+                    <Row>
+                        <Col>
+                            <Button variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
+                                Add new call summary
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button variant="primary" onClick = {() => props.handleRouteChange('profile')} href="">
+                                Check your profile
+                            </Button>
+                        </Col>
+                    </Row>
+                </Container>
             </div>  
             <br>
             </br>

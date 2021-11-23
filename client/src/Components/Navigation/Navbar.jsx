@@ -9,13 +9,13 @@ export default function Navbar(props) {
         <div>
             <nav className='NavbarItems'>
                 <div>
-                    <a href="/">
+                    <div onClick={() => props.handleRouteChange('home')} href="">
                         <img
                             src={image1}
                             height = '60'
                             alt="Invoca Logo"
                         />
-                    </a>
+                    </div>
                 </div>
                 <div className='dropdown'>
                     <button className="dropbtn">
