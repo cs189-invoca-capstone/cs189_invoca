@@ -25,10 +25,10 @@ export default function Navbar(props) {
                     </button>
                     <div class="dropdown-content">
                         {props.loggedin === false && 
-                            <p onClick = {() => props.handleRouteChange('login')} href="#0"> Log In </p>
+                            <p onClick = {() => props.handleRouteChange('login')} href=""> Log In </p>
                         }
                         {props.loggedin === true && 
-                            <p onClick = {() => props.handleRouteChange('logout')} href="#0"> Log Out </p>
+                            <p onClick = {() => props.handleRouteChange('logout')} href=""> Log Out </p>
                         }
                     </div>
                 </div>

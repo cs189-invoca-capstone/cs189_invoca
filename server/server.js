@@ -19,8 +19,6 @@ mongoose
 
 const app = express();
 const request = require('request');
-const axios = require('axios');
-
 app.use(cors());
 
 // Allow incoming data to be of type json

@@ -12,7 +12,7 @@ import Form from 'react-bootstrap/Form';
 import "./CallTable.css";
 
 
-export default function CallTable() {
+export default function CallTable(props) {
     const [show, setShow] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
     const [showEdit, setShowEdit] = useState(true);
@@ -98,7 +98,6 @@ export default function CallTable() {
         setShowEdit(false)
     }
 
-
     // calls put method to save new data into database
     const handleSave = async () => {
         setReadOnly(true)
@@ -127,11 +126,9 @@ export default function CallTable() {
             <h1>Database testing</h1>
             <p className="card-description">Made by: <code>#Koki's Kookies</code> </p>
             <div>
-                <Link to={"/add-new"}>
-                    <Button variant="primary">
-                        Add new call summary
-                    </Button>
-                </Link> 
+                <Button variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
+                    Add new call summary
+                </Button>
             </div>  
             <br>
             </br>

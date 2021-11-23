@@ -43,13 +43,13 @@ function App() {
       <Navbar loggedin={loggedin} handleRouteChange = {handleRouteChange}/>
       { thisRoute === 'home'
         ? <>
-            <CallTable />
+            <CallTable handleRouteChange = {handleRouteChange}/>
           </>
         : ( thisRoute === 'profile' 
           ?  <ProfilePage user = {user} loggedin = {loggedin}/>
           : ( thisRoute === 'add-new' 
             ? <Container>
-                <SubmitForm />
+                <SubmitForm handleRouteChange = {handleRouteChange}/>
               </Container>
             : ( thisRoute === 'login'
                 ? <LoginPage handleLogIn = {handleLogIn} handleRouteChange = {handleRouteChange} />

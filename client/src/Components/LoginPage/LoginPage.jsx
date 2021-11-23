@@ -39,7 +39,7 @@ function LoginPage(props){
                     <div className='createcolumn'>
                         <div className='newaccount'>New here?</div>
                         {/* <a className='newaccount' href='register'>Create an Account</a> */}
-                        <p onClick = {() => props.handleRouteChange('register')} href="#0">Create an Account</p>
+                        <p onClick = {() => props.handleRouteChange('register')} href="">Create an Account</p>
                     </div>
                     <div className='jankfix'>
                         <div id='circle' onClick = {

@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 
 
-export default function SubmitForm() {
+export default function SubmitForm(props) {
     const [inputs, setInputs] = useState({});
 
     const handleChange = (event) => {
@@ -32,6 +32,7 @@ export default function SubmitForm() {
                 sentimentAnalysis: inputs.sentimentAnalysis
             });
             console.log(logs.data);
+            props.handleRouteChange('home')
         }catch(err){
             console.log(err);
         }
@@ -81,11 +82,9 @@ export default function SubmitForm() {
         </div>
         <br></br>
         <div>
-        <Link to={"/"}>
-            <Button variant="secondary">
+            <Button variant="secondary" onClick = {() => props.handleRouteChange('home')} href="">
                 Exit
             </Button>
-        </Link> 
         </div>
         </>
     )

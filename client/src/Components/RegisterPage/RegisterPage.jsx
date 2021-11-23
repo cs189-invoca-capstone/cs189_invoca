@@ -47,7 +47,7 @@ function RegisterPage(props){
                     <div className='createrow'>
                         <div className='createcolumn'>
                             <div className='newaccount'>Already have an account?</div>
-                            <p className='newaccount' onClick = {() => props.handleRouteChange('login')} href="#0">Login to Account</p>
+                            <p className='newaccount' onClick = {() => props.handleRouteChange('login')} href="">Login to Account</p>
                         </div>
                         <div className='jankfix'>
                             <div id='circle' onClick = {() =>registerUser(document.getElementById("gmail").value, document.getElementById('phone').value, document.getElementById('password').value)}>
