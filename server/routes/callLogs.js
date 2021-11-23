@@ -28,14 +28,15 @@ router.get('/all/:userId', async (req, res)=>{
 
 router.get('/search/', async (req, res)=>{
     console.log("in search");
-    console.log(req.body.searchType);
-    console.log(req.body.searchQuery);
+    console.log(req);
+    console.log(req.query.searchType);
+    console.log(req.query.searchQuery);
 
 
     try{
 
-        let type = req.body.searchType;
-        let query = req.body.searchQuery;
+        let type = req.query.searchType;
+        let query = req.query.searchQuery;
 
         if(type == undefined || query == undefined){
             throw "Missing Parameters";
@@ -45,7 +46,7 @@ router.get('/search/', async (req, res)=>{
         const allCallLogs = await CallLog.find(
             { [type] : { "$regex": query, "$options": "i" } }
         );
-
+        console.log(allCallLogs);
         res.status(200).send(allCallLogs);
     }catch(err){
         console.log(err);
@@ -89,7 +90,6 @@ router.post('/', async (req, res)=>{
 
 // get a specific call log info
 router.get('/:id', async (req, res)=>{
-
     try{
         const call = await CallLog.findById(req.params.id);
         res.status(200);
@@ -100,9 +100,7 @@ router.get('/:id', async (req, res)=>{
         res.status(400);
         res.send(err);
     }
-    res.end();
-
-    
+    res.end();    
 });
 
 // update the call log
