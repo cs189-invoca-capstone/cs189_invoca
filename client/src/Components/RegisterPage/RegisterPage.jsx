@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './RegisterPage.css';
 import arrow from '../LoginPage/arrow.svg';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
+
 
 function RegisterPage(props){
+    const [inputs, setInputs] = useState({});
+
+    const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({...values, [name]: value}))
+    }
+
     async function registerUser(gmail, invocaPhone, password){
         console.log("entered register User");
         try{
@@ -30,20 +41,20 @@ function RegisterPage(props){
                     <div className='welcometext'>Glad to finally meet you</div>
                     <div style={{padding: 20}}>
                         <div className='smalltext'>Email address</div>
-                        <input className="filloutbars" type="text" id="gmail"/>
+                        <input className="filloutbars" onChange={handleChange} type="text" id="gmail" value={inputs.gmail}/>
                     </div>
                     <div style={{padding: 20}}>
                         <div className='smalltext'>Your Phone Number</div>
-                        <input className="filloutbars" type="text" pattern="[0-9]*" id="phone"/>
+                        <input className="filloutbars" onChange={handleChange} type="text" pattern="[0-9]*" id="phone" value={inputs.phone}/>
                     </div>
                     <div style={{padding: 20}}>
                         <div className='smalltext'>Password</div>
-                        <input className="filloutbars" type="password" id="password" />
+                        <input className="filloutbars" onChange={handleChange} type="password" id="password" value={inputs.password}/>
                     </div>
                     <div className='createrow'>
                         <div className='createcolumn'>
                             <div className='newaccount'>Already have an account?</div>
-                            <Button variant="secondary" onClick={() => props.handleRouteChange('login')} href="">
+                            <Button variant="secondary" onClick={() => props.handleRouteChange('login')} href="" disabled={!inputs.gmail || !inputs.phone || !inputs.password}>
                                 Login to Account
                             </Button>
                         </div>
