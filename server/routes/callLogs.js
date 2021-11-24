@@ -26,7 +26,7 @@ router.get('/all/:userId', async (req, res)=>{
 
 });
 
-router.get('/search/', async (req, res)=>{
+router.get('/search/:userId', async (req, res)=>{
     console.log("in search");
     console.log(req);
     console.log(req.query.searchType);
@@ -44,7 +44,7 @@ router.get('/search/', async (req, res)=>{
         if( type != "userId" && type != "phoneNumber" && type != "entireCall" && type != "callSummary" && type != "sentimentAnalysis")
             throw "Search Type not valid";
         const allCallLogs = await CallLog.find(
-            { [type] : { "$regex": query, "$options": "i" } }
+            { [type] : { "$regex": query, "$options": "i" } , userId: req.params.userId}
         );
         console.log(allCallLogs);
         res.status(200).send(allCallLogs);

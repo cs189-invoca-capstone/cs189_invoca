@@ -143,8 +143,7 @@ export default function CallTable() {
         try{
             // swap 0 with actual call id once we extract it from login
             // and once the databse actually stores the user ID
-            console.log("INSIDE SUBMIT!!", choice, searchText);
-            const logs = await axios.get("callLogs/search/", {
+            const logs = await axios.get("callLogs/search/0", {
                 params: {
                     searchType: choice,
                     searchQuery: searchText
