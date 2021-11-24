@@ -6,18 +6,22 @@ import Button from 'react-bootstrap/Button';
 
 function LoginPage(props){
     async function loginUser(gmail, password){
-        console.log("entered login User");
-        try{
-            const res = await axios.post('/users/login', {
-                email: gmail,
-                password: password
-            });
-            // localStorage.setItem('user', res.data)
-            console.log(res.data);
-            props.handleLogIn(res.data);
-            props.handleRouteChange('home');
-        }catch(err){
-            console.log(err);
+        if (!gmail || !password){
+            alert("fill in information!")
+        }
+        else{
+            try{
+                const res = await axios.post('/users/login', {
+                    email: gmail,
+                    password: password
+                });
+                // localStorage.setItem('user', res.data)
+                console.log(res.data);
+                props.handleLogIn(res.data);
+                props.handleRouteChange('home');
+            }catch(err){
+                console.log(err);
+            }
         }
     }
 
