@@ -26,6 +26,7 @@ function App() {
   };
 
   function handleRouteChange(route){
+    console.log(route);
     if(route === 'logout'){
       setUser(null)
       setLoggedin(false)
@@ -41,11 +42,11 @@ function App() {
     <>
       <Navbar loggedin={loggedin} handleRouteChange = {handleRouteChange}/>
       { thisRoute === 'home'
-        ? <CallTable handleRouteChange = {handleRouteChange}/>
+        ? <CallTable user = {user} handleRouteChange = {handleRouteChange}/>
         : ( thisRoute === 'profile' 
           ?  <ProfilePage user = {user} loggedin = {loggedin}/>
           : ( thisRoute === 'add-new' 
-            ? <SubmitForm handleRouteChange = {handleRouteChange}/>
+            ? <SubmitForm user = {user} handleRouteChange = {handleRouteChange}/>
             : ( thisRoute === 'login'
                 ? <LoginPage handleLogIn = {handleLogIn} handleRouteChange = {handleRouteChange} />
                 : <RegisterPage handleLogIn = {handleLogIn} handleRouteChange = {handleRouteChange} />

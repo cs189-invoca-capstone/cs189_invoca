@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap';
 import axios from 'axios';
 
-
 export default function SubmitForm(props) {
     const [inputs, setInputs] = useState({});
 
@@ -16,19 +15,20 @@ export default function SubmitForm(props) {
         setInputs({});
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try{
             // swap 0 with actual call id once we extract it from login
             // and once the databse actually stores the user ID
-            const logs = await axios.post("callLogs/", {
-                userId: inputs._id,
+            const logs = await axios.post("callLogs", {
+                userId: props.user[Object.keys(props.user)[0]],
                 phoneNumber: inputs.phoneNumber,
                 entireCall: inputs.entireCall,
                 callSummary: inputs.callSummary,
                 sentimentAnalysis: inputs.sentimentAnalysis
             });
             console.log(logs.data);
-            props.handleRouteChange('home')
+            props.handleRouteChange('home');
         }catch(err){
             console.log(err);
         }
@@ -40,14 +40,6 @@ export default function SubmitForm(props) {
         <>
         <div>
         <Form onSubmit={handleSubmit} id="submit-form">
-            <Form.Group className="mb-3">
-            <Form.Label>Caller log ID</Form.Label>
-            <Form.Control type="text" name="_id" value={inputs._id} onChange={handleChange} placeholder="Enter caller log ID" />
-            <Form.Text className="text-muted">
-                Currently using 0 for testing.
-            </Form.Text>
-            </Form.Group>
-
             <Form.Group className="mb-3">
             <Form.Label>Phone Number</Form.Label>
             <Form.Control type="text" name="phoneNumber" value={inputs.phoneNumber} onChange={handleChange} placeholder="Enter phone number" />
@@ -71,7 +63,7 @@ export default function SubmitForm(props) {
             </Form.Text>
             </Form.Group>
 
-            <Button variant="primary" type="submit" disabled={!inputs._id || !inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary || !inputs.sentimentAnalysis}>
+            <Button variant="primary" type="submit" disabled={!inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary || !inputs.sentimentAnalysis}>
                 Submit
             </Button>
         </Form>

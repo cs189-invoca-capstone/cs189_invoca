@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 // import SearchBar from '../SearchBar/SearchBar';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
@@ -33,10 +32,9 @@ export default function CallTable(props) {
     // fetch call logs for table
     const getLogs = async () => {
         try{
-            // swap 0 with actual call id once we extract it from login
-            // and once the databse actually stores the user ID
-            const logs = await axios("callLogs/all/0");
-            console.log(logs.data);                
+            let tmp = "callLogs/all/" + props.user[Object.keys(props.user)[0]];
+            const logs = await axios.get(tmp);
+            // console.log(logs.data);                
             setCallLogs(logs.data);
             setShowAllLogs(false);
             setSearchText("");
@@ -70,10 +68,9 @@ export default function CallTable(props) {
                         console.error('There was an error!', error);
                     });
                 }
-            
                 deletePost();
-                
-                const newLogs = await axios("callLogs/all/0");
+                let tmp = "callLogs/all/" + props.user[Object.keys(props.user)[0]];
+                const newLogs = await axios.get(tmp);
                 setCallLogs(newLogs.data);
             }catch(err){
                 console.log(err);
@@ -136,11 +133,10 @@ export default function CallTable(props) {
         setSearchText(e.target.value);
     }
 
-    const handleSubmit = async () => {
+    const handleSearchSubmit = async () => {
         try{
-            // swap 0 with actual call id once we extract it from login
-            // and once the databse actually stores the user ID
-            const logs = await axios.get("callLogs/search/0", {
+            let tmp = "callLogs/search/" + props.user[Object.keys(props.user)[0]];
+            const logs = await axios.get(tmp, {
                 params: {
                     searchType: choice,
                     searchQuery: searchText
@@ -148,7 +144,7 @@ export default function CallTable(props) {
             }
             );
             setCallLogs(logs.data);
-            console.log(logs.data);
+            // console.log(logs.data);
             setShowAllLogs(true);
         }catch(err){
             console.log(err);
@@ -194,15 +190,15 @@ export default function CallTable(props) {
                             <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange}/>
                         </Form.Group>
                         <Form.Group as={Col} xs={1}>
-                            {/* <Button variant="primary" onClick={handleSubmit} disabled={!choice || !searchText}>
-                                    Search
-                            </Button>
-                            <Button variant="outline-secondary" onClick={handleSubmit}>
-                                    Return
-                            </Button> */}
-
-                            {showAllLogs ? <Button variant="outline-secondary" onClick={getLogs}>Return</Button>: <Button variant="primary" onClick={handleSubmit} disabled={!choice || !searchText}>Search</Button> }
-
+                            {showAllLogs 
+                            ? <Button variant="outline-secondary" onClick={getLogs}>
+                                Return
+                              </Button>
+                            : <Button variant="primary" 
+                                    onClick={handleSearchSubmit} 
+                                    disabled={!choice || !searchText}>
+                                Search
+                              </Button> }
                         </Form.Group>
                     </Row>
                 </Form>
@@ -229,21 +225,26 @@ export default function CallTable(props) {
             {/* modal for database */}
             <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
                 <Modal.Header closeButton>
-                <Modal.Title><h4>{tableData.phoneNumber}: {tableData.callSummary}</h4></Modal.Title>
+                    <Modal.Title>
+                        <h4>{tableData.phoneNumber}: {tableData.callSummary}</h4>
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group >
                         <Form.Label>Call Transcript:</Form.Label>
-                        <Form.Control as="textarea" rows={5} type="text" onChange={handleChange} value={tableData.entireCall} placeholder="Call transcription" readOnly={readOnly} name="entireCall"/>           
+                        <Form.Control as="textarea" rows={5} 
+                                type="text" onChange={handleChange} 
+                                value={tableData.entireCall} placeholder="Call transcription" 
+                                readOnly={readOnly} name="entireCall"/>           
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
                 
-                {showEdit ? <Button variant="primary" onClick={handleEdit}>Edit</Button> : <Button variant="success" onClick={handleSave}>Save</Button>}
+                {showEdit 
+                    ? <Button variant="primary" onClick={handleEdit}>Edit</Button> 
+                    : <Button variant="success" onClick={handleSave}>Save</Button>}
 
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
+                <Button variant="secondary" onClick={handleClose}> Close </Button>
                 </Modal.Footer>
             </Modal>
         </div>

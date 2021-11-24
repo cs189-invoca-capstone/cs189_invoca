@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 // get all the call logs for that user
 router.get('/all/:userId', async (req, res)=>{
-    console.log(req.params.userId);
+    
     try{
         const allCallLogs = await CallLog.find({userId: req.params.userId})
 
@@ -66,7 +66,7 @@ router.post('/', async (req, res)=>{
         if(req.body.userId == undefined || req.body.phoneNumber == undefined || req.body.entireCall == undefined || req.body.callSummary == undefined || req.body.sentimentAnalysis == undefined){
             throw "Missing a required parameter";
         }
-
+    
         call.userId = req.body.userId;
         call.phoneNumber = req.body.phoneNumber;
         call.entireCall = req.body.entireCall;
@@ -74,7 +74,7 @@ router.post('/', async (req, res)=>{
         call.sentimentAnalysis = req.body.sentimentAnalysis;
 
         await call.save();
-
+        console.log("inserted")
         res.status(200).send("Data Inserted");
     }
     catch(err){
@@ -83,8 +83,6 @@ router.post('/', async (req, res)=>{
         res.send(err);
     }
     res.end();
-
-
 });
 
 // get a specific call log info

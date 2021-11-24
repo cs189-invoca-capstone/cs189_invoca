@@ -28,17 +28,17 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client/build')))
 
 // AUTH0 Config
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: process.env.AUTH_0_SECRET,
-  baseURL: process.env.AUTH_0_BASE_URL,
-  clientID: process.env.AUTH_0_CLIENT_ID,
-  issuerBaseURL: process.env.AUTH_0_ISSUER_BASE_URL
-};
+// const config = {
+//   authRequired: false,
+//   auth0Logout: true,
+//   secret: process.env.AUTH_0_SECRET,
+//   baseURL: process.env.AUTH_0_BASE_URL,
+//   clientID: process.env.AUTH_0_CLIENT_ID,
+//   issuerBaseURL: process.env.AUTH_0_ISSUER_BASE_URL
+// };
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
-app.use(auth(config));
+// // auth router attaches /login, /logout, and /callback routes to the baseURL
+// app.use(auth(config));
 
 // route api endpoints used
 app.use("/callLogs", callLogsRoute);
