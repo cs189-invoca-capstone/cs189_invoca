@@ -4,18 +4,25 @@ import { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import SearchBar from '../SearchBar/SearchBar';
+import { Link } from 'react-router-dom';
+// import SearchBar from '../SearchBar/SearchBar';
 import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import "./CallTable.css";
-import {Container, Row, Col} from 'react-bootstrap';
+// import {Container, Row, Col} from 'react-bootstrap';
 
 export default function CallTable(props) {
     const [show, setShow] = useState(false);
+    const [showAllLogs, setShowAllLogs] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
     const [showEdit, setShowEdit] = useState(true);
     const defaultInfo = [{callerID: "Bryan", phone:"12345", summary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
     const [callLogs, setCallLogs] = useState( [] );
+    const [choice, setChoice] = useState("");
+    const [searchText, setSearchText] = useState("");
 
     const handleClose = () => {
         setReadOnly(true);
@@ -31,6 +38,9 @@ export default function CallTable(props) {
             const logs = await axios("callLogs/all/0");
             console.log(logs.data);                
             setCallLogs(logs.data);
+            setShowAllLogs(false);
+            setSearchText("");
+            setChoice("");
         }catch(err){
             console.log(err);
         }
@@ -118,6 +128,33 @@ export default function CallTable(props) {
         setTableData(values => ({...values, [name]: value}))
     }
 
+    const handleDropdownChange = (e) => {
+        setChoice(e.target.value);
+    }
+
+    const handleTextChange = (e) => {
+        setSearchText(e.target.value);
+    }
+
+    const handleSubmit = async () => {
+        try{
+            // swap 0 with actual call id once we extract it from login
+            // and once the databse actually stores the user ID
+            const logs = await axios.get("callLogs/search/0", {
+                params: {
+                    searchType: choice,
+                    searchQuery: searchText
+                }              
+            }
+            );
+            setCallLogs(logs.data);
+            console.log(logs.data);
+            setShowAllLogs(true);
+        }catch(err){
+            console.log(err);
+        }
+    }
+
     return (
         <div>
             <h1>Database testing</h1>
@@ -140,9 +177,37 @@ export default function CallTable(props) {
             </div>  
             <br>
             </br>
-            {/* <div>
-                <SearchBar />
-            </div> */}
+            <div>
+            <Container>
+                <Form className="mb-3"> 
+                    <Row>
+                        <Form.Group as={Col} xs={3}>
+                            <Form.Select name="choice" value={choice} onChange={handleDropdownChange}>
+                                <option value="_id">Phone Call ID #</option>
+                                <option value="phoneNumber">Phone Number</option>
+                                <option value="callSummary">Summary</option>
+                                <option value="entireCall">Call Transcript</option>
+                                <option value="sentimentAnalysis">Sentiment</option>
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group as={Col} xs={8}>
+                            <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange}/>
+                        </Form.Group>
+                        <Form.Group as={Col} xs={1}>
+                            {/* <Button variant="primary" onClick={handleSubmit} disabled={!choice || !searchText}>
+                                    Search
+                            </Button>
+                            <Button variant="outline-secondary" onClick={handleSubmit}>
+                                    Return
+                            </Button> */}
+
+                            {showAllLogs ? <Button variant="outline-secondary" onClick={getLogs}>Return</Button>: <Button variant="primary" onClick={handleSubmit} disabled={!choice || !searchText}>Search</Button> }
+
+                        </Form.Group>
+                    </Row>
+                </Form>
+            </Container>
+            </div>
             <div>
                 <table data-testid="display-table" className="table table-hover table-bordered">
                     <thead>
