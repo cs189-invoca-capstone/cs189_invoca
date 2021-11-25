@@ -1,6 +1,6 @@
 const request = require('supertest')
+const Call_Log = require('../models/Call_Log.js')
 const app = require('../server.js')
-
 
 describe('Post Endpoints', () => {
   it('should post a new call', async () => {
@@ -12,6 +12,9 @@ describe('Post Endpoints', () => {
     .send({userId: 4, phoneNumber: "4158909000", entireCall: "This is the entire call 2", callSummary: "call summary 2", sentimentAnalysis: "false"})
     expect(res2.text).toEqual("Data Inserted")
 
+    const res_test = await request(app).post('/callLogs/')
+    .send({userId: 4, phoneNumber: "test", entireCall: "Testing", callSummary: "Testing", sentimentAnalysis: "false"})
+    expect(res_test.text).toEqual("Data Inserted")
   })
 
   
@@ -129,6 +132,37 @@ describe('Search Endpoint Edge', () => {
    
   })
 
+})
+
+describe("Testing Put Endpoint", () => {
+
+  it("should respond with a 200 status code if good/valid request", async () => {
+    let test_data = await Call_Log.findOne({userId: 4, phoneNumber: "test", entireCall: "Testing", callSummary: "Testing", sentimentAnalysis: "false"});
+    const res = await request(app).put(`/callLogs/${test_data._id}`).send({
+      userId: '0' //test entry
+    })
+    expect(res.statusCode).toEqual(200);
+  })
+
+  it("should respond with a 400 status code if bad/invalid request", async () => {
+    const res = await request(app).put('/callLogs/invalid_id').send({
+      userId: '0' //test entry
+    })
+    expect(res.statusCode).toEqual(400);
+  })
+})
+
+describe("Testing Delete Endpoint", () => {
+  it("should respond with a 200 status code if good/valid request", async () => {
+    let test_data = await Call_Log.findOne({userId: 0, phoneNumber: "test", entireCall: "Testing", callSummary: "Testing", sentimentAnalysis: "false"});
+    const res = await request(app).delete(`/callLogs/${test_data._id}`)
+    expect(res.statusCode).toEqual(200);
+  })
+
+  it("should respond with a 400 status code if bad/invalid request", async () => {
+    const res = await request(app).delete('/callLogs/invalid_id')
+    expect(res.statusCode).toEqual(400);
+  })
 })
 
 

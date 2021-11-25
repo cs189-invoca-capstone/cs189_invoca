@@ -113,7 +113,8 @@ router.put('/:id', async (req, res)=>{
             if(error || !result){
                 console.log("Error!");
                 res.status(400);
-                throw new Error("ID does not exist in Call Log Database.");
+                res.end();
+                return;
             }
         }); // Check if Id exists
         const filter = { _id: req.params.id };
@@ -170,7 +171,8 @@ router.delete('/:id', async (req, res)=>{
             if(error || !result){
                 console.log("Error!");
                 res.status(400);
-                throw "ID does not exist in Call Log Database.";
+                res.end();
+                return;
             }
         }); // Check if Id exists
         await CallLog.findOneAndRemove({_id: req.params.id}, (err, deletedRecord) => {
@@ -179,14 +181,13 @@ router.delete('/:id', async (req, res)=>{
                 res.status(200);
             }
             else{
-                throw new Error(err);
+                res.status(400);
             }
         }).clone().catch(function(err){ console.log(err)});
     }
     catch(err){
         console.log(err);
         res.status(400);
-        res.send(err);
     }
     res.end();
 });
