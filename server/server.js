@@ -10,6 +10,7 @@ const axios = require('axios');
 // api routes
 const callLogsRoute = require('./routes/callLogs');
 const usersRoute = require('./routes/users');
+const transactionsRoute = require('./routes/transactions');
 
 // mongodb connection
 mongoose 
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, '../client/build')))
 // route api endpoints used
 app.use("/callLogs", callLogsRoute);
 app.use("/users", usersRoute);
+app.use("/transactions", transactionsRoute);
 
 app.get('/invocaCallNum', async (req,res) => {
   axios.get("https://ucsbcapstone.invoca.net/api/2021-02-11/ring_pools/394157/allocate_number.xml?ring_pool_key=-RUfssNweQERwjibfp62ARaMN7uviJDx")
