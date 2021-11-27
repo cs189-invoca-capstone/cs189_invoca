@@ -47,6 +47,7 @@ export default function CallTable(props) {
     // fetch all call logs for table
     useEffect(() => {
         getLogs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // displays modal with more table information
