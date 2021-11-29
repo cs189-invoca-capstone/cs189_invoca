@@ -153,58 +153,73 @@ export default function CallTable(props) {
     }
 
     return (
-        <div>
-            <h1>Database testing</h1>
-            <p className="card-description">Made by: <code>#Koki's Kookies</code> </p>
-            <div>
-                <Container>
-                    <Row>
-                        <Col>
-                            <Button variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
-                                Add new call summary
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button variant="primary" onClick = {() => props.handleRouteChange('profile')} href="">
-                                Check your profile
-                            </Button>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>  
+        <Container>
             <br>
             </br>
-            <div>
-            <Container>
+            <Row>
+                <Col sm></Col>
+                <Col sm></Col>
+                <Col xs={true}>
+                    <Button variant="primary" onClick = {() => props.handleRouteChange('profile')} href="">
+                        Check your profile
+                    </Button>
+                </Col>
+                <Col sm></Col>
+                <Col sm></Col>
+            </Row>
+  
+            <br>
+            </br>
+            <Row>
                 <Form className="mb-3"> 
                     <Row>
-                        <Form.Group as={Col} xs={3}>
-                            <Form.Select name="choice" value={choice} onChange={handleDropdownChange}>
-                                <option value="_id">Phone Call ID #</option>
-                                <option value="phoneNumber">Phone Number</option>
-                                <option value="callSummary">Summary</option>
-                                <option value="entireCall">Call Transcript</option>
-                                <option value="sentimentAnalysis">Sentiment</option>
-                            </Form.Select>
-                        </Form.Group>
-                        <Form.Group as={Col} xs={8}>
-                            <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange}/>
-                        </Form.Group>
-                        <Form.Group as={Col} xs={1}>
-                            {showAllLogs 
-                            ? <Button variant="outline-secondary" onClick={getLogs}>
-                                Return
-                              </Button>
-                            : <Button variant="primary" 
-                                    onClick={handleSearchSubmit} 
-                                    disabled={!choice || !searchText}>
-                                Search
-                              </Button> }
-                        </Form.Group>
+                        <Col lg={3}>
+                            <Form.Group>
+                                <Form.Select name="choice" value={choice} onChange={handleDropdownChange}>
+                                    <option value="_id">Phone Call ID #</option>
+                                    <option value="phoneNumber">Phone Number</option>
+                                    <option value="callSummary">Summary</option>
+                                    <option value="entireCall">Call Transcript</option>
+                                    <option value="sentimentAnalysis">Sentiment</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                        <Col lg={8}>
+                            <Form.Group>
+                                <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange}/>
+                            </Form.Group>
+                        </Col>
+                        <Col lg={1}>
+                            <Form.Group>
+                                {showAllLogs 
+                                ? <Button variant="outline-secondary" onClick={getLogs}>
+                                    Return
+                                    </Button>
+                                : <Button variant="primary" 
+                                        onClick={handleSearchSubmit} 
+                                        disabled={!choice || !searchText}>
+                                    Search
+                                    </Button> }
+                            </Form.Group>
+                        </Col>
                     </Row>
                 </Form>
-            </Container>
-            </div>
+                <Row>
+                    <Col sm></Col>
+                    <Col sm></Col>
+                    <Col>
+                        <Button variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
+                            Add new call summary! 
+                        </Button>
+                    </Col>
+                    <Col sm></Col>
+                    <Col sm></Col>
+                </Row>
+            </Row>
+            <br>
+            </br>
+
+            <Row>
             <div>
                 <table data-testid="display-table" className="table table-hover table-bordered">
                     <thead>
@@ -220,10 +235,9 @@ export default function CallTable(props) {
                         {callLogs.map(renderLogs)}
                     </tbody>
                 </table>
-            </div>
-            
+            </div>            
+            </Row>
 
-            {/* modal for database */}
             <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -248,6 +262,6 @@ export default function CallTable(props) {
                 <Button variant="secondary" onClick={handleClose}> Close </Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </Container>
     )
 }
