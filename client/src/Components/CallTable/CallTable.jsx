@@ -153,72 +153,60 @@ export default function CallTable(props) {
     }
 
     return (
+        <div>
+            <div>
+            <br></br>
+            </div>
+            <Button Style="width:14%; margin-left:43%; margin-right:43%;" variant="success" onClick = {() => props.handleRouteChange('profile')} href="">
+                Check your profile
+            </Button>  
+            <div>
+            <br></br>
+            </div>
         <Container>
-            <br>
-            </br>
-            <Row>
-                <Col sm></Col>
-                <Col sm></Col>
-                <Col xs={true}>
-                    <Button variant="primary" onClick = {() => props.handleRouteChange('profile')} href="">
-                        Check your profile
-                    </Button>
-                </Col>
-                <Col sm></Col>
-                <Col sm></Col>
-            </Row>
-  
-            <br>
-            </br>
-            <Row>
-                <Form className="mb-3"> 
-                    <Row>
-                        <Col lg={3}>
-                            <Form.Group>
-                                <Form.Select name="choice" value={choice} onChange={handleDropdownChange}>
-                                    <option value="_id">Phone Call ID #</option>
-                                    <option value="phoneNumber">Phone Number</option>
-                                    <option value="callSummary">Summary</option>
-                                    <option value="entireCall">Call Transcript</option>
-                                    <option value="sentimentAnalysis">Sentiment</option>
-                                </Form.Select>
-                            </Form.Group>
-                        </Col>
-                        <Col lg={8}>
-                            <Form.Group>
-                                <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange}/>
-                            </Form.Group>
-                        </Col>
-                        <Col lg={1}>
-                            <Form.Group>
-                                {showAllLogs 
-                                ? <Button variant="outline-secondary" onClick={getLogs}>
-                                    Return
-                                    </Button>
-                                : <Button variant="primary" 
-                                        onClick={handleSearchSubmit} 
-                                        disabled={!choice || !searchText}>
-                                    Search
-                                    </Button> }
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                </Form>
+            <Form className="mb-3"> 
                 <Row>
-                    <Col sm></Col>
-                    <Col sm></Col>
-                    <Col>
-                        <Button variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
-                            Add new call summary! 
-                        </Button>
+                    <Col lg={3}>
+                        <Form.Group>
+                            <Form.Select name="choice" value={choice} onChange={handleDropdownChange}>
+                                <option value="_id">Phone Call ID #</option>
+                                <option value="phoneNumber">Phone Number</option>
+                                <option value="callSummary">Summary</option>
+                                <option value="entireCall">Call Transcript</option>
+                                <option value="sentimentAnalysis">Sentiment</option>
+                            </Form.Select>
+                        </Form.Group>
                     </Col>
-                    <Col sm></Col>
-                    <Col sm></Col>
+                    <Col lg={8}>
+                        <Form.Group>
+                            <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange}/>
+                        </Form.Group>
+                    </Col>
+                    <Col lg={1}>
+                        <Form.Group>
+                            {showAllLogs 
+                            ? <Button variant="outline-secondary" onClick={getLogs}>
+                                Return
+                                </Button>
+                            : <Button variant="primary" 
+                                    onClick={handleSearchSubmit} 
+                                    disabled={!choice || !searchText}>
+                                Search
+                                </Button> }
+                        </Form.Group>
+                    </Col>
                 </Row>
-            </Row>
-            <br>
-            </br>
+            </Form>
+        </Container>
+            
+        <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
+            Add new call summary
+        </Button>
+        <div>
+            <br></br>
+        </div>
 
+        <Container>
             <Row>
             <div>
                 <table data-testid="display-table" className="table table-hover table-bordered">
@@ -263,5 +251,6 @@ export default function CallTable(props) {
                 </Modal.Footer>
             </Modal>
         </Container>
+        </div>
     )
 }

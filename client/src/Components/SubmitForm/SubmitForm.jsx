@@ -40,6 +40,7 @@ export default function SubmitForm(props) {
     }
 
     return (
+        <div>
         <Container>
         <Row>
         <Form onSubmit={handleSubmit} id="submit-form">
@@ -69,24 +70,17 @@ export default function SubmitForm(props) {
 
             </Row>
             <Row>
-                <Col sm></Col>
-                <Col sm></Col>
-                <Col>
-                    <Button variant="primary" type="submit" disabled={!inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary || !inputs.sentimentAnalysis}>
+                    <Button Style="width:10%; margin-left:45%; margin-right:45%;" variant="primary" type="submit" disabled={!inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary || !inputs.sentimentAnalysis}>
                         Submit
                     </Button>
-                </Col>
-                <Col sm></Col>
-                <Col sm></Col>
             </Row>
         </Form>
         </Row>
         <br></br>
-        <Row>
-            <Button variant="secondary" onClick = {() => props.handleRouteChange('home')} href="">
-                Exit
-            </Button>
-        </Row>
         </Container>
+        <Button Style="width:14%; margin-left:43%; margin-right:43%;" variant="secondary" onClick = {() => props.handleRouteChange('home')} href="">
+            Exit
+        </Button>
+        </div>
     )
 }
