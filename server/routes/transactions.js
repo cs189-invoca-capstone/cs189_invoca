@@ -67,7 +67,7 @@ router.post('/', async (req, res)=>{
 router.get('/:userId', async (req, res)=>{
     console.log("in get transactions for a specific user");
 
-    let allTransactions = await Transactions.find({userId: "6188a5f0a2ba110011da0c14"});
+    let allTransactions = await Transactions.find({userId: req.params.userId});
 
     console.log(allTransactions);
     res.status(200).send(allTransactions);
