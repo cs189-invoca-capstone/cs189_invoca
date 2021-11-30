@@ -49,6 +49,9 @@ const TransactionSchema = new mongoose.Schema(
         },
         transcript: {
             type: Array
+        },
+        userId: {
+            type: String
         }
     }
 );
