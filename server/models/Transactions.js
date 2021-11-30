@@ -47,6 +47,12 @@ const TransactionSchema = new mongoose.Schema(
         destination_phone_number: {
             type: String
         },
+        transcript: {
+            type: Array
+        },
+        userId: {
+            type: String
+        }
     }
 );
 
