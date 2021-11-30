@@ -31,6 +31,16 @@ export default function Navbar(props) {
                             </Button>
                         }
                         {props.loggedin === true && 
+                            <Button variant="secondary" onClick={() => props.handleRouteChange('profile')} href="">
+                                Profile
+                            </Button>
+                        }
+                        {props.loggedin === true && 
+                            <Button variant="secondary" onClick={() => props.handleRouteChange('home')} href="">
+                                Data
+                            </Button>
+                        }
+                        {props.loggedin === true && 
                             <Button variant="secondary" onClick={() => props.handleRouteChange('logout')} href="">
                                 Logout
                             </Button>
