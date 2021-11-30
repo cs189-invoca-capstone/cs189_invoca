@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap';
 import axios from 'axios';
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 export default function SubmitForm(props) {
     const [inputs, setInputs] = useState({});
@@ -37,9 +40,11 @@ export default function SubmitForm(props) {
     }
 
     return (
-        <>
         <div>
+        <Container>
+        <Row>
         <Form onSubmit={handleSubmit} id="submit-form">
+            <Row>
             <Form.Group className="mb-3">
             <Form.Label>Phone Number</Form.Label>
             <Form.Control type="text" name="phoneNumber" value={inputs.phoneNumber} onChange={handleChange} placeholder="Enter phone number" />
@@ -59,21 +64,23 @@ export default function SubmitForm(props) {
             <Form.Label>Sentiment Analysis</Form.Label>
             <Form.Control type="text" name="sentimentAnalysis" value={inputs.sentimentAnalysis} onChange={handleChange} placeholder="Enter sentiment analysis" />
             <Form.Text className="text-muted">
-                Sentiment takes in 0 or 1 (to be updated in future).
+                Sentiment takes in 0 or 1 (to be updated in future). 
             </Form.Text>
             </Form.Group>
 
-            <Button variant="primary" type="submit" disabled={!inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary || !inputs.sentimentAnalysis}>
-                Submit
-            </Button>
+            </Row>
+            <Row>
+                    <Button Style="width:10%; margin-left:45%; margin-right:45%;" variant="primary" type="submit" disabled={!inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary || !inputs.sentimentAnalysis}>
+                        Submit
+                    </Button>
+            </Row>
         </Form>
-        </div>
+        </Row>
         <br></br>
-        <div>
-            <Button variant="secondary" onClick = {() => props.handleRouteChange('home')} href="">
-                Exit
-            </Button>
+        </Container>
+        <Button Style="width:14%; margin-left:43%; margin-right:43%;" variant="secondary" onClick = {() => props.handleRouteChange('home')} href="">
+            Exit
+        </Button>
         </div>
-        </>
     )
 }

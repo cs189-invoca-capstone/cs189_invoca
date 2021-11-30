@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './RegisterPage.css';
 import arrow from '../LoginPage/arrow.svg';
 import axios from 'axios';

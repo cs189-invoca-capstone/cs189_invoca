@@ -46,6 +46,7 @@ export default function CallTable(props) {
     // fetch all call logs for table
     useEffect(() => {
         getLogs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // displays modal with more table information
@@ -152,31 +153,20 @@ export default function CallTable(props) {
 
     return (
         <div>
-            <h1>Database testing</h1>
-            <p className="card-description">Made by: <code>#Koki's Kookies</code> </p>
             <div>
-                <Container>
-                    <Row>
-                        <Col>
-                            <Button variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
-                                Add new call summary
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button variant="primary" onClick = {() => props.handleRouteChange('profile')} href="">
-                                Check your profile
-                            </Button>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>  
-            <br>
-            </br>
+            <br></br>
+            </div>
+            <Button Style="width:14%; margin-left:43%; margin-right:43%;" variant="success" onClick = {() => props.handleRouteChange('profile')} href="">
+                Check your profile
+            </Button>  
             <div>
-            <Container>
-                <Form className="mb-3"> 
-                    <Row>
-                        <Form.Group as={Col} xs={3}>
+            <br></br>
+            </div>
+        <Container>
+            <Form className="mb-3"> 
+                <Row>
+                    <Col lg={3}>
+                        <Form.Group>
                             <Form.Select name="choice" value={choice} onChange={handleDropdownChange}>
                                 <option value="_id">Phone Call ID #</option>
                                 <option value="phoneNumber">Phone Number</option>
@@ -185,24 +175,38 @@ export default function CallTable(props) {
                                 <option value="sentimentAnalysis">Sentiment</option>
                             </Form.Select>
                         </Form.Group>
-                        <Form.Group as={Col} xs={8}>
+                    </Col>
+                    <Col lg={8}>
+                        <Form.Group>
                             <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange}/>
                         </Form.Group>
-                        <Form.Group as={Col} xs={1}>
+                    </Col>
+                    <Col lg={1}>
+                        <Form.Group>
                             {showAllLogs 
                             ? <Button variant="outline-secondary" onClick={getLogs}>
                                 Return
-                              </Button>
+                                </Button>
                             : <Button variant="primary" 
                                     onClick={handleSearchSubmit} 
                                     disabled={!choice || !searchText}>
                                 Search
-                              </Button> }
+                                </Button> }
                         </Form.Group>
-                    </Row>
-                </Form>
-            </Container>
-            </div>
+                    </Col>
+                </Row>
+            </Form>
+        </Container>
+            
+        <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
+            Add new call summary
+        </Button>
+        <div>
+            <br></br>
+        </div>
+
+        <Container>
+            <Row>
             <div>
                 <table data-testid="display-table" className="table table-hover table-bordered">
                     <thead>
@@ -218,10 +222,9 @@ export default function CallTable(props) {
                         {callLogs.map(renderLogs)}
                     </tbody>
                 </table>
-            </div>
-            
+            </div>            
+            </Row>
 
-            {/* modal for database */}
             <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -246,6 +249,7 @@ export default function CallTable(props) {
                 <Button variant="secondary" onClick={handleClose}> Close </Button>
                 </Modal.Footer>
             </Modal>
+        </Container>
         </div>
     )
 }
