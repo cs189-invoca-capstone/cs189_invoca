@@ -60,17 +60,121 @@ router.post('/', async (req, res)=>{
 });
 
 
-// get user Id by query
-// get invoca phone by user Id
-// get transaction objects by correlating invocaPhone = destination_phone_number
-// return that
-router.get('/:userId', async (req, res)=>{
+// get all transactions for a user
+router.get('/all/:userId', async (req, res)=>{
     console.log("in get transactions for a specific user");
 
     let allTransactions = await Transactions.find({userId: req.params.userId});
 
     console.log(allTransactions);
     res.status(200).send(allTransactions);
+    res.end();
+});
+
+router.get('/:id', async (req, res)=>{
+    try{
+        const call = await Transactions.findById(req.params.id);
+        res.status(200);
+        res.send(call);
+    }
+    catch(err){
+        console.log("errors");
+        res.status(400);
+        res.send(err);
+    }
+    res.end();    
+});
+
+// search
+router.get('/search/:userId', async (req, res)=>{
+    console.log("in search");
+    console.log(req);
+    console.log(req.query.searchType);
+    console.log(req.query.searchQuery);
+
+    try{
+        let type = req.query.searchType;
+        let query = req.query.searchQuery;
+
+        if(type == undefined || query == undefined){
+            throw "Missing Parameters";
+        }
+        if(type != "userId" && type != "destination_phone_number" && type != "calling_phone_number" && type != "complete_call_id" && type != "transaction_id" && type != "transcript")
+            throw "Search Type not valid";
+        const allTransactions = await Transactions.find(
+            { [type] : { "$regex": query, "$options": "i" } , userId: req.params.userId}
+        );
+        console.log(allTransactions);
+        res.status(200).send(allTransactions);
+    }catch(err){
+        console.log(err);
+        res.status(400);
+        res.send(err);
+    }
+    res.end();
+
+});
+
+//edit a specific transaction by id
+router.put('/:id', async (req, res)=>{
+    console.log("Inside Update/Put");
+    try {
+        await Transactions.exists({ _id: req.params.id }, (error, result) => {
+            if(error || !result){
+                console.log("Error!");
+                res.status(400);
+                res.end();
+                return;
+            }
+        }); // Check if Id exists
+        const filter = { _id: req.params.id };
+        const opts = { new: true };
+        let update = {};
+        if("userId" in req.body) update.userId = req.body.userId;
+        if("destination_phone_number" in req.body) update.destination_phone_number = req.body.destination_phone_number;
+        if("calling_phone_number" in req.body) update.calling_phone_number = req.body.calling_phone_number;
+        if("complete_call_id" in req.body) update.complete_call_id = req.body.complete_call_id;
+        if("transaction_id" in req.body) update.transaction_id = req.body.transaction_id;
+        if("transcript" in req.body) update.transcript = req.body.transcript;
+    
+        let updatedRecord = await Transactions.findOneAndUpdate(filter, update, opts);
+
+        res.status(200);
+        console.log(updatedRecord);
+    }
+    catch(err){
+        console.log(err);
+    }
+
+    res.end();
+});
+
+router.delete('/:id', async (req, res)=>{
+    console.log("Inside Delete");
+
+    try {
+        await Transactions.exists({ _id: req.params.id }, (error, result) => {
+            if(error || !result){
+                console.log("Error!");
+                res.status(400);
+                res.end();
+                return;
+            }
+        }); // Check if Id exists
+        await Transactions.findOneAndRemove({_id: req.params.id}, (err, deletedRecord) => {
+            if(!err){
+                console.log("Deleted Record: ", deletedRecord);
+                res.status(200);
+            }
+            else{
+                res.status(400);
+            }
+        }).clone().catch(function(err){ console.log(err)});
+    }
+    catch(err){
+        console.log(err);
+        res.status(400);
+    }
     res.end();
 });
 
