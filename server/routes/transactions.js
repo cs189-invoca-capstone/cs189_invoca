@@ -180,3 +180,76 @@ router.delete('/:id', async (req, res)=>{
 
 
 module.exports = router;
+
+
+
+/*
+app.get('/invocaCallNum', async (req,res) => {
+  axios.get("https://ucsbcapstone.invoca.net/api/2021-02-11/ring_pools/394157/allocate_number.xml?ring_pool_key=-RUfssNweQERwjibfp62ARaMN7uviJDx")
+    .then(response => {
+      console.log(response.data.url);
+      console.log(response.data.explanation);
+      res.status(200).json(response);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json(error);
+  });
+});
+// getting phone numbers from ringpool api
+app.get('/ringpool', async(request,result) => {
+  axios.request({
+    method: 'POST',
+    url: 'https://pnapi.invoca.net/api/2013-07-01/bulk.json',
+    data: {"requests":[
+          {"api_suffix": "394157/allocate_number.json?ring_pool_key=-RUfssNweQERwjibfp62ARaMN7uviJDx"}
+          ]
+        }
+    })
+    .then(res => {
+      const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+      console.log('Status Code:', res.status);
+      console.log('Date in Response header:', headerDate);
+
+      const data = res.data;
+
+      result.json(data);
+    })
+    .catch(err => {
+      result.json('Error: ', err.message);
+    });
+  });
+// getting data from transactions api
+columns = [transaction_id, transaction_type, call_source_description, city, region, calling_phone_number, mobile, duration, connect_duration, start_time_local, start_time_utc, recording, complete_call_id, destination_phone_number];
+app.get('/transactions', async(request,result) => {
+  axios.get('https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp')
+    .then(res => {
+      const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+      console.log('Status Code:', res.status);
+      console.log('Date in Response header:', headerDate);
+
+      const data = res.data;
+
+      result.json(data);
+    })
+    .catch(err => {
+      result.json('Error: ', err.message);
+    });
+});
+//getting transcripts from call api
+app.get('/call', async(request,result) => {
+  axios.get('https://ucsbcapstone.invoca.net/call/transcript/D244-1B16E484A0FF?transcript_format=caller_agent_conversation&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp')
+    .then(res => {
+      const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+      console.log('Status Code:', res.status);
+      console.log('Date in Response header:', headerDate);
+
+      const data = res.data;
+      result.json(data);
+
+    })
+    .catch(err => {
+      result.json('Error: ', err);
+    });  
+  });
+  */
