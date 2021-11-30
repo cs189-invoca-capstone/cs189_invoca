@@ -14,7 +14,7 @@ router.post("/register", async (req, res) => {
         const newUser = new Users({
             email: req.body.email,
             password: hashedPass,
-            invocaPhone: "",
+            invocaPhone: req.body.invocaPhone,
             isAdmin: false
         });
 

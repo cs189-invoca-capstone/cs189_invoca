@@ -4,10 +4,8 @@ const User = require("../models/User");
 
 // get all the call logs for that user
 router.get('/all/:userId', async (req, res)=>{
-    
     try{
         const allCallLogs = await CallLog.find({userId: req.params.userId})
-
         let callLogList = []
         allCallLogs.map((call) => {
             let {userId} = call;
@@ -22,7 +20,6 @@ router.get('/all/:userId', async (req, res)=>{
         res.send(err);
     }
     res.end();
-
 });
 
 router.get('/search/:userId', async (req, res)=>{
@@ -30,8 +27,6 @@ router.get('/search/:userId', async (req, res)=>{
     console.log(req);
     console.log(req.query.searchType);
     console.log(req.query.searchQuery);
-
-
     try{
 
         let type = req.query.searchType;
@@ -185,7 +180,5 @@ router.delete('/:id', async (req, res)=>{
     }
     res.end();
 });
-
-
 
 module.exports = router;
