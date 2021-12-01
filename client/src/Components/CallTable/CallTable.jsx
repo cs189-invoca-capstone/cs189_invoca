@@ -241,8 +241,8 @@ export default function CallTable(props) {
                         <Form.Label>Call Transcript:</Form.Label>
                         <Form.Control as="textarea" rows={5} 
                                 type="text" onChange={handleChange} 
-                                value={tableData.transcript} placeholder="Call transcription" 
-                                readOnly={readOnly} name="entireCall"/>           
+                                value={tableData.transcript}placeholder="Call transcription" 
+                                readOnly={readOnly} name="transcript"/>           
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
