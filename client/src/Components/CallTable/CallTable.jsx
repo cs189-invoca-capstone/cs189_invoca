@@ -184,10 +184,10 @@ export default function CallTable(props) {
                         <Col lg={2}>
                             <Form.Group>
                                 <Form.Select name="choice" value={choice} onChange={handleDropdownChange} className='dropdownbar'>
-                                    <option value="_id">Phone Call ID #</option>
-                                    <option value="phoneNumber">Phone Number</option>
+                                    <option value="id">Phone Call ID #</option>
+                                    <option value="calling_phone_number">Phone Number</option>
                                     <option value="callSummary">Summary</option>
-                                    <option value="entireCall">Call Transcript</option>
+                                    <option value="transcript">Call Transcript</option>
                                     <option value="sentimentAnalysis">Sentiment</option>
                                 </Form.Select>
                             </Form.Group>
