@@ -17,6 +17,8 @@ export default function CallTable(props) {
     const [readOnly, setReadOnly] = useState(true);
     const [showEdit, setShowEdit] = useState(true);
 
+    const [lastId, setLastId] = useState("");
+
     const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
     const [transactions, setTransactions] = useState( [] );
@@ -34,6 +36,9 @@ export default function CallTable(props) {
         try{
             console.log("inside getLogs");
             await axios.post('transactions');
+            const currLastId = await axios.post('transactions/invoca');
+            console.log(currLastId);
+            setLastId(currLastId);
             let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
             const logs = await axios.get(tmp);
             for (let i = 0; i < logs.data.length; i++){
@@ -44,7 +49,6 @@ export default function CallTable(props) {
             setShowAllLogs(false);
             setSearchText("");
             setChoice("");
-            console.log("getLogs: logs.data = ", logs.data);
         }catch(err){
             console.log(err);
         }
@@ -162,106 +166,109 @@ export default function CallTable(props) {
     }
 
     return (
-        <div>
+        <div className='homepagebackground'>
+            <div>
+                <br></br>
+            </div>
+            <div className='hellotext'>
+                Hello User
+            </div>
+            <div>
+                <br></br>
+            </div>
+            <div className='welcometext'>
+                Welcome Back!
+            </div>
+            <div>
+                <br></br>
+            </div>
+            <Container>
+                <Form className="mb-3"> 
+                    <Row>
+                        <Col lg={2}/>
+                        <Col lg={2}>
+                            <Form.Group>
+                                <Form.Select name="choice" value={choice} onChange={handleDropdownChange} className='dropdownbar'>
+                                    <option value="_id">Phone Call ID #</option>
+                                    <option value="phoneNumber">Phone Number</option>
+                                    <option value="callSummary">Summary</option>
+                                    <option value="entireCall">Call Transcript</option>
+                                    <option value="sentimentAnalysis">Sentiment</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                        <Col lg={4}>
+                            <Form.Group>
+                                <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange} className='searchbar'/>
+                            </Form.Group>
+                        </Col>
+                        <Col lg={3}>
+                            <Form.Group>
+                                {showAllLogs 
+                                ? <Button variant="outline-secondary" onClick={getLogs}>
+                                    Return
+                                    </Button>
+                                : <Button variant="primary" 
+                                        onClick={handleSearchSubmit} 
+                                        disabled={!choice || !searchText}>
+                                    Search
+                                    </Button> }
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                </Form>
+            </Container>
             <div>
             <br></br>
+
             </div>
-            <Button Style="width:14%; margin-left:43%; margin-right:43%;" variant="success" onClick = {() => props.handleRouteChange('profile')} href="">
-                Check your profile
-            </Button>  
+            <Container>
+            <div className='tablehold'>
+                <table data-testid="display-table" className="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Phone Call ID #</th>
+                            <th>Phone Number</th>
+                            <th  data-testid="summary-table">Summary</th>
+                            <th>Call Transcript</th>
+                            <th>Delete?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {transactions.map(renderLogs)}
+                    </tbody>
+                </table>
+            </div>
+                    <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>
+                                <h4>{tableData.calling_phone_number}: {tableData.callSummary}</h4>
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form.Group >
+                                <Form.Label>Call Transcript:</Form.Label>
+                                <Form.Control as="textarea" rows={5} 
+                                        type="text" onChange={handleChange} 
+                                        value={tableData.transcript} placeholder="Call transcription" 
+                                        readOnly={readOnly} name="transcript"/>           
+                            </Form.Group>
+                        </Modal.Body>
+                        <Modal.Footer>
+                        
+                        {showEdit 
+                            ? <Button variant="primary" onClick={handleEdit}>Edit</Button> 
+                            : <Button variant="success" onClick={handleSave}>Save</Button>}
+                        <Button variant="secondary" onClick={handleClose}> Close </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </Container>
             <div>
-            <br></br>
+                <br></br>
             </div>
-        <Container>
-            <Form className="mb-3"> 
-                <Row>
-                    <Col lg={3}>
-                        <Form.Group>
-                            <Form.Select name="choice" value={choice} onChange={handleDropdownChange}>
-                                <option value="id">Phone Call ID #</option>
-                                <option value="calling_phone_number">Phone Number</option>
-                                <option value="callSummary">Summary</option>
-                                <option value="transcript">Call Transcript</option>
-                                <option value="sentimentAnalysis">Sentiment</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
-                    <Col lg={8}>
-                        <Form.Group>
-                            <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange}/>
-                        </Form.Group>
-                    </Col>
-                    <Col lg={1}>
-                        <Form.Group>
-                            {showAllLogs 
-                            ? <Button variant="outline-secondary" onClick={getLogs}>
-                                Return
-                                </Button>
-                            : <Button variant="primary" 
-                                    onClick={handleSearchSubmit} 
-                                    disabled={!choice || !searchText}>
-                                Search
-                                </Button> }
-                        </Form.Group>
-                    </Col>
-                </Row>
-            </Form>
-        </Container>
-            
-        <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
-            Add new call summary
-        </Button>
-        <div>
-            <br></br>
-        </div>
-
-        <Container>
-            <Row>
-                <div>
-                    <table data-testid="display-table" className="table table-hover table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Phone Call ID #</th>
-                                <th>Phone Number</th>
-                                <th  data-testid="summary-table">Summary</th>
-                                <th>Call Transcript</th>
-                                <th>Delete?</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {transactions.map(renderLogs)}
-                        </tbody>
-                    </table>
-                </div>            
-            </Row>
-
-            <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        <h4>{tableData.calling_phone_number}: {tableData.callSummary}</h4>
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Group >
-                        <Form.Label>Call Transcript:</Form.Label>
-                        <Form.Control as="textarea" rows={5} 
-                                type="text" onChange={handleChange} 
-                                // value={tableData.transcript == null ? tableData.transcript : tableData.transcript[0].split(",").join("\n")} 
-                                value={tableData.transcript}
-                                placeholder="Call transcription" 
-                                readOnly={readOnly} name="transcript"/>           
-                    </Form.Group>
-                </Modal.Body>
-                <Modal.Footer>
-                
-                {showEdit 
-                    ? <Button variant="primary" onClick={handleEdit}>Edit</Button> 
-                    : <Button variant="success" onClick={handleSave}>Save</Button>}
-
-                <Button variant="secondary" onClick={handleClose}> Close </Button>
-                </Modal.Footer>
-            </Modal>
-        </Container>
+            <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
+                Add new call summary
+            </Button>
         </div>
     )
 }
