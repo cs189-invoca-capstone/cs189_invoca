@@ -42,8 +42,16 @@ router.post('/', async (req, res)=>{
                 // const headerDate = result.headers && result.headers.date ? result.headers.date : 'no resultponse date';
                 // console.log('Status Code:', result.status);
                 // console.log('Date in response header:', headerDate);
-
-                transactions.transcript = result.data; //storing transcript in transactions object
+                // console.log(result.data);
+                let out = []
+                for (let i = 0; i < result.data.length; i++){
+                    Object.entries(result.data[i]).map(([key, value]) => {
+                        let tmp = key + ": " + value;
+                        out.push(tmp);
+                    })
+                };
+                console.log(out);
+                transactions.transcript = out; //storing transcript in transactions object
                 // console.log(transactions.transcript);
                 // result.json(result.data);
             })

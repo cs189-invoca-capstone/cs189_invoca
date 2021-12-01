@@ -16,7 +16,8 @@ export default function CallTable(props) {
     const [showAllLogs, setShowAllLogs] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
     const [showEdit, setShowEdit] = useState(true);
-    const defaultInfo = [{callerID: "Bryan", phone:"12345", summary:"dummy data", status:"default"}]
+
+    const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
     const [transactions, setTransactions] = useState( [] );
     const [choice, setChoice] = useState("");
@@ -31,6 +32,7 @@ export default function CallTable(props) {
     // fetch call logs for table
     const getLogs = async () => {
         try{
+            const fetchFromInvoca = await axios.post('transactions');
             let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
             const logs = await axios.get(tmp);
             // console.log(logs.data);                
@@ -81,21 +83,13 @@ export default function CallTable(props) {
         
     // shows all logs and adds logic to clicks
     const renderLogs = (transactions, index) => {
-        let transcripts = transactions.transcript;
-        let out = []
-        for (let i = 0; i < transcripts.length; i++){
-            Object.entries(transcripts[i]).map(([key, value]) => {
-                let tmp = key + ": " + value;
-                out.push(tmp);
-            })
-        }
         return(
             <tr Style="cursor: pointer;" key={index}>
                 <td onClick={() => handleTableClick(transactions)}>{transactions._id}</td>
-                <td onClick={() => handleTableClick(transactions)}>{transactions.transaction_id}</td>
+                {/* <td onClick={() => handleTableClick(transactions)}>{transactions.transaction_id}</td> */}
                 <td onClick={() => handleTableClick(transactions)}>{transactions.calling_phone_number}</td>
-                {/* <td onClick={() => handleTableClick(transactions)}>{transactions.callSummary}</td> */}
-                <td onClick={() => handleTableClick(transactions)} className='tableStyle'>{out}</td>
+                <td onClick={() => handleTableClick(transactions)}>{transactions.callSummary}</td>
+                <td onClick={() => handleTableClick(transactions)} className='tableStyle'>{transactions.transcript}</td>
                 <td onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
                         Delete
@@ -129,6 +123,8 @@ export default function CallTable(props) {
 
     // ensures that tableData.entireCall is editable
     const handleChange = (event) => {
+        console.log(event.target.name);
+        console.log(event.target.value);
         const name = event.target.name;
         const value = event.target.value;
         setTableData(values => ({...values, [name]: value}))
@@ -145,12 +141,12 @@ export default function CallTable(props) {
     const handleSearchSubmit = async () => {
         try{
             let tmp = "transactions/search/" + props.user[Object.keys(props.user)[0]];
-            const logs = await axios.get(tmp, {
-                params: {
-                    searchType: choice,
-                    searchQuery: searchText
-                }              
-            }
+                const logs = await axios.get(tmp, {
+                    params: {
+                        searchType: choice,
+                        searchQuery: searchText
+                    }              
+                }
             );
             setTransactions(logs.data);
             // console.log(logs.data);
@@ -216,28 +212,28 @@ export default function CallTable(props) {
 
         <Container>
             <Row>
-            <div>
-                <table data-testid="display-table" className="table table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Phone Call ID #</th>
-                            <th>Phone Number</th>
-                            <th  data-testid="summary-table">Summary</th>
-                            <th>Call Transcript</th>
-                            <th>Delete?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {transactions.map(renderLogs)}
-                    </tbody>
-                </table>
-            </div>            
+                <div>
+                    <table data-testid="display-table" className="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Phone Call ID #</th>
+                                <th>Phone Number</th>
+                                <th  data-testid="summary-table">Summary</th>
+                                <th>Call Transcript</th>
+                                <th>Delete?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {transactions.map(renderLogs)}
+                        </tbody>
+                    </table>
+                </div>            
             </Row>
 
             <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        <h4>{tableData.phoneNumber}: {tableData.callSummary}</h4>
+                        <h4>{tableData.calling_phone_number}: {tableData.callSummary}</h4>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -245,7 +241,7 @@ export default function CallTable(props) {
                         <Form.Label>Call Transcript:</Form.Label>
                         <Form.Control as="textarea" rows={5} 
                                 type="text" onChange={handleChange} 
-                                value={tableData.entireCall} placeholder="Call transcription" 
+                                value={tableData.transcript} placeholder="Call transcription" 
                                 readOnly={readOnly} name="entireCall"/>           
                     </Form.Group>
                 </Modal.Body>
