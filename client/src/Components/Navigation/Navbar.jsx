@@ -37,14 +37,24 @@ export default function Navbar(props) {
                     </button>
                     <div class="dropdown-content">
                         {props.loggedin === false && 
-                            <Button variant="secondary" onClick={() => props.handleRouteChange('login')} href="">
+                            <div className='navbarbutton' onClick={() => props.handleRouteChange('login')} href="">
                                 Login
-                            </Button>
+                            </div>
                         }
                         {props.loggedin === true && 
-                            <Button variant="secondary" onClick={() => props.handleRouteChange('logout')} href="">
+                            <div className='navbarbutton' onClick={() => props.handleRouteChange('profile')} href="">
+                                Profile
+                            </div>
+                        }
+                        {props.loggedin === true && 
+                            <div className='navbarbutton' onClick={() => props.handleRouteChange('home')} href="">
+                                Data
+                            </div>
+                        }
+                        {props.loggedin === true && 
+                            <div className='navbarbutton' onClick={() => props.handleRouteChange('logout')} href="">
                                 Logout
-                            </Button>
+                            </div>
                         }
                     </div>
                 </div>

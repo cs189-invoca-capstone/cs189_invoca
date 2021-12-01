@@ -8,7 +8,67 @@
 .move-center{
     /*Change the width as much as you like, but make sure 
     margin-left and margin-right + width = 100%*/
-    width:50%;
+    width:20%;
     margin-left:25%;
     margin-right:25%;
+}
+
+.dropdownbar{
+    margin-left: 30px;
+    width: 170px;
+    background: rgb(245, 252, 245);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+.searchbar{
+    background: rgb(245, 252, 245);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+.homepagebackground{
+    width: screen;
+    height: 800px;
+
+    background: linear-gradient(180deg, rgba(7, 255, 32, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%), linear-gradient(0deg, rgba(7, 255, 32, 0.12), rgba(7, 255, 32, 0.12));
+}
+
+.hellotext{
+    margin-left: 15%;
+    width: 258px;
+    height: 25px;
+
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 44px;
+
+    color: #000000;
+}
+
+.welcometext{
+    margin-left: 15%;
+    text-align: left;
+    font-family: Montserrat;
+    font-style: italic;
+    font-weight: normal;
+    font-size: 25px;
+    line-height: 30px;
+
+    color: #000000;
+}
+
+.tablehold{
+    padding: 10px;
+    width: 70%;
+    height: 500px;
+    overflow: scroll;
+    margin-left: 15%;
+    margin-right: 15%;
+
+    background: #FFFFFF;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 39px;
 }
