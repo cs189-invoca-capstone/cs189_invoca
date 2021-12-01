@@ -10,6 +10,7 @@ var last_transactions_id = "";
 
 router.post('/invoca', async (req, res)=>{
     let data = [];
+    console.log(last_transactions_id);
     let tmp = 'https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp&start_after_transaction_id='+last_transactions_id;
     await axios.get(tmp)
         .then(res => {
@@ -20,15 +21,29 @@ router.post('/invoca', async (req, res)=>{
             res.status(400);
             res.send("Error");
         });
+    console.log("data is");
+    console.log(data);
     for(d of data){
+        console.log("in loop");
         let temp1 = await Transactions.find({transaction_id: d.transaction_id});
-        console.log(temp1);
+        // console.log(temp1);
         // might have to use for loop here to traverse through the temp
         let temp2 = await User.find({invocaPhone: d.destination_phone_number});
-        if(temp1[0] == null && temp2[0]){
+        console.log(temp2);
+        console.log(temp2[0]);
+        console.log(temp1);
+        if(temp1.length == 0 && temp2 != null){
+            // console.log(temp2);
+            // console.log(temp1);
             let transactions = new Transactions();
-
+            // console.log("user infor");
+            // console.log(temp2);
+            // console.log(temp2[0]);
             transactions.userId = temp2[0]._id.toString();
+            // console.log(d);
+            // console.log(d.start_time_local);
+            // console.log(d.transaction_id);
+            transactions.start_time_local = d.start_time_local;
             transactions.transaction_id = d.transaction_id;
             transactions.complete_call_id = d.complete_call_id;
             transactions.calling_phone_number = d.calling_phone_number;
@@ -47,7 +62,7 @@ router.post('/invoca', async (req, res)=>{
                             out.push(tmp);
                         })
                     };
-                    console.log(out);
+                    // console.log(out);
                     transactions.transcript = out; //storing transcript in transactions object
                     // console.log(transactions.transcript);
                     // result.json(result.data);
@@ -56,6 +71,7 @@ router.post('/invoca', async (req, res)=>{
                     // result.json('Error: ', err);
                     console.log("Error: ", err);
                 });
+            console.log("transaction is");
             console.log(transactions);
             await transactions.save();
         }
@@ -71,11 +87,11 @@ router.post('/invoca', async (req, res)=>{
 
 // get all transactions for a user
 router.get('/all/:userId', async (req, res)=>{
-    console.log("in get transactions for a specific user");
+    // console.log("in get transactions for a specific user");
 
     let allTransactions = await Transactions.find({userId: req.params.userId});
 
-    console.log(allTransactions);
+    // console.log(allTransactions);
     res.status(200).send(allTransactions);
     res.end();
 });
@@ -139,11 +155,11 @@ router.put('/:id', async (req, res)=>{
         const filter = { _id: req.params.id };
         const opts = { new: true };
         let update = {};
-        if("userId" in req.body) update.userId = req.body.userId;
-        if("destination_phone_number" in req.body) update.destination_phone_number = req.body.destination_phone_number;
+        // if("start_time_local" in req.body) update.start_time_local = req.body.start_time_local;
         if("calling_phone_number" in req.body) update.calling_phone_number = req.body.calling_phone_number;
         if("complete_call_id" in req.body) update.complete_call_id = req.body.complete_call_id;
         if("transaction_id" in req.body) update.transaction_id = req.body.transaction_id;
+        if("callSummary" in req.body) update.callSummary = req.body.callSummary;
         if("transcript" in req.body) update.transcript = req.body.transcript;
     
         let updatedRecord = await Transactions.findOneAndUpdate(filter, update, opts);

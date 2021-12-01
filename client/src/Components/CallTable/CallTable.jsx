@@ -17,7 +17,7 @@ export default function CallTable(props) {
     const [readOnly, setReadOnly] = useState(true);
     const [showEdit, setShowEdit] = useState(true);
 
-    // const [lastId, setLastId] = useState("");
+    const [lastId, setLastId] = useState("");
 
     const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
@@ -41,9 +41,12 @@ export default function CallTable(props) {
             // setLastId(currLastId);
             let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
             const logs = await axios.get(tmp);
+            // console.log(logs);
+            // console.log(logs.data);
             for (let i = 0; i < logs.data.length; i++){
-                logs.data[i].transcript[0] = logs.data[i].transcript[0].split(",").join("\n")
-            };              
+                console.log(logs.data[i].transcript);
+                logs.data[i].transcript[0] = logs.data[i].transcript[0].split(",").join("\n");
+            };
             // console.log(logs.data);                
             setTransactions(logs.data);
             setShowAllLogs(false);
