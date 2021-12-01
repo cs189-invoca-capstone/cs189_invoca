@@ -9,9 +9,6 @@ const COLUMNS = ["transaction_id", "transaction_type", "call_source_description"
 router.post('/', async (req, res)=>{
     console.log("in post");
 
-    //delete any data to reset
-    await Transactions.deleteMany({});
-
     let data = [];
     await axios.get('https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp')
         .then(res => {
@@ -22,38 +19,48 @@ router.post('/', async (req, res)=>{
             res.status(400);
             res.send("Error");
         });
-    
+    console.log("final entry");
+    console.log(data[data.length - 1]);
+    console.log("     ");
     for(d of data){
-        let transactions = new Transactions();
+        let temp1 = await Transactions.find({transaction_id: d.transaction_id});
+        console.log(temp1);
+        // might have to use for loop here to traverse through the temp
+        let temp2 = await User.find({invocaPhone: d.destination_phone_number});
+        if(temp1[0] == null && temp2[0]){
+            let transactions = new Transactions();
 
-        transactions.transaction_id = d.transaction_id;
-        transactions.complete_call_id = d.complete_call_id;
-        transactions.calling_phone_number = d.calling_phone_number;
-        transactions.destination_phone_number = d.destination_phone_number;
-
-        //might have to use for loop here to traverse through the temp
-        transactions.userId = "";
-        let temp = await User.find({invocaPhone: d.destination_phone_number});
-        if(temp[0]){
-            let test = temp[0]._id.toString();
-            transactions.userId = test;
+            transactions.userId = temp[0]._id.toString();
+            transactions.transaction_id = d.transaction_id;
+            transactions.complete_call_id = d.complete_call_id;
+            transactions.calling_phone_number = d.calling_phone_number;
+            transactions.destination_phone_number = d.destination_phone_number;
+            
+            await axios.get(`https://ucsbcapstone.invoca.net/call/transcript/${d.complete_call_id}?transcript_format=caller_agent_conversation&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp`)
+                .then(result => {
+                    // const headerDate = result.headers && result.headers.date ? result.headers.date : 'no resultponse date';
+                    // console.log('Status Code:', result.status);
+                    // console.log('Date in response header:', headerDate);
+                    // console.log(result.data);
+                    let out = []
+                    for (let i = 0; i < result.data.length; i++){
+                        Object.entries(result.data[i]).map(([key, value]) => {
+                            let tmp = key + ": " + value;
+                            out.push(tmp);
+                        })
+                    };
+                    console.log(out);
+                    transactions.transcript = out; //storing transcript in transactions object
+                    // console.log(transactions.transcript);
+                    // result.json(result.data);
+                })
+                .catch(err => {
+                    // result.json('Error: ', err);
+                    console.log("Error: ", err);
+                });
+            console.log(transactions);
+            await transactions.save();
         }
-        await axios.get(`https://ucsbcapstone.invoca.net/call/transcript/${d.complete_call_id}?transcript_format=caller_agent_conversation&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp`)
-            .then(result => {
-                // const headerDate = result.headers && result.headers.date ? result.headers.date : 'no resultponse date';
-                // console.log('Status Code:', result.status);
-                // console.log('Date in response header:', headerDate);
-
-                transactions.transcript = result.data; //storing transcript in transactions object
-                // console.log(transactions.transcript);
-                // result.json(result.data);
-            })
-            .catch(err => {
-                // result.json('Error: ', err);
-                console.log("Error: ", err);
-            });
-        console.log(transactions);
-        await transactions.save();
     }
     
     res.status(200).send("Inserted");
@@ -100,7 +107,7 @@ router.get('/search/:userId', async (req, res)=>{
         if(type == undefined || query == undefined){
             throw "Missing Parameters";
         }
-        if(type != "userId" && type != "destination_phone_number" && type != "calling_phone_number" && type != "complete_call_id" && type != "transaction_id" && type != "transcript")
+        if(type != "id" && type != "calling_phone_number" && type != "callSummary" && type != "transcript" && type != "sentimentAnalysis")
             throw "Search Type not valid";
         const allTransactions = await Transactions.find(
             { [type] : { "$regex": query, "$options": "i" } , userId: req.params.userId}
@@ -147,6 +154,33 @@ router.put('/:id', async (req, res)=>{
         console.log(err);
     }
 
+    res.end();
+});
+
+// post a call logs that a user wants to upload
+router.post('/new', async (req, res)=>{
+    try{
+        console.log("in post");
+        let call = new Transactions();
+        console.log(req.body);
+        if(req.body.userId == undefined || req.body.phoneNumber == undefined || req.body.entireCall == undefined || req.body.callSummary == undefined || req.body.sentimentAnalysis == undefined){
+            throw "Missing a required parameter";
+        }
+        call.userId = req.body.userId;
+        call.destination_phone_number = req.body.phoneNumber;
+        call.transcript = req.body.entireCall;
+        call.callSummary = req.body.callSummary;
+        call.sentimentAnalysis = req.body.sentimentAnalysis;
+
+        await call.save();
+        console.log("inserted")
+        res.status(200).send("Data Inserted");
+    }
+    catch(err){
+        console.log(err);
+        res.status(400);
+        res.send(err);
+    }
     res.end();
 });
 

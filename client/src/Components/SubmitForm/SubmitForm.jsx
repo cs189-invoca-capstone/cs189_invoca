@@ -22,7 +22,7 @@ export default function SubmitForm(props) {
         try{
             // swap 0 with actual call id once we extract it from login
             // and once the databse actually stores the user ID
-            const logs = await axios.post("callLogs", {
+            const logs = await axios.post("transactions/new", {
                 userId: props.user[Object.keys(props.user)[0]],
                 phoneNumber: inputs.phoneNumber,
                 entireCall: inputs.entireCall,
