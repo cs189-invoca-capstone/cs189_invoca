@@ -5,11 +5,12 @@ const axios = require('axios');
 
 const COLUMNS = ["transaction_id", "transaction_type", "call_source_description", "city", "region", "calling_phone_number", "mobile", "duration", "connect_duration", "start_time_local", "start_time_utc", "recording", "complete_call_id", "destination_phone_number"];
 
-router.post('/', async (req, res)=>{
-    console.log("in post");
+var last_transactions_id = "";
 
+router.post('/invoca', async (req, res)=>{
     let data = [];
-    await axios.get('https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp')
+    let tmp = 'https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp&start_after_transaction_id='+last_transactions_id;
+    await axios.get(tmp)
         .then(res => {
             data = res.data;
         })
@@ -18,9 +19,6 @@ router.post('/', async (req, res)=>{
             res.status(400);
             res.send("Error");
         });
-    console.log("final entry");
-    console.log(data[data.length - 1]);
-    console.log("     ");
     for(d of data){
         let temp1 = await Transactions.find({transaction_id: d.transaction_id});
         console.log(temp1);
@@ -29,7 +27,7 @@ router.post('/', async (req, res)=>{
         if(temp1[0] == null && temp2[0]){
             let transactions = new Transactions();
 
-            transactions.userId = temp[0]._id.toString();
+            transactions.userId = temp2[0]._id.toString();
             transactions.transaction_id = d.transaction_id;
             transactions.complete_call_id = d.complete_call_id;
             transactions.calling_phone_number = d.calling_phone_number;
@@ -61,11 +59,12 @@ router.post('/', async (req, res)=>{
             await transactions.save();
         }
     }
-    
-    res.status(200).send("Inserted");
+    // console.log("last")
+    // console.log(data[data.length - 1]['transaction_id'])
+    last_transactions_id = data[data.length - 1]['transaction_id']
+    res.status(200).send("inserted");
     res.end();
 });
-
 
 // get all transactions for a user
 router.get('/all/:userId', async (req, res)=>{

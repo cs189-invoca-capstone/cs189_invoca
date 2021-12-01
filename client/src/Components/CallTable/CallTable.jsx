@@ -17,6 +17,8 @@ export default function CallTable(props) {
     const [readOnly, setReadOnly] = useState(true);
     const [showEdit, setShowEdit] = useState(true);
 
+    const [lastId, setLastId] = useState("");
+
     const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
     const [transactions, setTransactions] = useState( [] );
@@ -32,7 +34,9 @@ export default function CallTable(props) {
     // fetch call logs for table
     const getLogs = async () => {
         try{
-            const fetchFromInvoca = await axios.post('transactions');
+            const currLastId = await axios.post('transactions/invoca');
+            console.log(currLastId);
+            setLastId(currLastId);
             let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
             const logs = await axios.get(tmp);
             // console.log(logs.data);                
