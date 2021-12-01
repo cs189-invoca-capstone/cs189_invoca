@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Transactions = require("../models/Transactions");
 const User = require("../models/User");
 const axios = require('axios');
+//const { data } = require("jquery");
 
 const COLUMNS = ["transaction_id", "transaction_type", "call_source_description", "city", "region", "calling_phone_number", "mobile", "duration", "connect_duration", "start_time_local", "start_time_utc", "recording", "complete_call_id", "destination_phone_number"];
 

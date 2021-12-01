@@ -9,8 +9,7 @@ import LoginPage from './Components/LoginPage/LoginPage'
 
 import SubmitForm from './Components/SubmitForm/SubmitForm';
 import CallTable from './Components/CallTable/CallTable';
-
-// import LandingPage from './Components/LandingPage/LandingPage'
+import LandingPage from './Components/LandingPage/LandingPage'
 // import Sidebar from './Components/Sidebar/Sidebar';
 // import {Container, Row, Col} from 'react-bootstrap';
 // import Table from './Components/Table/Table'
@@ -39,7 +38,7 @@ function App() {
   };
 
   return (
-    <>
+    <div class = "w-screen h-screen">
       <Navbar loggedin={loggedin} handleRouteChange = {handleRouteChange}/>
       { thisRoute === 'home'
         ? <CallTable user = {user} handleRouteChange = {handleRouteChange}/>
@@ -52,8 +51,7 @@ function App() {
                 : <RegisterPage handleLogIn = {handleLogIn} handleRouteChange = {handleRouteChange} />
               )
         ))}
-    </>
-
+    </div>
   );
 }
 

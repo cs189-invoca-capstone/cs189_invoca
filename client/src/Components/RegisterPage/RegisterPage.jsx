@@ -50,7 +50,7 @@ function RegisterPage(props){
                         <div className='createcolumn'>
                             <div className='newaccount'>Already have an account?</div>
                             <Button variant="secondary" onClick={() => props.handleRouteChange('login')} href="">
-                                Login to Account
+                                Login
                             </Button>
                         </div>
                         <div className='jankfix'>
