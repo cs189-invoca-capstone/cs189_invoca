@@ -29,7 +29,7 @@ router.post('/', async (req, res)=>{
         if(temp1[0] == null && temp2[0]){
             let transactions = new Transactions();
 
-            transactions.userId = temp[0]._id.toString();
+            transactions.userId = temp2[0]._id.toString();
             transactions.transaction_id = d.transaction_id;
             transactions.complete_call_id = d.complete_call_id;
             transactions.calling_phone_number = d.calling_phone_number;

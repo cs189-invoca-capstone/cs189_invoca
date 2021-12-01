@@ -32,14 +32,19 @@ export default function CallTable(props) {
     // fetch call logs for table
     const getLogs = async () => {
         try{
-            const fetchFromInvoca = await axios.post('transactions');
+            console.log("inside getLogs");
+            await axios.post('transactions');
             let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
             const logs = await axios.get(tmp);
+            for (let i = 0; i < logs.data.length; i++){
+                logs.data[i].transcript[0] = logs.data[i].transcript[0].split(",").join("\n")
+            };              
             // console.log(logs.data);                
             setTransactions(logs.data);
             setShowAllLogs(false);
             setSearchText("");
             setChoice("");
+            console.log("getLogs: logs.data = ", logs.data);
         }catch(err){
             console.log(err);
         }
@@ -111,7 +116,7 @@ export default function CallTable(props) {
         setShowEdit(true)
         try{
             const logs = await axios.put("transactions/"+ tableData._id, {
-                entireCall: tableData.entireCall
+                transcript: tableData.transcript
             });
             console.log(logs.data);
         } catch(err){
@@ -241,7 +246,9 @@ export default function CallTable(props) {
                         <Form.Label>Call Transcript:</Form.Label>
                         <Form.Control as="textarea" rows={5} 
                                 type="text" onChange={handleChange} 
-                                value={tableData.transcript}placeholder="Call transcription" 
+                                // value={tableData.transcript == null ? tableData.transcript : tableData.transcript[0].split(",").join("\n")} 
+                                value={tableData.transcript}
+                                placeholder="Call transcription" 
                                 readOnly={readOnly} name="transcript"/>           
                     </Form.Group>
                 </Modal.Body>
