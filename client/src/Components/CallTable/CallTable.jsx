@@ -42,10 +42,12 @@ export default function CallTable(props) {
             let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
             const logs = await axios.get(tmp);
             // console.log(logs);
-            // console.log(logs.data);
+            console.log(logs.data);
             for (let i = 0; i < logs.data.length; i++){
+                let tmp1 = logs.data[i].transcript.toString();
+                console.log(tmp1);
+                logs.data[i].transcript = tmp1.split(",").join('\n');
                 console.log(logs.data[i].transcript);
-                logs.data[i].transcript[0] = logs.data[i].transcript[0].split(",").join("\n");
             };
             // console.log(logs.data);                
             setTransactions(logs.data);
