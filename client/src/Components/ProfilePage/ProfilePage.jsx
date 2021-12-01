@@ -24,6 +24,12 @@ function ProfilePage(props) {
                     <div className=''>
                         Phone: {invocaPhone}
                     </div>
+                    <div>
+                        <br></br>
+                    </div>
+                    <div className='editbutton'>
+                        <div className='dumb'>Edit</div>
+                    </div>
                 </div>
             </div>
         </div>

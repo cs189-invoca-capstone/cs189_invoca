@@ -18,7 +18,7 @@ export default function CallTable(props) {
     const [showEdit, setShowEdit] = useState(true);
     const defaultInfo = [{callerID: "Bryan", phone:"12345", summary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
-    const [callLogs, setCallLogs] = useState( [] );
+    const [transactions, setTransactions] = useState( [] );
     const [choice, setChoice] = useState("");
     const [searchText, setSearchText] = useState("");
 
@@ -31,10 +31,10 @@ export default function CallTable(props) {
     // fetch call logs for table
     const getLogs = async () => {
         try{
-            let tmp = "callLogs/all/" + props.user[Object.keys(props.user)[0]];
+            let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
             const logs = await axios.get(tmp);
             // console.log(logs.data);                
-            setCallLogs(logs.data);
+            setTransactions(logs.data);
             setShowAllLogs(false);
             setSearchText("");
             setChoice("");
@@ -62,16 +62,16 @@ export default function CallTable(props) {
                 // swap 0 with actual call id once we extract it from login
                 // and once the databse actually stores the user ID
                 async function deletePost() {
-                    await axios.delete('callLogs/' + data._id)
+                    await axios.delete('transactions/' + data._id)
                     .then(response => console.log('Delete successful'))
                     .catch(error => {
                         console.error('There was an error!', error);
                     });
                 }
                 deletePost();
-                let tmp = "callLogs/all/" + props.user[Object.keys(props.user)[0]];
+                let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
                 const newLogs = await axios.get(tmp);
-                setCallLogs(newLogs.data);
+                setTransactions(newLogs.data);
             }catch(err){
                 console.log(err);
             }
@@ -80,14 +80,23 @@ export default function CallTable(props) {
     }
         
     // shows all logs and adds logic to clicks
-    const renderLogs = (callLogs, index) => {
+    const renderLogs = (transactions, index) => {
+        let transcripts = transactions.transcript;
+        let out = []
+        for (let i = 0; i < transcripts.length; i++){
+            Object.entries(transcripts[i]).map(([key, value]) => {
+                let tmp = key + ": " + value;
+                out.push(tmp);
+            })
+        }
         return(
             <tr Style="cursor: pointer;" key={index}>
-                <td onClick={() => handleTableClick(callLogs)}>{callLogs._id}</td>
-                <td onClick={() => handleTableClick(callLogs)}>{callLogs.phoneNumber}</td>
-                <td onClick={() => handleTableClick(callLogs)}>{callLogs.callSummary}</td>
-                <td onClick={() => handleTableClick(callLogs)} className='tableStyle'>{callLogs.entireCall}</td>
-                <td onClick={() => handleDelete(callLogs)}>    
+                <td onClick={() => handleTableClick(transactions)}>{transactions._id}</td>
+                <td onClick={() => handleTableClick(transactions)}>{transactions.transaction_id}</td>
+                <td onClick={() => handleTableClick(transactions)}>{transactions.calling_phone_number}</td>
+                {/* <td onClick={() => handleTableClick(transactions)}>{transactions.callSummary}</td> */}
+                <td onClick={() => handleTableClick(transactions)} className='tableStyle'>{out}</td>
+                <td onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
                         Delete
                     </Button>
@@ -107,7 +116,7 @@ export default function CallTable(props) {
         setReadOnly(true)
         setShowEdit(true)
         try{
-            const logs = await axios.put("callLogs/"+ tableData._id, {
+            const logs = await axios.put("transactions/"+ tableData._id, {
                 entireCall: tableData.entireCall
             });
             console.log(logs.data);
@@ -135,7 +144,7 @@ export default function CallTable(props) {
 
     const handleSearchSubmit = async () => {
         try{
-            let tmp = "callLogs/search/" + props.user[Object.keys(props.user)[0]];
+            let tmp = "transactions/search/" + props.user[Object.keys(props.user)[0]];
             const logs = await axios.get(tmp, {
                 params: {
                     searchType: choice,
@@ -143,7 +152,7 @@ export default function CallTable(props) {
                 }              
             }
             );
-            setCallLogs(logs.data);
+            setTransactions(logs.data);
             // console.log(logs.data);
             setShowAllLogs(true);
         }catch(err){
@@ -205,29 +214,25 @@ export default function CallTable(props) {
                 </Form>
             </Container>
             <div>
-                <br></br>
+            <br></br>
             </div>
+            <Container>
             <div className='tablehold'>
-                <Container>
-                    <Row>
-                    <div>
-                        <table data-testid="display-table" className="table table-hover table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Phone Call ID #</th>
-                                    <th>Phone Number</th>
-                                    <th  data-testid="summary-table">Summary</th>
-                                    <th>Call Transcript</th>
-                                    <th>Delete?</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {callLogs.map(renderLogs)}
-                            </tbody>
-                        </table>
-                    </div>            
-                    </Row>
-
+                <table data-testid="display-table" className="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Phone Call ID #</th>
+                            <th>Phone Number</th>
+                            <th  data-testid="summary-table">Summary</th>
+                            <th>Call Transcript</th>
+                            <th>Delete?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {transactions.map(renderLogs)}
+                    </tbody>
+                </table>
+            </div>
                     <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
                         <Modal.Header closeButton>
                             <Modal.Title>
@@ -253,7 +258,6 @@ export default function CallTable(props) {
                         </Modal.Footer>
                     </Modal>
                 </Container>
-            </div>
             <div>
                 <br></br>
             </div>

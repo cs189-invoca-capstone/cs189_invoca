@@ -34,3 +34,26 @@
     font-style: italic;
     font-weight: normal;
 }
+
+.editbutton{
+    margin-left: 40%;
+    height: 40px;
+    width: 20%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    background: rgb(245, 252, 245);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+.editbutton:hover{
+    background: rgb(204, 206, 204);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+.dumb{
+    margin-top: 5px;
+}
