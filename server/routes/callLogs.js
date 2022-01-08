@@ -1,6 +1,36 @@
 const router = require("express").Router();
 const CallLog = require("../models/Call_Log");
 const User = require("../models/User");
+const language = require('@google-cloud/language');
+
+const client = new language.LanguageServiceClient();
+
+
+router.get('/sent', async (req, res)=>{
+
+    try{
+    console.log('in sentiment get');
+    const document = {
+        content: 'cool sentiment',
+        type: 'PLAIN_TEXT',
+      };
+
+      // Detects the sentiment of the document
+  const [result] = await client.analyzeSentiment({document});
+  
+  const sentiment = result.documentSentiment;
+  console.log('Document sentiment:');
+  console.log(`  Score: ${sentiment.score}`);
+  console.log(`  Magnitude: ${sentiment.magnitude}`);
+  
+  
+    res.status(200).send(sentiment);
+    }
+    catch(err){
+        console.log(err);
+    }
+    res.end();
+});
 
 // get all the call logs for that user
 router.get('/all/:userId', async (req, res)=>{

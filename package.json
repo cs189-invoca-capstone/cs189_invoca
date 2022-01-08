@@ -13,6 +13,7 @@
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "dependencies": {
+    "@google-cloud/language": "^4.3.2",
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "bootstrap": "^5.1.3",

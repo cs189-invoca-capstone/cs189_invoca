@@ -65,6 +65,7 @@ router.post('/invoca', async (req, res)=>{
                     };
                     // console.log(out);
                     transactions.transcript = out; //storing transcript in transactions object
+                    
                     // console.log(transactions.transcript);
                     // result.json(result.data);
                 })
@@ -72,6 +73,8 @@ router.post('/invoca', async (req, res)=>{
                     // result.json('Error: ', err);
                     console.log("Error: ", err);
                 });
+                const sentiment = await axios.get('/callLogs/sent', { params: "testing"}) ;
+                console.log(sentiment);
             console.log("transaction is");
             console.log(transactions);
             await transactions.save();
