@@ -11,7 +11,7 @@ const usersRoute = require('./routes/users');
 // const transactionsRoute = require('./routes/transactions');
 const transactionsRoute = require('./test/testRoutes/testtransactions');
 
-// const nlpRoute = require('./routes/nlp');
+const nlpRoute = require('./routes/nlp');
 
 // mongodb connection
 mongoose 
@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, '../client/build')))
 app.use("/callLogs", callLogsRoute);
 app.use("/users", usersRoute);
 app.use("/transactions", transactionsRoute);
-// app.use("/nlp", nlpRoute);
+app.use("/nlp", nlpRoute);
 
 /*
 async function entity(){
