@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const Transactions = require("../models/Transactions");
-const User = require("../models/User");
+const Transactions = require("../testModels/TestTransactions");
+const User = require("../../models/User");
 const axios = require('axios');
 const language = require('@google-cloud/language');
 const client = new language.LanguageServiceClient();
@@ -11,7 +11,9 @@ const COLUMNS = ["transaction_id", "transaction_type", "call_source_description"
 var last_transactions_id = "";
 
 router.post('/invoca', async (req, res)=>{
-    // await Transactions.deleteMany({});
+    // delete all of the transactions stored because this is for testing
+    // can remove if not desired
+    await Transactions.deleteMany({});
     // console.log(last_transactions_id);
 
     // data will be all of the transactions that are stored on invoca
@@ -104,6 +106,28 @@ router.post('/invoca', async (req, res)=>{
 
                     // set the sentiment value extracted
                     transactions.sentiment = sentiment.score.toString();
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(400);
+                    res.send(err);
+                });
+            
+            // entity analysis
+            await client.analyzeEntities({document})
+                .then(result => {
+                    const entities = result[0].entities;
+                    console.log('Entities:');
+                    entities.forEach(entity => {
+                        console.log(entity.name);
+                        console.log(` - Type: ${entity.type}, Salience: ${entity.salience}`);
+                        if (entity.metadata && entity.metadata.wikipedia_url) {
+                            console.log(` - Wikipedia URL: ${entity.metadata.wikipedia_url}`);
+                        }
+                    });
+
+                    // set the sentiment value extracted
+                    transactions.keywords = entities;
                 })
                 .catch(err => {
                     console.log(err);
