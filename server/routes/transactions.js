@@ -74,9 +74,13 @@ router.post('/invoca', async (req, res)=>{
 
                     // go through the call log and format it such that it is easier to display on front end
                     let out = []
+                    let caller_only = []
                     for (let i = 0; i < result.data.length; i++){
                         Object.entries(result.data[i]).map(([key, value]) => {
                             let tmp = key + ": " + value;
+                            if (key === "caller") {
+                            	caller_only.push(tmp);
+                            }
                             out.push(tmp);
                         })
                     };
@@ -92,7 +96,7 @@ router.post('/invoca', async (req, res)=>{
 
             // sentiment analysis
             const document = {
-                content: transactions.transcript.join(". "),
+                content: caller_only.join(". "),
                 type: 'PLAIN_TEXT',
             };
             await client.analyzeSentiment({document})
