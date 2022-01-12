@@ -40,7 +40,7 @@ router.get("/entity", async (req, res) => {
 router.get("/sentiment", async (req, res) => {
   try{
     const document = {
-      content: 'cool sentiment',
+      content: req.body.text,
       type: 'PLAIN_TEXT',
     };
     
@@ -48,9 +48,8 @@ router.get("/sentiment", async (req, res) => {
 
     const sentiment = result.documentSentiment;
     console.log('Document sentiment:');
-    console.log(  Score: ${sentiment.score});
-    console.log(  Magnitude: ${sentiment.magnitude});
-
+    console.log( `Score: ${sentiment.score}`);
+    console.log( `Magnitude: ${sentiment.magnitude}`);
   }catch(err){
     console.log(err);
     res.status(400);

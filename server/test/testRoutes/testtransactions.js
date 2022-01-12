@@ -97,6 +97,8 @@ router.post('/invoca', async (req, res)=>{
                 content: transactions.transcript.join(". "),
                 type: 'PLAIN_TEXT',
             };
+
+            /*
             await client.analyzeSentiment({document})
                 .then(result => {
                     const sentiment = result[0].documentSentiment;
@@ -112,8 +114,10 @@ router.post('/invoca', async (req, res)=>{
                     res.status(400);
                     res.send(err);
                 });
-            
+            */
+
             // entity analysis
+            /* 
             await client.analyzeEntities({document})
                 .then(result => {
                     const entities = result[0].entities;
@@ -134,6 +138,7 @@ router.post('/invoca', async (req, res)=>{
                     res.status(400);
                     res.send(err);
                 });
+            */
 
             console.log("transaction is");
             console.log(transactions);
