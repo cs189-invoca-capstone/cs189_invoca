@@ -51,7 +51,7 @@ const TestTransactionSchema = new mongoose.Schema(
             type: Array
         },
         summary: {
-            type: Array
+            type: String
         },
         keywords: {
             type: Array
