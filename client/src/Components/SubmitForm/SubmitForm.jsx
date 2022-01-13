@@ -60,11 +60,15 @@ export default function SubmitForm(props) {
             </Form.Group>
 
             <Form.Group className="mb-3">
-            <Form.Label>Sentiment Analysis</Form.Label>
-            <Form.Control type="text" name="sentimentAnalysis" value={inputs.sentimentAnalysis} onChange={handleChange} placeholder="Enter sentiment analysis" />
-            <Form.Text className="text-muted">
-                Sentiment takes in 0 or 1 (to be updated in future). 
-            </Form.Text>
+            <Form.Label>Call Sentiment</Form.Label>
+            <Form.Select name="sentimentAnalysis" value={inputs.sentimentAnalysis} onChange={handleChange} className='dropdownbar'>
+                <option>Select...</option>
+                <option value="Very Negative">Very Negative</option>
+                <option value="Negative">Negative</option>
+                <option value="Neutral">Neutral</option>
+                <option value="Positive">Positive</option>
+                <option value="Very Positive">Very Positive</option>
+            </Form.Select>
             </Form.Group>
 
             </Row>
