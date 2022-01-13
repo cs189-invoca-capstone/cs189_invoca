@@ -23,12 +23,30 @@ router.get("/entity", async (req, res) => {
     const entities = result.entities;
   
     console.log('Entities:');
+    var other_count = 0;
+    var top_entities = [];
     entities.forEach(entity => {
-      console.log(entity.name);
-      console.log(` - Type: ${entity.type}, Salience: ${entity.salience}`);
-      if (entity.metadata && entity.metadata.wikipedia_url) {
-        console.log(` - Wikipedia URL: ${entity.metadata.wikipedia_url}`);
+      // console.log(entity.name);
+      // console.log(` - Type: ${entity.type}, Salience: ${entity.salience}`);
+      // if (entity.metadata && entity.metadata.wikipedia_url) {
+      //   console.log(` - Wikipedia URL: ${entity.metadata.wikipedia_url}`);
+      // }
+      if(entity.type == "PERSON" || entity.type == "LOCATION" || entity.type == "ORGANIZATION" || entity.type == "EVENT") {
+        console.log(entity.name);
+        console.log(` - Type: ${entity.type}`);
+        top_entities.push(entity.name);
+        
+      } else {
+        
+        if(other_count < 3 && top_entities.indexOf(entity.name) == -1) {
+          console.log(entity.name);
+          console.log(` - Type: ${entity.type}`);
+          top_entities.push(entity.name);
+          other_count++;
+        }
       }
+
+
     });
 
     // decide on how to determine which are the most important terms
