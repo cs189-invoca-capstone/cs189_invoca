@@ -7,7 +7,7 @@ const axios = require('axios');
 const client = new language.LanguageServiceClient();
 
 
-router.get('/', async (req, res)=>{
+router.get('/sentiment', async (req, res)=>{
 
     console.log('in sentiment get');
     const document = {

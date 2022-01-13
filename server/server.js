@@ -9,6 +9,7 @@ const cors = require('cors');
 const callLogsRoute = require('./routes/callLogs');
 const usersRoute = require('./routes/users');
 const transactionsRoute = require('./routes/transactions');
+const sentimentRoute = require('./routes/sentiment');
 
 // mongodb connection
 mongoose 
@@ -29,6 +30,34 @@ app.use(express.static(path.join(__dirname, '../client/build')))
 app.use("/callLogs", callLogsRoute);
 app.use("/users", usersRoute);
 app.use("/transactions", transactionsRoute);
+// app.use("/sentiment", transactionsRoute);
+
+
+async function hello() {
+  const language = require('@google-cloud/language');
+  const client = new language.LanguageServiceClient();
+  console.log("hello!")
+  console.log('in sentiment get');
+    const document = {
+        content: 'cool sentiment',
+        type: 'PLAIN_TEXT',
+      };
+
+      // Detects the sentiment of the document
+  const [result] = await client.analyzeSentiment({document});
+  
+  const sentiment = result.documentSentiment;
+  console.log('Document sentiment:');
+  console.log(`  Score: ${sentiment.score}`);
+  console.log(`  Magnitude: ${sentiment.magnitude}`);
+  
+  
+    // res.status(200).send(sentiment);
+    // res.end();
+}
+
+hello();
+
 
 // listen to port specified
 const PORT = process.env.PORT || 3001;
