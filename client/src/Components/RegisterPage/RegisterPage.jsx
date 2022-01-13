@@ -3,8 +3,11 @@ import './RegisterPage.css';
 import arrow from '../LoginPage/arrow.svg';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import { useHistory } from 'react-router-dom';
 
 function RegisterPage(props){
+    const history = useHistory();
+
     async function registerUser(gmail, invocaPhone, password){
         // console.log("entered register User");
         if (!gmail || !invocaPhone || !password){
@@ -21,7 +24,7 @@ function RegisterPage(props){
                 // localStorage.setItem('user', res.data)
                 console.log(res.data);
                 props.handleLogIn(res.data);
-                props.handleRouteChange('home');
+                history.push("/");
             }catch(err){
                 console.log(err);
             }

@@ -5,8 +5,8 @@ import profilepic from './blank-profile-picture.png'
 function ProfilePage(props) {
 
     console.log(props.user)
-    const { email, invocaPhone } = props.user;
-    console.log(email, invocaPhone)
+    // const { email, invocaPhone } = props.user;
+    // console.log(email, invocaPhone)
 
     return (
         <div class="h-screen w-screen">
@@ -19,7 +19,7 @@ function ProfilePage(props) {
                         Joe Doe
                     </div>
                     <div className=''>
-                        Email: {email}
+                        Email: 
                     </div>
                     <div className=''>
                         {/* Phone: {invocaPhone} */}

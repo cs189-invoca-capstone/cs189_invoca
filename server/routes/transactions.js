@@ -87,30 +87,6 @@ router.post('/invoca', async (req, res)=>{
                     console.log("Error: ", err);
                 });
             
-            // now lets set the callSummary and sentiment analysis
-            
-
-            // sentiment analysis
-            const document = {
-                content: transactions.transcript.join(". "),
-                type: 'PLAIN_TEXT',
-            };
-            await client.analyzeSentiment({document})
-                .then(result => {
-                    const sentiment = result[0].documentSentiment;
-                    console.log('Document sentiment:');
-                    console.log( `Score: ${sentiment.score}`);
-                    console.log( `Magnitude: ${sentiment.magnitude}`);
-
-                    // set the sentiment value extracted
-                    transactions.sentiment = sentiment.score.toString();
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(400);
-                    res.send(err);
-                });
-
             console.log("transaction is");
             console.log(transactions);
             await transactions.save();
