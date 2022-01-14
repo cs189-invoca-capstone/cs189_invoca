@@ -107,7 +107,21 @@ router.post('/invoca', async (req, res)=>{
                     console.log( `Magnitude: ${sentiment.magnitude}`);
 
                     // set the sentiment value extracted
-                    transactions.sentiment = sentiment.score.toString();
+                    transaction_sentiment = ""
+                    if (sentiment.score <= -0.35) {
+                        transaction_sentiment = "Very Negative"
+                    } else if (sentiment.score <= -0.1) {
+                        transaction_sentiment = "Negative"
+                    } else if (sentiment.score >= 0.35) {
+                        transaction_sentiment = "Very Positive"
+                    } else if (sentiment.score >= 0.1) {
+                        transaction_sentiment = "Positive"
+                    } else if (sentiment.score < 0.1 && -0.1 < sentiment.score) {
+                        transaction_sentiment = "Neutral"
+                    } else {
+                        transaction_sentiment = "ERROR IN TRANSACTIONS.JS"
+                    }
+                    transactions.sentiment = transaction_sentiment;
                 })
                 .catch(err => {
                     console.log(err);
