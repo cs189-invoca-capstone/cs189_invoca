@@ -90,6 +90,7 @@ export default function CallTable(props) {
                 <td onClick={() => handleTableClick(transactions)}>{transactions.calling_phone_number}</td>
                 <td onClick={() => handleTableClick(transactions)}>{transactions.callSummary}</td>
                 <td onClick={() => handleTableClick(transactions)} className='tableStyle'>{transactions.transcript}</td>
+                <td onClick={() => handleTableClick(transactions)}>{transactions.sentimentAnalysis}</td>
                 <td onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
                         Delete
@@ -221,6 +222,7 @@ export default function CallTable(props) {
                             <th>Phone Number</th>
                             <th  data-testid="summary-table">Summary</th>
                             <th>Call Transcript</th>
+                            <th>Sentiment Analysis</th>
                             <th>Delete?</th>
                         </tr>
                     </thead>
