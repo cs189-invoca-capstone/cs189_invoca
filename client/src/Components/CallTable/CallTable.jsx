@@ -17,6 +17,8 @@ export default function CallTable(props) {
     const [readOnly, setReadOnly] = useState(true);
     const [showEdit, setShowEdit] = useState(true);
 
+    const [lastId, setLastId] = useState("");
+
     const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
     const [transactions, setTransactions] = useState( [] );
@@ -32,9 +34,21 @@ export default function CallTable(props) {
     // fetch call logs for table
     const getLogs = async () => {
         try{
-            const fetchFromInvoca = await axios.post('transactions');
+            console.log("inside getLogs");
+            // await axios.post('transactions');
+            await axios.post('transactions/invoca');
+            // console.log(currLastId);
+            // setLastId(currLastId);
             let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
             const logs = await axios.get(tmp);
+            // console.log(logs);
+            console.log(logs.data);
+            for (let i = 0; i < logs.data.length; i++){
+                let tmp1 = logs.data[i].transcript.toString();
+                console.log(tmp1);
+                logs.data[i].transcript = tmp1.split(",").join('\n');
+                console.log(logs.data[i].transcript);
+            };
             // console.log(logs.data);                
             setTransactions(logs.data);
             setShowAllLogs(false);
@@ -112,7 +126,7 @@ export default function CallTable(props) {
         setShowEdit(true)
         try{
             const logs = await axios.put("transactions/"+ tableData._id, {
-                entireCall: tableData.entireCall
+                transcript: tableData.transcript
             });
             console.log(logs.data);
         } catch(err){
@@ -181,10 +195,10 @@ export default function CallTable(props) {
                         <Col lg={2}>
                             <Form.Group>
                                 <Form.Select name="choice" value={choice} onChange={handleDropdownChange} className='dropdownbar'>
-                                    <option value="_id">Phone Call ID #</option>
-                                    <option value="phoneNumber">Phone Number</option>
+                                    <option value="id">Phone Call ID #</option>
+                                    <option value="calling_phone_number">Phone Number</option>
                                     <option value="callSummary">Summary</option>
-                                    <option value="entireCall">Call Transcript</option>
+                                    <option value="transcript">Call Transcript</option>
                                     <option value="sentimentAnalysis">Sentiment</option>
                                 </Form.Select>
                             </Form.Group>
@@ -212,6 +226,7 @@ export default function CallTable(props) {
             </Container>
             <div>
             <br></br>
+
             </div>
             <Container>
             <div className='tablehold'>
@@ -234,7 +249,7 @@ export default function CallTable(props) {
                     <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
                         <Modal.Header closeButton>
                             <Modal.Title>
-                                <h4>{tableData.phoneNumber}: {tableData.callSummary}</h4>
+                                <h4>{tableData.calling_phone_number}: {tableData.callSummary}</h4>
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
@@ -242,8 +257,8 @@ export default function CallTable(props) {
                                 <Form.Label>Call Transcript:</Form.Label>
                                 <Form.Control as="textarea" rows={5} 
                                         type="text" onChange={handleChange} 
-                                        value={tableData.entireCall} placeholder="Call transcription" 
-                                        readOnly={readOnly} name="entireCall"/>           
+                                        value={tableData.transcript} placeholder="Call transcription" 
+                                        readOnly={readOnly} name="transcript"/>           
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>
@@ -251,7 +266,6 @@ export default function CallTable(props) {
                         {showEdit 
                             ? <Button variant="primary" onClick={handleEdit}>Edit</Button> 
                             : <Button variant="success" onClick={handleSave}>Save</Button>}
-
                         <Button variant="secondary" onClick={handleClose}> Close </Button>
                         </Modal.Footer>
                     </Modal>

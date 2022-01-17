@@ -19,6 +19,8 @@ function App() {
   const [loggedin, setLoggedin]  = useState(false);
   const [thisRoute, setThisRoute] = useState('login');
   
+  const [transactionId, setTransactionId] = useState('');
+
   function handleLogIn(user) {
     setLoggedin(true);
     setUser(user);
