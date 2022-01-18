@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 //columns = [transaction_id, transaction_type, call_source_description, 
 //city, region, calling_phone_number, mobile, duration, connect_duration, 
 //start_time_local, start_time_utc, recording, complete_call_id, destination_phone_number];
-const TransactionSchema = new mongoose.Schema(
+const TestTransactionSchema = new mongoose.Schema(
     {
         transaction_id: {
             type: String
@@ -65,4 +65,4 @@ const TransactionSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model("Transactions", TransactionSchema);
+module.exports = mongoose.model("TestTransactions", TestTransactionSchema);

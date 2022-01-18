@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const Transactions = require("../models/Transactions");
-const User = require("../models/User");
+const Transactions = require("../testModels/TestTransactions");
+const User = require("../../models/User");
 const axios = require('axios');
 const language = require('@google-cloud/language');
 const client = new language.LanguageServiceClient();
@@ -11,7 +11,9 @@ const COLUMNS = ["transaction_id", "transaction_type", "call_source_description"
 var last_transactions_id = "";
 
 router.post('/invoca', async (req, res)=>{
-    // await Transactions.deleteMany({});
+    // delete all of the transactions stored because this is for testing
+    // can remove if not desired
+    await Transactions.deleteMany({});
     // console.log(last_transactions_id);
 
     // data will be all of the transactions that are stored on invoca
@@ -66,39 +68,41 @@ router.post('/invoca', async (req, res)=>{
             // with the complete call id that is stored, will want to retrieve the call log
             // that is associated/recorded from this specific transaction
             await axios.get(`https://ucsbcapstone.invoca.net/call/transcript/${d.complete_call_id}?transcript_format=caller_agent_conversation&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp`)
-                .then(result => {
-                    // const headerDate = result.headers && result.headers.date ? result.headers.date : 'no resultponse date';
-                    // console.log('Status Code:', result.status);
-                    // console.log('Date in response header:', headerDate);
-                    // console.log(result.data);
+            .then(result => {
+                // const headerDate = result.headers && result.headers.date ? result.headers.date : 'no resultponse date';
+                // console.log('Status Code:', result.status);
+                // console.log('Date in response header:', headerDate);
+                // console.log(result.data);
 
-                    // go through the call log and format it such that it is easier to display on front end
-                    let out = []
-                    let caller_only = []
-                    for (let i = 0; i < result.data.length; i++){
-                        Object.entries(result.data[i]).map(([key, value]) => {
-                            let tmp = key + ": " + value;
-                            if (key === "caller") {
-                            	caller_only.push(tmp);
-                            }
-                            out.push(tmp);
-                        })
-                    };
-                    transactions.transcript = out; //storing transcript in transactions object
-                })
-                .catch(err => {
-                    // result.json('Error: ', err);
-                    console.log("Error: ", err);
-                });
+                // go through the call log and format it such that it is easier to display on front end
+                let out = []
+                let caller_only = []
+                for (let i = 0; i < result.data.length; i++){
+                    Object.entries(result.data[i]).map(([key, value]) => {
+                        let tmp = key + ": " + value;
+                        if (key === "caller") {
+                            caller_only.push(tmp);
+                        }
+                        out.push(tmp);
+                    })
+                };
+                transactions.transcript = out; //storing transcript in transactions object
+            })
+            .catch(err => {
+                // result.json('Error: ', err);
+                console.log("Error: ", err);
+            });
             
             // now lets set the callSummary and sentiment analysis
             
 
             // sentiment analysis
             const document = {
-                content: caller_only.join(". "),
+                content: transactions.transcript.join(". "),
                 type: 'PLAIN_TEXT',
             };
+
+            
             await client.analyzeSentiment({document})
                 .then(result => {
                     const sentiment = result[0].documentSentiment;
@@ -107,63 +111,71 @@ router.post('/invoca', async (req, res)=>{
                     console.log( `Magnitude: ${sentiment.magnitude}`);
 
                     // set the sentiment value extracted
-                    transaction_sentiment = ""
-                    if (sentiment.score <= -0.35) {
-                        transaction_sentiment = "Very Negative"
-                    } else if (sentiment.score <= -0.1) {
-                        transaction_sentiment = "Negative"
-                    } else if (sentiment.score >= 0.35) {
-                        transaction_sentiment = "Very Positive"
-                    } else if (sentiment.score >= 0.1) {
-                        transaction_sentiment = "Positive"
-                    } else if (sentiment.score < 0.1 && -0.1 < sentiment.score) {
-                        transaction_sentiment = "Neutral"
-                    } else {
-                        transaction_sentiment = "ERROR IN TRANSACTIONS.JS"
-                    }
-                    transactions.sentiment = transaction_sentiment;
+                    transactions.sentiment = sentiment.score.toString();
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(400);
                     res.send(err);
                 });
+            
 
-
-                
-            // entities
-            const entity_document = {
-                content: transactions.transcript.join(". "),
-                type: 'PLAIN_TEXT',
-              };
-              
-
-            await client.analyzeEntities({document: entity_document})
+            // entity analysis
+            /* 
+            await client.analyzeEntities({document})
                 .then(result => {
                     const entities = result[0].entities;
                     console.log('Entities:');
-                    var other_count = 0;
-
                     entities.forEach(entity => {
-                        if(entity.type == "PERSON" || entity.type == "LOCATION" || entity.type == "ORGANIZATION" || entity.type == "EVENT") {
-                            console.log(entity.name);
-                            console.log(` - Type: ${entity.type}`);
-                            transactions.keywords.push(entity.name);
-                            
-                        } else {
-                            
-                            if(other_count < 3 && transactions.keywords.indexOf(entity.name) == -1) {
-                            console.log(entity.name);
-                            console.log(` - Type: ${entity.type}`);
-                            transactions.keywords.push(entity.name);
-                            other_count++;
-                            }
+                        console.log(entity.name);
+                        console.log(` - Type: ${entity.type}, Salience: ${entity.salience}`);
+                        if (entity.metadata && entity.metadata.wikipedia_url) {
+                            console.log(` - Wikipedia URL: ${entity.metadata.wikipedia_url}`);
                         }
                     });
+
+                    // set the sentiment value extracted
+                    transactions.keywords = entities;
                 })
                 .catch(err => {
                     console.log(err);
+                    res.status(400);
+                    res.send(err);
                 });
+            */
+                const joined_transactions = transactions.transcript.join(". ");
+                console.log(typeof(joined_transactions));
+                const entity_document = {
+                    content: joined_transactions,
+                    type: 'PLAIN_TEXT',
+                  };
+
+            await client.analyzeEntities({document: entity_document})
+            .then(result => {
+                const entities = result[0].entities;
+                console.log('Entities:');
+                var other_count = 0;
+
+                entities.forEach(entity => {
+                    if(entity.type == "PERSON" || entity.type == "LOCATION" || entity.type == "ORGANIZATION" || entity.type == "EVENT") {
+                        console.log(entity.name);
+                        console.log(` - Type: ${entity.type}`);
+                        transactions.keywords.push(entity.name);
+                        
+                    } else {
+                        
+                        if(other_count < 3 && transactions.keywords.indexOf(entity.name) == -1) {
+                        console.log(entity.name);
+                        console.log(` - Type: ${entity.type}`);
+                        transactions.keywords.push(entity.name);
+                        other_count++;
+                        }
+                    }
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
 
             console.log("transaction is");
             console.log(transactions);
