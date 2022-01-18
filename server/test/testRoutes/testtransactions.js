@@ -4,6 +4,10 @@ const User = require("../../models/User");
 const axios = require('axios');
 const language = require('@google-cloud/language');
 const client = new language.LanguageServiceClient();
+
+const NLPCloudClient = require('nlpcloud');
+const summarizeClient = new NLPCloudClient('bart-large-cnn',process.env.NLP_CLOUD_TOKEN);
+
 // const { data } = require("jquery");
 
 const COLUMNS = ["transaction_id", "transaction_type", "call_source_description", "city", "region", "calling_phone_number", "mobile", "duration", "connect_duration", "start_time_local", "start_time_utc", "recording", "complete_call_id", "destination_phone_number"];
@@ -18,6 +22,8 @@ router.post('/invoca', async (req, res)=>{
 
     // data will be all of the transactions that are stored on invoca
     let data = [];
+
+    console.log("in invoca");
 
     // call invoca transactions api
     let tmp = 'https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp&start_after_transaction_id='+last_transactions_id;
@@ -65,6 +71,7 @@ router.post('/invoca', async (req, res)=>{
             transactions.destination_phone_number = d.destination_phone_number;
 
 
+            console.log("getting invoca transcript");
             // with the complete call id that is stored, will want to retrieve the call log
             // that is associated/recorded from this specific transaction
             await axios.get(`https://ucsbcapstone.invoca.net/call/transcript/${d.complete_call_id}?transcript_format=caller_agent_conversation&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp`)
@@ -98,7 +105,7 @@ router.post('/invoca', async (req, res)=>{
                 type: 'PLAIN_TEXT',
             };
 
-            /*
+            
             await client.analyzeSentiment({document})
                 .then(result => {
                     const sentiment = result[0].documentSentiment;
@@ -111,13 +118,12 @@ router.post('/invoca', async (req, res)=>{
                 })
                 .catch(err => {
                     console.log(err);
-                    res.status(400);
-                    res.send(err);
+                    
                 });
-            */
+            
 
             // entity analysis
-            /* 
+            
             await client.analyzeEntities({document})
                 .then(result => {
                     const entities = result[0].entities;
@@ -135,10 +141,24 @@ router.post('/invoca', async (req, res)=>{
                 })
                 .catch(err => {
                     console.log(err);
-                    res.status(400);
-                    res.send(err);
+                    
                 });
-            */
+            
+
+            // summarization
+            console.log("getting summary");
+            console.log(document.content);
+            await summarizeClient.summarization(document.content)
+                .then(result => {
+                    console.log(result);
+                    let summary = result.data.summary_text;
+                    transactions.summary = summary;
+                })
+                .catch(err=>{
+                    console.log(err);
+                    
+                });
+            
 
             console.log("transaction is");
             console.log(transactions);

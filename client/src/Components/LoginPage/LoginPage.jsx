@@ -19,7 +19,7 @@ function LoginPage(props){
                     password: password
                 });
                 // localStorage.setItem('user', res.data)
-                console.log(res.data);
+                // console.log(res.data);
                 props.handleLogIn(res.data);
                 history.push("/");
             }catch(err){

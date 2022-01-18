@@ -18,28 +18,18 @@ import LandingPage from './Components/LandingPage/LandingPage'
 // import Table from './Components/Table/Table'
 
 function App() {
-  const getUser = () => {
-    console.log("get user");
-    const userString = sessionStorage.getItem('user');
-    console.log(userString);
-    const userParsed = JSON.parse(userString);
-    console.log(userParsed);
-    // if(userParsed != null){
-    //   setUser(userParsed);
-    // }
-    
-    return userParsed;
-  };
 
-  const [user, setUser] = useState(getUser());
+  const [user, setUser] = useState(null);
+
   const [loggedin, setLoggedin]  = useState(false);
   const [thisRoute, setThisRoute] = useState('login');
   
   const [transactionId, setTransactionId] = useState('');
 
-  function handleLogIn(user) {
+  const handleLogIn = (user) => {
     console.log(user);
     sessionStorage.setItem('user', JSON.stringify(user));
+    setUser(user);
   };
 
   const clearUser = () => {
@@ -47,17 +37,37 @@ function App() {
     setUser(null);
   };
 
+  const getUser = () => {
+    console.log("get user");
+    const userString = sessionStorage.getItem('user');
+    console.log(userString);
+    const userParsed = JSON.parse(userString);
+    console.log(userParsed);
+    if(userParsed != null){
+      setUser(userParsed);
+    }
+  };
+
+
+  useEffect(() => {
+    console.log("use effect");
+    getUser();
+  }, []);
+
   return (
     <Router>
-      <Navbar loggedin={loggedin} clearUser={clearUser}/>
+      {/* <Navbar clearUser={clearUser}/> */}
       <Switch>
         <Route exact path = "/">
           { user === null
-            ? <CallTable user = {user} />
-            : <LoginPage handleLogIn = {handleLogIn} />
+            ? <LoginPage handleLogIn = {handleLogIn} />
+            : <CallTable user = {user} />
           }
+          {user === null && <LoginPage handleLogIn = {handleLogIn} />}
         </Route>
         <Route path = "/profile">
+          {user === null
+          }
           <ProfilePage user = {user} loggedin = {loggedin}/>
         </Route>
         <Route path = "/add">
@@ -69,6 +79,17 @@ function App() {
         <Route path = "/register">
           <RegisterPage handleLogIn = {handleLogIn} />
         </Route>
+        {user == null
+          &&
+          <>
+            <Route path = "/profile">
+              <ProfilePage user = {user} loggedin = {loggedin}/>
+            </Route>
+            <Route path = "/add">
+              <SubmitForm user = {user} />
+            </Route>
+          </>
+        }
       </Switch>
     </Router>
   );
