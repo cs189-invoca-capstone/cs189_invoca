@@ -6,6 +6,9 @@ const language = require('@google-cloud/language');
 const client = new language.LanguageServiceClient();
 // const { data } = require("jquery");
 
+const NLPCloudClient = require('nlpcloud');
+const summarizeClient = new NLPCloudClient('bart-large-cnn',process.env.NLP_CLOUD_TOKEN);
+
 const COLUMNS = ["transaction_id", "transaction_type", "call_source_description", "city", "region", "calling_phone_number", "mobile", "duration", "connect_duration", "start_time_local", "start_time_utc", "recording", "complete_call_id", "destination_phone_number"];
 
 var last_transactions_id = "";
@@ -65,6 +68,10 @@ router.post('/invoca', async (req, res)=>{
             transactions.destination_phone_number = d.destination_phone_number;
 
 
+            const caller_only = [];
+
+            const joined_transcripts = [];
+
             // with the complete call id that is stored, will want to retrieve the call log
             // that is associated/recorded from this specific transaction
             await axios.get(`https://ucsbcapstone.invoca.net/call/transcript/${d.complete_call_id}?transcript_format=caller_agent_conversation&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp`)
@@ -76,13 +83,13 @@ router.post('/invoca', async (req, res)=>{
 
                 // go through the call log and format it such that it is easier to display on front end
                 let out = []
-                let caller_only = []
                 for (let i = 0; i < result.data.length; i++){
                     Object.entries(result.data[i]).map(([key, value]) => {
                         let tmp = key + ": " + value;
                         if (key === "caller") {
                             caller_only.push(tmp);
                         }
+                        joined_transcripts.push(value);
                         out.push(tmp);
                     })
                 };
@@ -98,20 +105,32 @@ router.post('/invoca', async (req, res)=>{
 
             // sentiment analysis
             const document = {
-                content: transactions.transcript.join(". "),
+                content: caller_only.join(". "),
                 type: 'PLAIN_TEXT',
             };
-
             
+            // say how you empirically found these thresholds through your trial and error
             await client.analyzeSentiment({document})
                 .then(result => {
                     const sentiment = result[0].documentSentiment;
-                    console.log('Document sentiment:');
-                    console.log( `Score: ${sentiment.score}`);
-                    console.log( `Magnitude: ${sentiment.magnitude}`);
+                    // console.log('Document sentiment:');
+                    // console.log( `Score: ${sentiment.score}`);
+                    // console.log( `Magnitude: ${sentiment.magnitude}`);
+                    if (sentiment.score <= -0.35) {
+                        transaction_sentiment = "Very Negative"
+                    } else if (sentiment.score <= -0.1) {
+                        transaction_sentiment = "Negative"
+                    } else if (sentiment.score >= 0.35) {
+                        transaction_sentiment = "Very Positive"
+                    } else if (sentiment.score >= 0.1) {
+                        transaction_sentiment = "Positive"
+                    } else if (sentiment.score < 0.1 && -0.1 < sentiment.score) {
+                        transaction_sentiment = "Neutral"
+                    } else {
+                        transaction_sentiment = "ERROR IN TRANSACTIONS.JS"
+                    }
 
-                    // set the sentiment value extracted
-                    transactions.sentiment = sentiment.score.toString();
+                    transactions.sentiment = transaction_sentiment;
                 })
                 .catch(err => {
                     console.log(err);
@@ -143,12 +162,15 @@ router.post('/invoca', async (req, res)=>{
                     res.send(err);
                 });
             */
-                const joined_transactions = transactions.transcript.join(". ");
-                console.log(typeof(joined_transactions));
-                const entity_document = {
-                    content: joined_transactions,
-                    type: 'PLAIN_TEXT',
-                  };
+
+            
+            const joined_transactions = transactions.transcript.join(". ");
+            const joined_transactions_entities = joined_transcripts.join(". ");
+            // console.log(typeof(joined_transactions));
+            const entity_document = {
+                content: joined_transactions_entities,
+                type: 'PLAIN_TEXT',
+            };
 
             await client.analyzeEntities({document: entity_document})
             .then(result => {
@@ -165,10 +187,10 @@ router.post('/invoca', async (req, res)=>{
                     } else {
                         
                         if(other_count < 3 && transactions.keywords.indexOf(entity.name) == -1) {
-                        console.log(entity.name);
-                        console.log(` - Type: ${entity.type}`);
-                        transactions.keywords.push(entity.name);
-                        other_count++;
+                            console.log(entity.name);
+                            console.log(` - Type: ${entity.type}`);
+                            transactions.keywords.push(entity.name);
+                            other_count++;
                         }
                     }
                 });
@@ -176,6 +198,19 @@ router.post('/invoca', async (req, res)=>{
             .catch(err => {
                 console.log(err);
             });
+
+            // console.log(joined_transactions);
+            await summarizeClient.summarization(joined_transactions)
+                .then(result => {
+                    console.log(result);
+                    let summary = result.data.summary_text;
+                    transactions.summary = summary;
+                })
+                .catch(err=>{
+                    console.log(err);
+                    
+                });
+            
 
             console.log("transaction is");
             console.log(transactions);

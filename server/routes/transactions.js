@@ -6,6 +6,9 @@ const language = require('@google-cloud/language');
 const client = new language.LanguageServiceClient();
 // const { data } = require("jquery");
 
+const NLPCloudClient = require('nlpcloud');
+const summarizeClient = new NLPCloudClient('bart-large-cnn',process.env.NLP_CLOUD_TOKEN);
+
 const COLUMNS = ["transaction_id", "transaction_type", "call_source_description", "city", "region", "calling_phone_number", "mobile", "duration", "connect_duration", "start_time_local", "start_time_utc", "recording", "complete_call_id", "destination_phone_number"];
 
 var last_transactions_id = "";
@@ -163,6 +166,17 @@ router.post('/invoca', async (req, res)=>{
                 })
                 .catch(err => {
                     console.log(err);
+                });
+            
+            await summarizeClient.summarization(document.content)
+                .then(result => {
+                    console.log(result);
+                    let summary = result.data.summary_text;
+                    transactions.summary = summary;
+                })
+                .catch(err=>{
+                    console.log(err);
+                    
                 });
 
             console.log("transaction is");

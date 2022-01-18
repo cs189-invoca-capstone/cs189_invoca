@@ -47,6 +47,9 @@ export default function CallTable(props) {
                 let tmp1 = logs.data[i].transcript.toString();
                 console.log(tmp1);
                 logs.data[i].transcript = tmp1.split(",").join('\n');
+
+                let tmp2 = logs.data[i].keywords.toString();
+                logs.data[i].keywords = tmp2.split(",").join('\n');
                 console.log(logs.data[i].transcript);
             };
             // console.log(logs.data);                
@@ -103,9 +106,11 @@ export default function CallTable(props) {
                 <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions._id}</td>
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.transaction_id}</td> */}
                 <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.calling_phone_number}</td>
-                <td onClick={() => handleTableClick(transactions)}>{transactions.callSummary}</td>
+                <td onClick={() => handleTableClick(transactions)}>{transactions.summary}</td>
+                {/* <td onClick={() => handleTableClick(transactions)}>{transactions.keywords}</td> */}
+                
                 <td className="hidden" onClick={() => handleTableClick(transactions)} className='tableStyle'>{transactions.transcript}</td>
-                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.sentimentAnalysis}</td>
+                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.sentiment}</td>
                 <td className="hidden" onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
                         Delete
