@@ -97,14 +97,16 @@ export default function CallTable(props) {
         
     // shows all logs and adds logic to clicks
     const renderLogs = (transactions, index) => {
+        console.log(transactions.sentimentAnalysis)
         return(
             <tr Style="cursor: pointer;" key={index}>
-                <td onClick={() => handleTableClick(transactions)}>{transactions._id}</td>
+                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions._id}</td>
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.transaction_id}</td> */}
-                <td onClick={() => handleTableClick(transactions)}>{transactions.calling_phone_number}</td>
+                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.calling_phone_number}</td>
                 <td onClick={() => handleTableClick(transactions)}>{transactions.callSummary}</td>
-                <td onClick={() => handleTableClick(transactions)} className='tableStyle'>{transactions.transcript}</td>
-                <td onClick={() => handleDelete(transactions)}>    
+                <td className="hidden" onClick={() => handleTableClick(transactions)} className='tableStyle'>{transactions.transcript}</td>
+                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.sentimentAnalysis}</td>
+                <td className="hidden" onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
                         Delete
                     </Button>
@@ -234,8 +236,9 @@ export default function CallTable(props) {
                         <tr>
                             <th>Phone Call ID #</th>
                             <th>Phone Number</th>
-                            <th  data-testid="summary-table">Summary</th>
+                            <th  data-testid="summary-table" className="evenpercent">Summary</th>
                             <th>Call Transcript</th>
+                            <th>Sentiment Analysis</th>
                             <th>Delete?</th>
                         </tr>
                     </thead>
@@ -257,6 +260,10 @@ export default function CallTable(props) {
                                         type="text" onChange={handleChange} 
                                         value={tableData.transcript} placeholder="Call transcription" 
                                         readOnly={readOnly} name="transcript"/>           
+                            </Form.Group>
+                            <Form.Group >
+                                <Form.Label>Sentiment Analysis:</Form.Label>
+                                        
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>

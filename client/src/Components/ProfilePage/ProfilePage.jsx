@@ -16,13 +16,14 @@ function ProfilePage(props) {
                         <img src={profilepic} alt="profile" className='picture'/>
                     </div>
                     <div className='logintext'>
-                        Joe Shmoe
+                        Joe Doe
                     </div>
                     <div className=''>
                         Email: {email}
                     </div>
                     <div className=''>
-                        Phone: {invocaPhone}
+                        {/* Phone: {invocaPhone} */}
+                        Phone: XXX-XXX-XXXX
                     </div>
                     <div>
                         <br></br>
