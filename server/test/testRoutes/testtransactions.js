@@ -68,26 +68,30 @@ router.post('/invoca', async (req, res)=>{
             // with the complete call id that is stored, will want to retrieve the call log
             // that is associated/recorded from this specific transaction
             await axios.get(`https://ucsbcapstone.invoca.net/call/transcript/${d.complete_call_id}?transcript_format=caller_agent_conversation&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp`)
-                .then(result => {
-                    // const headerDate = result.headers && result.headers.date ? result.headers.date : 'no resultponse date';
-                    // console.log('Status Code:', result.status);
-                    // console.log('Date in response header:', headerDate);
-                    // console.log(result.data);
+            .then(result => {
+                // const headerDate = result.headers && result.headers.date ? result.headers.date : 'no resultponse date';
+                // console.log('Status Code:', result.status);
+                // console.log('Date in response header:', headerDate);
+                // console.log(result.data);
 
-                    // go through the call log and format it such that it is easier to display on front end
-                    let out = []
-                    for (let i = 0; i < result.data.length; i++){
-                        Object.entries(result.data[i]).map(([key, value]) => {
-                            let tmp = key + ": " + value;
-                            out.push(tmp);
-                        })
-                    };
-                    transactions.transcript = out; //storing transcript in transactions object
-                })
-                .catch(err => {
-                    // result.json('Error: ', err);
-                    console.log("Error: ", err);
-                });
+                // go through the call log and format it such that it is easier to display on front end
+                let out = []
+                let caller_only = []
+                for (let i = 0; i < result.data.length; i++){
+                    Object.entries(result.data[i]).map(([key, value]) => {
+                        let tmp = key + ": " + value;
+                        if (key === "caller") {
+                            caller_only.push(tmp);
+                        }
+                        out.push(tmp);
+                    })
+                };
+                transactions.transcript = out; //storing transcript in transactions object
+            })
+            .catch(err => {
+                // result.json('Error: ', err);
+                console.log("Error: ", err);
+            });
             
             // now lets set the callSummary and sentiment analysis
             
@@ -98,7 +102,7 @@ router.post('/invoca', async (req, res)=>{
                 type: 'PLAIN_TEXT',
             };
 
-            /*
+            
             await client.analyzeSentiment({document})
                 .then(result => {
                     const sentiment = result[0].documentSentiment;
@@ -114,7 +118,7 @@ router.post('/invoca', async (req, res)=>{
                     res.status(400);
                     res.send(err);
                 });
-            */
+            
 
             // entity analysis
             /* 
@@ -139,6 +143,39 @@ router.post('/invoca', async (req, res)=>{
                     res.send(err);
                 });
             */
+                const joined_transactions = transactions.transcript.join(". ");
+                console.log(typeof(joined_transactions));
+                const entity_document = {
+                    content: joined_transactions,
+                    type: 'PLAIN_TEXT',
+                  };
+
+            await client.analyzeEntities({document: entity_document})
+            .then(result => {
+                const entities = result[0].entities;
+                console.log('Entities:');
+                var other_count = 0;
+
+                entities.forEach(entity => {
+                    if(entity.type == "PERSON" || entity.type == "LOCATION" || entity.type == "ORGANIZATION" || entity.type == "EVENT") {
+                        console.log(entity.name);
+                        console.log(` - Type: ${entity.type}`);
+                        transactions.keywords.push(entity.name);
+                        
+                    } else {
+                        
+                        if(other_count < 3 && transactions.keywords.indexOf(entity.name) == -1) {
+                        console.log(entity.name);
+                        console.log(` - Type: ${entity.type}`);
+                        transactions.keywords.push(entity.name);
+                        other_count++;
+                        }
+                    }
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
 
             console.log("transaction is");
             console.log(transactions);

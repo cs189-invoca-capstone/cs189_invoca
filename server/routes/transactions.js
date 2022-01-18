@@ -115,6 +115,42 @@ router.post('/invoca', async (req, res)=>{
                     res.send(err);
                 });
 
+
+                
+            // entities
+            const entity_document = {
+                content: transactions.transcript.join(". "),
+                type: 'PLAIN_TEXT',
+              };
+              
+
+            await client.analyzeEntities({document: entity_document})
+                .then(result => {
+                    const entities = result[0].entities;
+                    console.log('Entities:');
+                    var other_count = 0;
+
+                    entities.forEach(entity => {
+                        if(entity.type == "PERSON" || entity.type == "LOCATION" || entity.type == "ORGANIZATION" || entity.type == "EVENT") {
+                            console.log(entity.name);
+                            console.log(` - Type: ${entity.type}`);
+                            transactions.keywords.push(entity.name);
+                            
+                        } else {
+                            
+                            if(other_count < 3 && transactions.keywords.indexOf(entity.name) == -1) {
+                            console.log(entity.name);
+                            console.log(` - Type: ${entity.type}`);
+                            transactions.keywords.push(entity.name);
+                            other_count++;
+                            }
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
             console.log("transaction is");
             console.log(transactions);
             await transactions.save();

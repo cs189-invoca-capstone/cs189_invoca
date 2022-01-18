@@ -45,12 +45,11 @@ router.get("/entity", async (req, res) => {
           other_count++;
         }
       }
-
-
     });
 
-    // decide on how to determine which are the most important terms
     res.status(200).json(entities);
+    transactions.keywords = top_entities;
+
   }catch(err){
     console.log(err);
     res.status(400);
