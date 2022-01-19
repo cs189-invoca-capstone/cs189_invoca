@@ -176,7 +176,7 @@ export default function CallTable(props) {
                 <br></br>
             </div>
             <div className='hellotext'>
-                Hello User
+                Hello {props.user.email}
             </div>
             <div>
                 <br></br>

@@ -19,11 +19,11 @@ function ProfilePage(props) {
                         Joe Doe
                     </div>
                     <div className=''>
-                        Email: 
+                        Email: {props.user.email}
                     </div>
                     <div className=''>
                         {/* Phone: {invocaPhone} */}
-                        Phone: XXX-XXX-XXXX
+                        Phone: {props.user.invocaPhone}
                     </div>
                     <div>
                         <br></br>

@@ -56,22 +56,10 @@ function App() {
 
   return (
     <Router>
-      {/* <Navbar clearUser={clearUser}/> */}
+      <Navbar user = {user} clearUser={clearUser} />
       <Switch>
         <Route exact path = "/">
-          { user === null
-            ? <LoginPage handleLogIn = {handleLogIn} />
-            : <CallTable user = {user} />
-          }
-          {user === null && <LoginPage handleLogIn = {handleLogIn} />}
-        </Route>
-        <Route path = "/profile">
-          {user === null
-          }
-          <ProfilePage user = {user} loggedin = {loggedin}/>
-        </Route>
-        <Route path = "/add">
-          <SubmitForm user = {user} />
+          <LandingPage />
         </Route>
         <Route path = "/login">
           <LoginPage handleLogIn = {handleLogIn} />
@@ -79,14 +67,17 @@ function App() {
         <Route path = "/register">
           <RegisterPage handleLogIn = {handleLogIn} />
         </Route>
-        {user == null
+        {user != null
           &&
           <>
             <Route path = "/profile">
-              <ProfilePage user = {user} loggedin = {loggedin}/>
+              <ProfilePage user = {user} />
             </Route>
             <Route path = "/add">
               <SubmitForm user = {user} />
+            </Route>
+            <Route path = "/callLogs">
+              <CallTable user = {user} />
             </Route>
           </>
         }
