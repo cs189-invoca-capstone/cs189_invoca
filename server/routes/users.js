@@ -12,6 +12,7 @@ router.post("/register", async (req, res) => {
         
         // create a new user
         const newUser = new Users({
+            name: req.body.name,
             email: req.body.email,
             password: hashedPass,
             invocaPhone: req.body.invocaPhone,
@@ -43,6 +44,33 @@ router.post("/login", async (req,res)=>{
         res.status(200).json(user);
     }catch (err){
         res.status(500).json(err);
+    }
+});
+
+router.put("/edit", async (req,res) => {
+    try {
+        await Users.exists({ _id: req.params.id }, (error, result) => {
+            if(error || !result){
+                console.log("Error! User Doesn't exist");
+                res.status(400);
+                res.end();
+                return;
+            }
+        }); // Check if Id exists
+        const filter = { _id: req.params.id };
+        const opts = { new: true };
+        let update = {};
+        // if("start_time_local" in req.body) update.start_time_local = req.body.start_time_local;
+        if("name" in req.body) update.name = req.body.name;
+        if("email" in req.body) update.email = req.body.email;
+    
+        let updatedRecord = await Users.findOneAndUpdate(filter, update, opts);
+
+        res.status(200);
+        console.log(updatedRecord);
+    }
+    catch(err){
+        console.log(err);
     }
 });
 
