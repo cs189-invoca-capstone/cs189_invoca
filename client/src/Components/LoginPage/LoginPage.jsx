@@ -21,7 +21,7 @@ function LoginPage(props){
                 // localStorage.setItem('user', res.data)
                 // console.log(res.data);
                 props.handleLogIn(res.data);
-                history.push("/");
+                history.push("/callLogs");
             }catch(err){
                 console.log(err);
             }
@@ -44,7 +44,7 @@ function LoginPage(props){
                 <div className='createrow'>
                     <div className='createcolumn'>
                         <div className='newaccount'>New here?</div>
-                        <Button variant="secondary" onClick={() => props.handleRouteChange('register')} href="">
+                        <Button variant="secondary" onClick={() => history.push("/register")} >
                             Create an Account
                         </Button>
                     </div>

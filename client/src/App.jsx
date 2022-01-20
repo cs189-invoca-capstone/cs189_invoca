@@ -18,11 +18,7 @@ import LandingPage from './Components/LandingPage/LandingPage'
 // import Table from './Components/Table/Table'
 
 function App() {
-
   const [user, setUser] = useState(null);
-
-  const [loggedin, setLoggedin]  = useState(false);
-  const [thisRoute, setThisRoute] = useState('login');
   
   const [transactionId, setTransactionId] = useState('');
 

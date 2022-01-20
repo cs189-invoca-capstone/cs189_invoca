@@ -14,7 +14,6 @@ export default function Navbar(props) {
         props.clearUser();
         history.push("/login");
     }
-
     
     return(
         <div>
