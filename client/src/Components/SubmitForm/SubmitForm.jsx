@@ -63,7 +63,7 @@ export default function SubmitForm(props) {
                     <Form.Label>Sentiment Analysis</Form.Label>
                     <Form.Control type="text" name="sentimentAnalysis" value={inputs.sentimentAnalysis} onChange={handleChange} placeholder="Enter sentiment analysis" />
                     <Form.Text className="text-muted">
-                        Sentiment takes in 0 or 1 (to be updated in future). 
+                        Sentiment takes in the options of (Very Negative, Negative, Neutral, Positive, Very Positive)
                     </Form.Text>
                 </Form.Group>
             </Row>
