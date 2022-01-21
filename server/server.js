@@ -8,8 +8,8 @@ const cors = require('cors');
 // api routes
 const callLogsRoute = require('./routes/callLogs');
 const usersRoute = require('./routes/users');
-// const transactionsRoute = require('./routes/transactions');
-const transactionsRoute = require('./test/testRoutes/testtransactions');
+const transactionsRoute = require('./routes/transactions');
+// const transactionsRoute = require('./test/testRoutes/testtransactions');
 
 const nlpRoute = require('./routes/nlp');
 
