@@ -3,8 +3,11 @@ import './LoginPage.css';
 import arrow from './arrow.svg';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import { useHistory } from 'react-router-dom';
 
 function LoginPage(props){
+    const history = useHistory();
+
     async function loginUser(gmail, password){
         if (!gmail || !password){
             alert("fill in information!")
@@ -16,9 +19,9 @@ function LoginPage(props){
                     password: password
                 });
                 // localStorage.setItem('user', res.data)
-                console.log(res.data);
+                // console.log(res.data);
                 props.handleLogIn(res.data);
-                props.handleRouteChange('home');
+                history.push("/callLogs");
             }catch(err){
                 console.log(err);
             }
@@ -41,7 +44,7 @@ function LoginPage(props){
                 <div className='createrow'>
                     <div className='createcolumn'>
                         <div className='newaccount'>New here?</div>
-                        <Button variant="secondary" onClick={() => props.handleRouteChange('register')} href="">
+                        <Button variant="secondary" onClick={() => history.push("/register")} >
                             Create an Account
                         </Button>
                     </div>

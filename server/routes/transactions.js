@@ -93,10 +93,8 @@ router.post('/invoca', async (req, res)=>{
                     // result.json('Error: ', err);
                     console.log("Error: ", err);
                 });
-            
-            // now lets set the callSummary and sentiment analysis
-            
 
+            // now lets set the callSummary and sentiment analysis
             // sentiment analysis
             const document = {
                 content: caller_only.join(". "),
@@ -178,7 +176,6 @@ router.post('/invoca', async (req, res)=>{
                     console.log(err);
                     
                 });
-
             console.log("transaction is");
             console.log(transactions);
             await transactions.save();
