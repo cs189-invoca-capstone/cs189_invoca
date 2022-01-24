@@ -6,8 +6,44 @@
     width: screen;
     height: 748px;
 
-    background: linear-gradient(180deg, rgba(7, 255, 32, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%), linear-gradient(0deg, rgba(7, 255, 32, 0.12), rgba(7, 255, 32, 0.12));
+    background-image: url("../assets/background.png");
+
+    /* background: linear-gradient(180deg, rgba(7, 255, 32, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%), linear-gradient(0deg, rgba(7, 255, 32, 0.12), rgba(7, 255, 32, 0.12)); */
 }
+
+.profileInfo{
+    width: 706px;
+    height: 671px;
+    flex-direction: 'column';
+    display: 'flex';
+    align-items: 'center';
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 39px;
+}
+
+.profileName{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+
+    color: rgba(0, 0, 0, 0.63);
+}
+
+.profileNumber{
+    font-family: Roboto;
+    font-style: italic;
+    font-size: 25px;
+    line-height: 44px;
+    text-align: center;
+
+    color: rgba(0, 0, 0, 0.63);
+}
+
 
 #circle2 {
     margin-top: 20px;
@@ -43,17 +79,17 @@
     justify-content: center;
     display: flex;
     align-items: center;
-    background: rgb(245, 252, 245);
+    background: #97CFC0;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
 }
 
 .editbutton:hover{
-    background: rgb(204, 206, 204);
+    background: #5685CA;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
     cursor: pointer;
 }
 
-.dumb{
+.editText{
     margin-top: 5px;
 }
