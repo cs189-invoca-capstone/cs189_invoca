@@ -5,14 +5,15 @@ import './App.scss';
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Navbar from './Components/Navigation/Navbar'
-import RegisterPage from './Components/RegisterPage/RegisterPage'
-import ProfilePage from './Components/ProfilePage/ProfilePage'
-import LoginPage from './Components/LoginPage/LoginPage'
+import Navbar from './Components/Navigation/Navbar';
+import RegisterPage from './Components/RegisterPage/RegisterPage';
+import ProfilePage from './Components/ProfilePage/ProfilePage';
+import LoginPage from './Components/LoginPage/LoginPage';
+import EditProfilePage from './Components/EditProfilePage/EditProfilePage';
 
 import SubmitForm from './Components/SubmitForm/SubmitForm';
 import CallTable from './Components/CallTable/CallTable';
-import LandingPage from './Components/LandingPage/LandingPage'
+import LandingPage from './Components/LandingPage/LandingPage';
 // import Sidebar from './Components/Sidebar/Sidebar';
 // import {Container, Row, Col} from 'react-bootstrap';
 // import Table from './Components/Table/Table'
@@ -68,6 +69,9 @@ function App() {
           <>
             <Route path = "/profile">
               <ProfilePage user = {user} />
+            </Route>
+            <Route path = "/editProfile">
+              <EditProfilePage user = {user} handleLogIn = {handleLogIn} clearUser = {clearUser}/>
             </Route>
             <Route path = "/add">
               <SubmitForm user = {user} />

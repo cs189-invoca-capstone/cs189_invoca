@@ -2,9 +2,10 @@ import React from 'react';
 import './ProfilePage.css';
 import profilepic from './blank-profile-picture.png'
 import { Player } from '@lottiefiles/react-lottie-player';
+import { useHistory } from 'react-router-dom';
 
 function ProfilePage(props) {
-
+    const history = useHistory();
     console.log(props.user)
     // const { email, invocaPhone } = props.user;
     // console.log(email, invocaPhone)
@@ -54,7 +55,7 @@ function ProfilePage(props) {
                         >
                     </Player>
                     <div className='profileName'>
-                        Joe Doe
+                        {props.user.name}
                     </div>
                     <div className='profileNumber'>
                         Phone: {props.user.invocaPhone}
@@ -62,7 +63,7 @@ function ProfilePage(props) {
                     <div>
                         <br></br>
                     </div>
-                    <div className='editbutton'>
+                    <div className='editbutton' onClick={() => history.push("/editProfile")}>
                         <div className='editText'>Edit</div>
                     </div>
                 </div>

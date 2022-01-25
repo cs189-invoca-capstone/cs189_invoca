@@ -47,7 +47,7 @@ router.post("/login", async (req,res)=>{
     }
 });
 
-router.put("/edit", async (req,res) => {
+router.put("/edit/:id", async (req,res) => {
     try {
         await Users.exists({ _id: req.params.id }, (error, result) => {
             if(error || !result){
@@ -66,7 +66,7 @@ router.put("/edit", async (req,res) => {
     
         let updatedRecord = await Users.findOneAndUpdate(filter, update, opts);
 
-        res.status(200);
+        res.status(200).json(updatedRecord);
         console.log(updatedRecord);
     }
     catch(err){
