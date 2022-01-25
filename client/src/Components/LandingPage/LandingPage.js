@@ -11,8 +11,8 @@ function LandingPage(){
                 <Player
                         autoplay
                         loop
-                        speed=".75"
-                        mode="normal"
+                        mode="bounce"
+                        speed=".25"
                         src="https://assets6.lottiefiles.com/private_files/lf30_vrcurbxk.json"
                         style={{ height: '400px', width: '500px' }}
                         />
@@ -27,19 +27,19 @@ function LandingPage(){
                         style={{ height: '25%', width: '30%'}}
                     />
                     <p>
-                        Talk to your heart's content as our platform uses state-of-the-art technology to transcribe your calls for easy access later on.
+                        Talk to your heart's content as our platform uses state-of-the-art technology to <strong>Transcribe</strong> your calls for easy access later on.
                     </p>
                 </div>
                 <div className="LandingPage-infobars">
                     <Player
                         autoplay
                         loop
-                        speed=".75"
+                        speed=".65"
                         src="https://assets2.lottiefiles.com/datafiles/WLZxDkEn1AQcp9K/data.json"
                         style={{ height: '25%', width: '35%'}}
                     />
                     <p>
-                        Our Artificial Intelligence helps you stay at the top of your game by generating sentiment analysis, summaries, and keywords that come up most in your calls. 
+                        Our <strong>Artificial</strong> Intelligence helps you stay at the top of your game by generating sentiment analysis, summaries, and keywords that come up most in your calls. 
                     </p>
                 </div>
                 <div className="LandingPage-infobars">
@@ -51,7 +51,7 @@ function LandingPage(){
                         style={{ height: '25%', width: '45%'}}
                     />
                     <p>
-                        Easily view all of your call logs in one neat table and edit the entries as you see fit! You know what's best for your sales calls after all.
+                        Easily view all of your call <strong>Logs</strong> in one neat table and edit the entries as you see fit! You know what's best for your sales calls after all.
                     </p>
                 </div>
                 <div className="LandingPage-infobars">
@@ -62,7 +62,7 @@ function LandingPage(){
                         style={{ height: '25%', width: '70%'}}
                     />
                     <p>
-                        Generate the most used and successful keywords with our artificial intelligence platform, and watch as your profits grow!
+                        Generate the most used and successful <strong>Keywords</strong> with our artificial intelligence platform, and watch as your profits grow!
                     </p>
                 </div>
             </div>
