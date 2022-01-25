@@ -34,7 +34,7 @@ function LandingPage(){
                     <Player
                         autoplay
                         loop
-                        src="https://assets1.lottiefiles.com/private_files/lf30_9qdtthec.json"
+                        src="https://assets2.lottiefiles.com/datafiles/WLZxDkEn1AQcp9K/data.json"
                         style={{ height: '25%', width: '50%'}}
                     />
                     2
@@ -43,7 +43,7 @@ function LandingPage(){
                     <Player
                         autoplay
                         loop
-                        src="https://assets1.lottiefiles.com/private_files/lf30_9qdtthec.json"
+                        src="https://assets1.lottiefiles.com/packages/lf20_dews3j6m.json"
                         style={{ height: '25%', width: '50%'}}
                     />
                     3
@@ -52,7 +52,7 @@ function LandingPage(){
                     <Player
                         autoplay
                         loop
-                        src="https://assets1.lottiefiles.com/private_files/lf30_9qdtthec.json"
+                        src="https://assets9.lottiefiles.com/private_files/lf30_4p0aandr.json"
                         style={{ height: '25%', width: '50%'}}
                     />
                     4
