@@ -4,6 +4,7 @@ import arrow from './arrow.svg';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 function LoginPage(props){
     const history = useHistory();
@@ -31,29 +32,34 @@ function LoginPage(props){
     return (
         <div className='backgroundlogin' >
             <div className='loginsquare'>
-                <div className='logintext'>Login</div>
-                <div className='welcometext'>Welcome to Invoca!</div>
-                <div style={{padding: 20}}>
-                    <div className='smalltext'>Email address</div>
-                    <input className="filloutbars" type="text" id="gmail"/>
-                </div>
-                <div style={{padding: 20}}>
-                    <div className='smalltext'>Password</div>
-                    <input className="filloutbars" type="password" id="password" />
-                </div>
-                <div className='createrow'>
-                    <div className='createcolumn'>
-                        <div className='newaccount'>New here?</div>
-                        <Button variant="secondary" onClick={() => history.push("/register")} >
-                            Create an Account
-                        </Button>
+                <div className='loginelements'>
+                    <div className='logintext'>Login</div>
+                    <div style={{padding: 20}}>
+                        <div className='smalltext'>Email Address</div>
+                        <input className="filloutbars" type="text" id="gmail"/>
                     </div>
-                    <div className='jankfix'>
-                        <div id='circle' onClick = {
-                            () => loginUser(document.getElementById("gmail").value,  document.getElementById('password').value)}>
-                            <img src={arrow} alt="arrow" className='ellipse'/>
+                    <div style={{padding: 20}}>
+                        <div className='smalltext'>Password</div>
+                        <input className="filloutbars" type="password" id="password" />
+                    </div>
+                    <div className='createrow'>
+                        <div className='createcolumn'>
+                            <div className='newaccount' onClick={() => history.push("/register")} >New here? Create an account.</div>
+                            <Button variant="secondary" onClick={() => loginUser(document.getElementById("gmail").value,  document.getElementById('password').value)}>
+                                Login
+                            </Button>
                         </div>
                     </div>
+                </div>
+
+                <div>
+                    <Player
+                        autoplay
+                        loop
+                        src="https://assets7.lottiefiles.com/private_files/lf30_7z3j6ycb.json"
+                        style={{ height: '400px', width: '500px' }}
+                        >
+                    </Player>
                 </div>
             </div>
         </div>
