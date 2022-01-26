@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useHistory, Link } from 'react-router-dom';
 import './SubmitForm.css';
 
-
 export default function SubmitForm(props) {
     const [inputs, setInputs] = useState({});
     const history = useHistory();
@@ -41,52 +40,50 @@ export default function SubmitForm(props) {
     }
 
     return (
-        <div className='backgroundregisterSubmit'>
-            <div className='registersquare'>
-            <div className='logintextSubmit'>Add Call</div>
-
-            <Container>
-            <Row>
-            <Form onSubmit={handleSubmit} id="submit-form">
+        <div className="backgroundSubmit">
+            <div className="boxSubmit">
+                <Container>
                 <Row>
+                <Form onSubmit={handleSubmit} id="submit-form">
+                    <Row>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Phone Number</Form.Label>
+                            <Form.Control type="text" name="phoneNumber" value={inputs.phoneNumber} onChange={handleChange} placeholder="Enter phone number" />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Summary</Form.Label>
+                            <Form.Control type="text" name="callSummary" value={inputs.callSummary} onChange={handleChange} placeholder="Enter call summary" />
+                        </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Phone Number</Form.Label>
-                        <Form.Control className="filloutbarsSubmit" type="text" name="phoneNumber" value={inputs.phoneNumber} onChange={handleChange} placeholder="Enter phone number" />
+                        <Form.Label>Call Transcript</Form.Label>
+                        <Form.Control type="text" name="entireCall" value={inputs.entireCall} onChange={handleChange} placeholder="Enter call transcript" />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Summary</Form.Label>
-                        <Form.Control className="filloutbarsSubmit" type="text" name="callSummary" value={inputs.callSummary} onChange={handleChange} placeholder="Enter call summary" />
+                        <Form.Label>Call Sentiment</Form.Label>
+                        <Form.Select name="sentimentAnalysis" value={inputs.sentimentAnalysis} onChange={handleChange} className='dropdownbar'>
+                            <option>Select...</option>
+                            <option value="Very Negative">Very Negative</option>
+                            <option value="Negative">Negative</option>
+                            <option value="Neutral">Neutral</option>
+                            <option value="Positive">Positive</option>
+                            <option value="Very Positive">Very Positive</option>
+                        </Form.Select>
                     </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Call Transcript</Form.Label>
-                    <Form.Control className="filloutbarsSubmit" type="text" name="entireCall" value={inputs.entireCall} onChange={handleChange} placeholder="Enter call transcript" />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                    <Form.Label>Call Sentiment</Form.Label>
-                    <Form.Select name="sentimentAnalysis" value={inputs.sentimentAnalysis} onChange={handleChange} className='filloutbarsSubmit'>
-                        <option>Select...</option>
-                        <option value="Very Negative">Very Negative</option>
-                        <option value="Negative">Negative</option>
-                        <option value="Neutral">Neutral</option>
-                        <option value="Positive">Positive</option>
-                        <option value="Very Positive">Very Positive</option>
-                    </Form.Select>
-                </Form.Group>
+                    </Row>
+                    <Row>
+                        <Button Style="width:10%; margin-left:45%; margin-right:45%;" variant="primary" type="submit" disabled={!inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary || !inputs.sentimentAnalysis}>
+                            Submit
+                        </Button>
+                    </Row>
+                </Form>
                 </Row>
-                <Row>
-                    <Button Style="width:30%; margin-left:34%; margin-right:45%;" variant="primary" type="submit" disabled={!inputs.phoneNumber || !inputs.entireCall || !inputs.callSummary || !inputs.sentimentAnalysis}>
-                        Submit
-                    </Button>
-                </Row>
-            </Form>
-            </Row>
-            <br></br>
-            </Container>
-            <Button Style="width:14%; margin-left:43%; margin-right:43%;" variant="secondary" onClick = {() => history.push("/callLogs")}>
-                Exit
-            </Button>
+                <br></br>
+                </Container>
+                <Button Style="width:14%; margin-left:43%; margin-right:43%;" variant="secondary" onClick = {() => history.push("/callLogs")}>
+                    Exit
+                </Button>
             </div>
         </div>
     )
