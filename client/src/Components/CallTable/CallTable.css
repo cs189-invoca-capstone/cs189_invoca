@@ -39,7 +39,7 @@
     width: 375px;
     height: 25px;
 
-    font-family: Montserrat;
+    font-family: sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 30px;
@@ -51,7 +51,7 @@
 .welcometext{
     margin-left: 15%;
     text-align: left;
-    font-family: Montserrat;
+    font-family: sans-serif;
     font-style: italic;
     font-weight: normal;
     font-size: 25px;
