@@ -28,7 +28,7 @@
     width: 70%;
     height: 100%;
     left: 30%;
-    top: 0px;
+    top: 35px;
 
     background: #85C8B8;
 }
@@ -45,6 +45,7 @@
 .LandingPage-infobars{
     display: flex;
     align-items: center;
+    justify-content: left;
     height: 25%;
 }
 

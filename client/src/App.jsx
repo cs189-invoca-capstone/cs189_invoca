@@ -52,39 +52,37 @@ function App() {
   }, []);
 
   return (
-    // <SubmitForm/>
-    <LandingPage/>
-    // <Router>
-    //   <Navbar user = {user} clearUser={clearUser} />
-    //   <Switch>
-    //     <Route exact path = "/">
-    //       <LandingPage />
-    //     </Route>
-    //     <Route path = "/login">
-    //       <LoginPage handleLogIn = {handleLogIn} />
-    //     </Route>
-    //     <Route path = "/register">
-    //       <RegisterPage handleLogIn = {handleLogIn} />
-    //     </Route>
-    //     {user != null
-    //       &&
-    //       <>
-    //         <Route path = "/profile">
-    //           <ProfilePage user = {user} />
-    //         </Route>
-    //         <Route path = "/editProfile">
-    //           <EditProfilePage user = {user} handleLogIn = {handleLogIn} clearUser = {clearUser}/>
-    //         </Route>
-    //         <Route path = "/add">
-    //           <SubmitForm user = {user} />
-    //         </Route>
-    //         <Route path = "/callLogs">
-    //           <CallTable user = {user} />
-    //         </Route>
-    //       </>
-    //     }
-    //   </Switch>
-    // </Router>
+    <Router>
+      <Navbar user = {user} clearUser={clearUser} />
+      <Switch>
+        <Route exact path = "/">
+          <LandingPage />
+        </Route>
+        <Route path = "/login">
+          <LoginPage handleLogIn = {handleLogIn} />
+        </Route>
+        <Route path = "/register">
+          <RegisterPage handleLogIn = {handleLogIn} />
+        </Route>
+        {user != null
+          &&
+          <>
+            <Route path = "/profile">
+              <ProfilePage user = {user} />
+            </Route>
+            <Route path = "/editProfile">
+              <EditProfilePage user = {user} handleLogIn = {handleLogIn} clearUser = {clearUser}/>
+            </Route>
+            <Route path = "/add">
+              <SubmitForm user = {user} />
+            </Route>
+            <Route path = "/callLogs">
+              <CallTable user = {user} />
+            </Route>
+          </>
+        }
+      </Switch>
+    </Router>
   );
 }
 
