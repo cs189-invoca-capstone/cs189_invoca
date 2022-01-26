@@ -18,6 +18,7 @@ import LandingPage from './Components/LandingPage/LandingPage';
 // import {Container, Row, Col} from 'react-bootstrap';
 // import Table from './Components/Table/Table'
 
+
 function App() {
   const [user, setUser] = useState(null);
   
@@ -52,37 +53,43 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Navbar user = {user} clearUser={clearUser} />
-      <Switch>
-        <Route exact path = "/">
-          <LandingPage />
-        </Route>
-        <Route path = "/login">
-          <LoginPage handleLogIn = {handleLogIn} />
-        </Route>
-        <Route path = "/register">
-          <RegisterPage handleLogIn = {handleLogIn} />
-        </Route>
-        {user != null
-          &&
-          <>
-            <Route path = "/profile">
-              <ProfilePage user = {user} />
-            </Route>
-            <Route path = "/editProfile">
-              <EditProfilePage user = {user} handleLogIn = {handleLogIn} clearUser = {clearUser}/>
-            </Route>
-            <Route path = "/add">
-              <SubmitForm user = {user} />
-            </Route>
-            <Route path = "/callLogs">
-              <CallTable user = {user} />
-            </Route>
-          </>
-        }
-      </Switch>
-    </Router>
+    <div>
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+      </style>
+
+      <Router>
+        <Navbar user = {user} clearUser={clearUser} />
+        <Switch>
+          <Route exact path = "/">
+            <LandingPage />
+          </Route>
+          <Route path = "/login">
+            <LoginPage handleLogIn = {handleLogIn} />
+          </Route>
+          <Route path = "/register">
+            <RegisterPage handleLogIn = {handleLogIn} />
+          </Route>
+          {user != null
+            &&
+            <>
+              <Route path = "/profile">
+                <ProfilePage user = {user} />
+              </Route>
+              <Route path = "/editProfile">
+                <EditProfilePage user = {user} handleLogIn = {handleLogIn} clearUser = {clearUser}/>
+              </Route>
+              <Route path = "/add">
+                <SubmitForm user = {user} />
+              </Route>
+              <Route path = "/callLogs">
+                <CallTable user = {user} />
+              </Route>
+            </>
+          }
+        </Switch>
+      </Router>
+    </div>
   );
 }
 

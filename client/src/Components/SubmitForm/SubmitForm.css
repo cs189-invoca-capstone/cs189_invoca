@@ -21,4 +21,128 @@
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 83px;
+.backgroundregisterSubmit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: screen;
+    height: 748px;
+
+    background: url("../assets/background.png");
+}
+
+.loginsquareSubmit{
+    width: 900px;
+    height: 382px;
+    display: flex;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 39px;
+}
+
+.filloutbarsSubmit{
+    width: 291px;
+    height: 40px;
+    background: #97CFC0;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    margin-left:11%;
+}
+
+.logintextSubmit{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 44px;
+    color: #000000;
+}
+
+.welcometextSubmit{
+    font-style: italic;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 15px;
+    text-align: center;
+
+    color: #000000;
+}
+
+.smalltextSubmit{
+    padding-left: 50px;
+    font-style: italic;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 15px;
+    text-align: left;
+
+    color: #6B6B6B;
+}
+
+.createrowSubmit{
+    margin-top: 10px;
+    display: flex;
+    align-items: top;
+    justify-content: center;
+}
+
+.createcolumnSubmit{
+    flex-direction: 'column';
+    display: 'flex';
+    position: absolute;
+}
+
+.newaccountSubmit{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 14px;
+    text-align: center;
+    cursor: pointer;
+    color: #000000;
+    margin-bottom: 10px;
+    text-decoration: underline;
+}
+
+#circle {
+    width: 32px;
+    height: 32px;
+    background: rgba(7, 255, 32, 0.16);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 20px;
+    cursor: pointer;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+#circle:hover {
+    background: rgba(7, 255, 32, 0.20);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
+}
+
+.ellipse{
+    width: 25px;
+    height: 25px;
+}
+
+.jankfix{
+    width: 395px;
+    height: 10px;
+    display: flex;
+    align-items: right;
+    justify-content: right;
+}
+
+.dropdownbarSubmit{
+    margin-left: 11%;
+    width: 291px;
+    background: #97CFC0;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
 }

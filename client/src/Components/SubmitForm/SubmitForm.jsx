@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Button, Form, Container, Row} from 'react-bootstrap';
 import axios from 'axios';
 import { useHistory, Link } from 'react-router-dom';
-import './SubmitForm.css'
+import './SubmitForm.css';
 
 export default function SubmitForm(props) {
     const [inputs, setInputs] = useState({});
