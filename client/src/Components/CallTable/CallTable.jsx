@@ -41,35 +41,54 @@ export default function CallTable(props) {
         if(lastId == null){
             return "";
         }
-        
         const lastIdParsed = JSON.parse(lastId);
         return lastIdParsed;
+      };
+    
+    const handleTransactions = (transactions) => {
+        // console.log(lastId);
+        sessionStorage.setItem('transactions', JSON.stringify(transactions));
+        setTransactions(transactions);
+      };
+
+    const getTransactions = () => {
+        const transactions = sessionStorage.getItem('transactions');
+        const transactionsParsed = JSON.parse(transactions);
+        console.log(transactionsParsed);
+        if(transactionsParsed!=null){
+            setTransactions(transactionsParsed);
+        }
+        
       };
 
     // fetch call logs for table
     const getLogs = async () => {
         try{
             let parsed = getLastId();
+            getTransactions();
             // console.log("inside getLogs");
             // console.log("curr lastid");
             // console.log(parsed);
             let currLastId = await axios.post('transactions/invoca', { id: parsed});
             // console.log("recieved lastid");
             // console.log(currLastId.data);
+
+            // if the current table already has all the logs necessary
             if(currLastId.data != ""){
                 handleLastId(currLastId.data);
+                let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
+                const logs = await axios.get(tmp);
+                for (let i = 0; i < logs.data.length; i++){
+                    let tmp1 = logs.data[i].transcript.toString();
+                    logs.data[i].transcript = tmp1.split(",").join('\n');
+    
+                    let tmp2 = logs.data[i].keywords.toString();
+                    logs.data[i].keywords = tmp2.split(",").join('\n');
+                };
+                handleTransactions(logs.data);
             }
-            let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
-            const logs = await axios.get(tmp);
-            for (let i = 0; i < logs.data.length; i++){
-                let tmp1 = logs.data[i].transcript.toString();
-                logs.data[i].transcript = tmp1.split(",").join('\n');
 
-                let tmp2 = logs.data[i].keywords.toString();
-                logs.data[i].keywords = tmp2.split(",").join('\n');
-            };
-            // console.log(logs.data);                
-            setTransactions(logs.data);
+            // console.log(logs.data);       
             setShowAllLogs(false);
             setSearchText("");
             setChoice("");
