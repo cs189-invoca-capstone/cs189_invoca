@@ -31,6 +31,7 @@ function App() {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('lastId');
     sessionStorage.removeItem('callLog');
+    sessionStorage.removeItem('transactions');
     setUser(null);
   };
   const getUser = () => {

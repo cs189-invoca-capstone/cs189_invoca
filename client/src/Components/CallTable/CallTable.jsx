@@ -54,7 +54,7 @@ export default function CallTable(props) {
     const getTransactions = () => {
         const transactions = sessionStorage.getItem('transactions');
         const transactionsParsed = JSON.parse(transactions);
-        console.log(transactionsParsed);
+        // console.log(transactionsParsed);
         if(transactionsParsed!=null){
             setTransactions(transactionsParsed);
         }
