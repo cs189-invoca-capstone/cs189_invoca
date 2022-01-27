@@ -34,6 +34,13 @@ app.use("/users", usersRoute);
 app.use("/transactions", transactionsRoute);
 app.use("/nlp", nlpRoute);
 
+// const Transactions = require("./models/Transactions");
+// async function deleteAllTransactions(){
+//   await Transactions.deleteMany({});
+  
+// }
+
+// deleteAllTransactions();
 /*
 async function entity(){
   const language = require('@google-cloud/language');

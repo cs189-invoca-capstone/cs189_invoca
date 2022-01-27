@@ -13,6 +13,10 @@ const COLUMNS = ["transaction_id", "transaction_type", "call_source_description"
 
 var last_transactions_id = "";
 
+router.delete('/all', async (req, res) =>{
+    await Transactions.deleteMany({});
+});
+
 router.post('/invoca', async (req, res)=>{
     // await Transactions.deleteMany({});
     // console.log(last_transactions_id);
@@ -65,6 +69,9 @@ router.post('/invoca', async (req, res)=>{
             transactions.calling_phone_number = d.calling_phone_number;
             transactions.destination_phone_number = d.destination_phone_number;
 
+            const caller_only = [];
+
+            const joined_transcripts = [];
 
             // with the complete call id that is stored, will want to retrieve the call log
             // that is associated/recorded from this specific transaction
@@ -76,14 +83,14 @@ router.post('/invoca', async (req, res)=>{
                     // console.log(result.data);
 
                     // go through the call log and format it such that it is easier to display on front end
-                    let out = []
-                    let caller_only = []
+                    let out = [];
                     for (let i = 0; i < result.data.length; i++){
                         Object.entries(result.data[i]).map(([key, value]) => {
                             let tmp = key + ": " + value;
                             if (key === "caller") {
                             	caller_only.push(tmp);
                             }
+                            joined_transcripts.push(value);
                             out.push(tmp);
                         })
                     };
@@ -103,9 +110,9 @@ router.post('/invoca', async (req, res)=>{
             await client.analyzeSentiment({document})
                 .then(result => {
                     const sentiment = result[0].documentSentiment;
-                    console.log('Document sentiment:');
-                    console.log( `Score: ${sentiment.score}`);
-                    console.log( `Magnitude: ${sentiment.magnitude}`);
+                    // console.log('Document sentiment:');
+                    // console.log( `Score: ${sentiment.score}`);
+                    // console.log( `Magnitude: ${sentiment.magnitude}`);
 
                     // set the sentiment value extracted
                     transaction_sentiment = ""
@@ -126,18 +133,17 @@ router.post('/invoca', async (req, res)=>{
                 })
                 .catch(err => {
                     console.log(err);
-                    res.status(400);
-                    res.send(err);
                 });
-
-
                 
-            // entities
+            const joined_transactions = transactions.transcript.join(". ");
+            const joined_transactions_entities = joined_transcripts.join(". ");
+            // console.log(typeof(joined_transactions));
+
             const entity_document = {
-                content: transactions.transcript.join(". "),
+                content: joined_transactions_entities,
                 type: 'PLAIN_TEXT',
-              };
-              
+            };
+            
 
             await client.analyzeEntities({document: entity_document})
                 .then(result => {
@@ -166,7 +172,7 @@ router.post('/invoca', async (req, res)=>{
                     console.log(err);
                 });
             
-            await summarizeClient.summarization(document.content)
+            await summarizeClient.summarization(joined_transactions)
                 .then(result => {
                     console.log(result);
                     let summary = result.data.summary_text;
@@ -174,7 +180,6 @@ router.post('/invoca', async (req, res)=>{
                 })
                 .catch(err=>{
                     console.log(err);
-                    
                 });
             console.log("transaction is");
             console.log(transactions);
@@ -185,6 +190,106 @@ router.post('/invoca', async (req, res)=>{
     // console.log(data[data.length - 1]['transaction_id'])
     if(data.length > 0){
         last_transactions_id = data[data.length - 1]['transaction_id']
+        console.log(data[data.length - 1]['transaction_id']);
+    }
+    res.status(200).send("inserted");
+    res.end();
+});
+
+router.post('/invoca/tmp', async (req, res)=>{
+    // await Transactions.deleteMany({});
+    // console.log(last_transactions_id);
+
+    // data will be all of the transactions that are stored on invoca
+    let data = [];
+    start_last_3_id = "7E84DED4-7CBF573D";
+    // call invoca transactions api
+    let tmp = 'https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp&start_after_transaction_id='+start_last_3_id;
+    await axios.get(tmp)
+        .then(res => {
+            data = res.data;
+        })
+        .catch(err => {
+            console.log(err);
+            // res.status(400);
+            // res.send("Error");
+        });
+    
+    // go through all of the transactions that have been retrieved from invoca
+    for(d of data){
+
+        // see if the transactions retrieved from invoca already exist in the mongodb 
+        let temp1 = await Transactions.find({transaction_id: d.transaction_id});
+        // console.log("check transactions db");
+        // console.log(temp1);
+
+        // check specifically for all of the transactions that correlate to 
+        // the user that was logged in
+        let temp2 = await User.find({invocaPhone: d.destination_phone_number});
+        // console.log("check users");
+        // console.log(temp2);
+
+        // check if the temp1 is 0
+        //      if so, then the transactions that were retrieved from invoca does NOT exist
+        //      in our db, thus, will want to store that info
+        //
+        // check if the temp2 is 0
+        //      if temp2 is 0, this transaction belongs to some other user; thus, we can ignore it
+        //
+        if(temp1.length == 0 && temp2 != null){
+
+            // debugging
+            // console.log(d);
+            // console.log(d.start_time_local);
+            // console.log(d.transaction_id); 
+
+            // create new transaction for the newly retrieved invoca transaction
+            let transactions = new Transactions();
+            transactions.userId = temp2[0]._id.toString();
+            transactions.start_time_local = d.start_time_local;
+            transactions.transaction_id = d.transaction_id;
+            transactions.complete_call_id = d.complete_call_id;
+            transactions.calling_phone_number = d.calling_phone_number;
+            transactions.destination_phone_number = d.destination_phone_number;
+
+            const caller_only = [];
+
+            const joined_transcripts = [];
+
+            // with the complete call id that is stored, will want to retrieve the call log
+            // that is associated/recorded from this specific transaction
+            await axios.get(`https://ucsbcapstone.invoca.net/call/transcript/${d.complete_call_id}?transcript_format=caller_agent_conversation&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp`)
+                .then(result => {
+                    // const headerDate = result.headers && result.headers.date ? result.headers.date : 'no resultponse date';
+                    // console.log('Status Code:', result.status);
+                    // console.log('Date in response header:', headerDate);
+                    // console.log(result.data);
+
+                    // go through the call log and format it such that it is easier to display on front end
+                    let out = [];
+                    for (let i = 0; i < result.data.length; i++){
+                        Object.entries(result.data[i]).map(([key, value]) => {
+                            let tmp = key + ": " + value;
+                            out.push(tmp);
+                        })
+                    };
+                    transactions.transcript = out; //storing transcript in transactions object
+                })
+                .catch(err => {
+                    // result.json('Error: ', err);
+                    console.log("Error: ", err);
+                });
+            console.log("transaction is");
+            console.log(transactions);
+            await transactions.save();
+        }
+    }
+    // console.log("last")
+    // console.log(data[data.length - 1]['transaction_id'])
+    if(data.length > 0){
+        // last_transactions_id = data[data.length - 1]['transaction_id']
+        // start_last_3_id = (data[data.length - 3]['transaction_id']);
+        // console.log(data[data.length - 3]['transaction_id']);
     }
     res.status(200).send("inserted");
     res.end();
@@ -261,12 +366,14 @@ router.put('/:id', async (req, res)=>{
         const opts = { new: true };
         let update = {};
         // if("start_time_local" in req.body) update.start_time_local = req.body.start_time_local;
+        // if("complete_call_id" in req.body) update.complete_call_id = req.body.complete_call_id;
+        // if("transaction_id" in req.body) update.transaction_id = req.body.transaction_id;
+
         if("calling_phone_number" in req.body) update.calling_phone_number = req.body.calling_phone_number;
-        if("complete_call_id" in req.body) update.complete_call_id = req.body.complete_call_id;
-        if("transaction_id" in req.body) update.transaction_id = req.body.transaction_id;
-        if("callSummary" in req.body) update.callSummary = req.body.callSummary;
+        if("summary" in req.body) update.summary = req.body.summary;
+        if("keywords" in req.body) update.keywords = req.body.keywords;
         if("transcript" in req.body) update.transcript = req.body.transcript;
-    
+        if("sentiment" in req.body) update.sentiment = req.body.sentiment;
         let updatedRecord = await Transactions.findOneAndUpdate(filter, update, opts);
 
         res.status(200);

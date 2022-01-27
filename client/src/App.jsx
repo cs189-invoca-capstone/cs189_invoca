@@ -12,6 +12,7 @@ import LoginPage from './Components/LoginPage/LoginPage';
 import EditProfilePage from './Components/EditProfilePage/EditProfilePage';
 
 import SubmitForm from './Components/SubmitForm/SubmitForm';
+import EditForm from "./Components/EditForm/EditForm";
 import CallTable from './Components/CallTable/CallTable';
 import LandingPage from './Components/LandingPage/LandingPage';
 // import Sidebar from './Components/Sidebar/Sidebar';
@@ -21,28 +22,44 @@ import LandingPage from './Components/LandingPage/LandingPage';
 
 function App() {
   const [user, setUser] = useState(null);
-  
-  const [transactionId, setTransactionId] = useState('');
-
   const handleLogIn = (user) => {
     console.log(user);
     sessionStorage.setItem('user', JSON.stringify(user));
     setUser(user);
   };
-
   const clearUser = () => {
     sessionStorage.removeItem('user');
     setUser(null);
   };
-
   const getUser = () => {
-    console.log("get user");
     const userString = sessionStorage.getItem('user');
-    console.log(userString);
     const userParsed = JSON.parse(userString);
-    console.log(userParsed);
     if(userParsed != null){
       setUser(userParsed);
+    }
+  };
+
+
+  const [currCallLog, setCurrCallLog] = useState(null);
+  const handleCallLog = (callLog) => {
+    console.log(callLog);
+    sessionStorage.setItem('callLog', JSON.stringify(callLog));
+    setCurrCallLog(callLog);
+  };
+
+  const clearCallLog = () => {
+    sessionStorage.removeItem('callLog');
+    setCurrCallLog(null);
+  };
+
+  const getCallLog = () => {
+    const callLogString = sessionStorage.getItem('callLog');
+    console.log(callLogString);
+    const callLogParsed = JSON.parse(callLogString);
+    console.log(callLogParsed);
+    if(callLogParsed != null){
+      console.log("not null");
+      setCurrCallLog(callLogParsed);
     }
   };
 
@@ -50,6 +67,7 @@ function App() {
   useEffect(() => {
     console.log("use effect");
     getUser();
+    getCallLog();
   }, []);
 
   return (
@@ -76,15 +94,21 @@ function App() {
               <Route path = "/profile">
                 <ProfilePage user = {user} />
               </Route>
-              <Route path = "/editProfile">
+              <Route exact path = "/editProfile">
                 <EditProfilePage user = {user} handleLogIn = {handleLogIn} clearUser = {clearUser}/>
               </Route>
               <Route path = "/add">
                 <SubmitForm user = {user} />
               </Route>
               <Route path = "/callLogs">
-                <CallTable user = {user} />
+                <CallTable user = {user} handleCallLog={handleCallLog} clearCallLog={clearCallLog} />
               </Route>
+              {currCallLog != null 
+                &&
+                <Route exact path = "/editCall">
+                  <EditForm user = {user} currCallLog = {currCallLog}/>
+                </Route>
+              }
             </>
           }
         </Switch>

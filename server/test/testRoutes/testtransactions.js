@@ -118,6 +118,7 @@ router.post('/invoca', async (req, res)=>{
                     // console.log('Document sentiment:');
                     // console.log( `Score: ${sentiment.score}`);
                     // console.log( `Magnitude: ${sentiment.magnitude}`);
+                    transaction_sentiment = "";
                     if (sentiment.score <= -0.35) {
                         transaction_sentiment = "Very Negative"
                     } else if (sentiment.score <= -0.1) {
@@ -138,46 +139,6 @@ router.post('/invoca', async (req, res)=>{
                     console.log(err);
                     
                 });
-            
-
-            // entity analysis
-            
-            await client.analyzeEntities({document})
-                .then(result => {
-                    const entities = result[0].entities;
-                    console.log('Entities:');
-                    entities.forEach(entity => {
-                        console.log(entity.name);
-                        console.log(` - Type: ${entity.type}, Salience: ${entity.salience}`);
-                        if (entity.metadata && entity.metadata.wikipedia_url) {
-                            console.log(` - Wikipedia URL: ${entity.metadata.wikipedia_url}`);
-                        }
-                    });
-
-                    // set the sentiment value extracted
-                    transactions.keywords = entities;
-                })
-                .catch(err => {
-                    console.log(err);
-                    
-                });
-            
-
-            // summarization
-            console.log("getting summary");
-            console.log(document.content);
-            await summarizeClient.summarization(document.content)
-                .then(result => {
-                    console.log(result);
-                    let summary = result.data.summary_text;
-                    transactions.summary = summary;
-                })
-                .catch(err=>{
-                    console.log(err);
-                    
-                });
-            
-
             
             const joined_transactions = transactions.transcript.join(". ");
             const joined_transactions_entities = joined_transcripts.join(". ");
