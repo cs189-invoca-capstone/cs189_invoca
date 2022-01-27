@@ -63,6 +63,20 @@ router.put("/edit/:id", async (req,res) => {
         // if("start_time_local" in req.body) update.start_time_local = req.body.start_time_local;
         if("name" in req.body) update.name = req.body.name;
         if("email" in req.body) update.email = req.body.email;
+        if("invocaPhone" in req.body) {
+            if (req.body.invocaPhone.length === 10) {
+                newPhone = ""
+                for (let i = 0; i < 10; i++) {
+                    newPhone+=req.body.invocaPhone[i];
+                    if (i === 2 || i === 5) {
+                        newPhone+="-";
+                    }
+                }
+                update.invocaPhone = newPhone;
+            } else {
+                update.invocaPhone = req.body.invocaPhone;
+            }
+        }
     
         let updatedRecord = await Users.findOneAndUpdate(filter, update, opts);
 

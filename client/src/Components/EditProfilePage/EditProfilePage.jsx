@@ -10,18 +10,38 @@ export default function EditProfilePage(props) {
 
     const history = useHistory();
 
-    async function editUser(name, gmail){
+    async function editUser(name, phone, gmail){
         // console.log("entered register User");
-        
-        if (!name && !gmail){
-            alert("fill in either information!")
-        }
-        else{
-            if(!name && gmail){
+        let cont_form = true;
+        if (phone) {
+            if (phone.length === 10 || phone.length === 12) {
+                for(let i = 0; i < phone.length; i++) {
+                    if (phone[i] !== "-" && isNaN(phone[i])){
+                        alert("please enter a valid phone number");
+                        cont_form = false;
+                        break;
+                    }
+                }
+            } else {
+                alert("please enter a valid phone number")
+                cont_form = false;
+            }
+        } 
+        if (cont_form) {
+            if (!name && !gmail && !phone){
+                alert("fill in some information!")
+            } else{
+                if (!gmail) {
+                    gmail = props.user.email;
+                }
+                if (!name) {
+                    name = props.user.name;
+                }
+                if (!phone) {
+                    phone = props.user.invocaPhone;
+                }
                 try{
-                    const res = await axios.put('/users/edit/' + props.user[Object.keys(props.user)[0]], {
-                        email: gmail
-                    });
+                    const res = await axios.put('/users/edit/' + props.user[Object.keys(props.user)[0]], { email: gmail, name: name, invocaPhone: phone});
                     props.clearUser();
                     props.handleLogIn(res.data);
                     history.push("/profile");
@@ -29,32 +49,7 @@ export default function EditProfilePage(props) {
                     console.log(err);
                 }
             }
-            else if(name && !gmail){
-                try{
-                    const res = await axios.put('/users/edit/' + props.user[Object.keys(props.user)[0]], {
-                        name: name
-                    });
-                    props.clearUser();
-                    props.handleLogIn(res.data);
-                    history.push("/profile");
-                }catch(err){
-                    console.log(err);
-                }
-            }
-            else{
-                try{
-                    const res = await axios.put('/users/edit/' + props.user[Object.keys(props.user)[0]], {
-                        name: name,
-                        email: gmail
-                    });
-                    props.clearUser();
-                    props.handleLogIn(res.data);
-                    history.push("/profile");
-                }catch(err){
-                    console.log(err);
-                }
-            }
-        }
+        }   
     }
 
     return (
@@ -64,15 +59,20 @@ export default function EditProfilePage(props) {
                     <Player
                         autoplay
                         loop
+                        speed=".5"
                         src="https://assets5.lottiefiles.com/packages/lf20_yqzunqte.json"
                         style={{ height: '400px', width: '500px' }}
                         >
                     </Player>
-                    <div style={{padding: 20}}>
+                    <div style={{padding: 9}}>
                         <div className='smallEdittext'>Name</div>
                         <input className="filloutbars" type="text" id="name" />
                     </div>
-                    <div style={{padding: 20}}>
+                    <div style={{padding: 9}}>
+                        <div className='smallEdittext'>Phone</div>
+                        <input className="filloutbars" type="text" id="phone" />
+                    </div>
+                    <div style={{padding: 9}}>
                         <div className='smallEdittext'>Email</div>
                         <input className="filloutbars" type="text" id="email" />
                     </div>
@@ -94,7 +94,7 @@ export default function EditProfilePage(props) {
                             {/* <div id='circle' onClick = {() =>registerUser(document.getElementById("name").value, document.getElementById('phone').value, document.getElementById('password').value)}>
                                 <img src={arrow} alt="arrow" className='ellipse'/>
                             </div> */}
-                            <div id='circle' onClick = {() =>editUser(document.getElementById("name").value, document.getElementById('email').value)}>
+                            <div id='circle' onClick = {() =>editUser(document.getElementById("name").value, document.getElementById("phone").value, document.getElementById('email').value)}>
                                 <img src={arrow} alt="arrow" className='ellipse'/>
                             </div>
                         </div>

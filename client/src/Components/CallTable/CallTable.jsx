@@ -9,9 +9,11 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import "./CallTable.css";
+import { useHistory } from 'react-router-dom';
 // import {Container, Row, Col} from 'react-bootstrap';
 
 export default function CallTable(props) {
+    const history = useHistory();
     const [show, setShow] = useState(false);
     const [showAllLogs, setShowAllLogs] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
@@ -183,7 +185,7 @@ export default function CallTable(props) {
                 <br></br>
             </div>
             <div className='hellotext'>
-                Hello {props.user.email}
+                Hello {props.user.name ? props.user.name : props.user.email}
             </div>
             <div>
                 <br></br>
@@ -283,7 +285,7 @@ export default function CallTable(props) {
             <div>
                 <br></br>
             </div>
-            <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
+            <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => history.push('/add')}>
                 Add new call summary
             </Button>
         </div>
