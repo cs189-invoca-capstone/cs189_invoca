@@ -17,7 +17,7 @@ router.delete('/all', async (req, res) =>{
     await Transactions.deleteMany({});
 });
 
-router.post('/invoca', async (req, res)=>{
+router.post('/invoca/tmp', async (req, res)=>{
     // await Transactions.deleteMany({});
     // console.log(last_transactions_id);
 
@@ -196,15 +196,17 @@ router.post('/invoca', async (req, res)=>{
     res.end();
 });
 
-router.post('/invoca/tmp', async (req, res)=>{
+router.post('/invoca', async (req, res)=>{
     // await Transactions.deleteMany({});
     // console.log(last_transactions_id);
 
     // data will be all of the transactions that are stored on invoca
     let data = [];
-    start_last_3_id = "7E84DED4-7CBF573D";
+    start_last_id = req.body.id;
+    // console.log("recieved id");
+    // console.log(req.body.id);
     // call invoca transactions api
-    let tmp = 'https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp&start_after_transaction_id='+start_last_3_id;
+    let tmp = 'https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp&start_after_transaction_id='+start_last_id;
     await axios.get(tmp)
         .then(res => {
             data = res.data;
@@ -214,7 +216,7 @@ router.post('/invoca/tmp', async (req, res)=>{
             // res.status(400);
             // res.send("Error");
         });
-    
+    // console.log(data);
     // go through all of the transactions that have been retrieved from invoca
     for(d of data){
 
@@ -279,19 +281,21 @@ router.post('/invoca/tmp', async (req, res)=>{
                     // result.json('Error: ', err);
                     console.log("Error: ", err);
                 });
-            console.log("transaction is");
-            console.log(transactions);
+            // console.log("transaction is");
+            // console.log(transactions);
             await transactions.save();
         }
     }
-    // console.log("last")
-    // console.log(data[data.length - 1]['transaction_id'])
+    
     if(data.length > 0){
-        // last_transactions_id = data[data.length - 1]['transaction_id']
-        // start_last_3_id = (data[data.length - 3]['transaction_id']);
-        // console.log(data[data.length - 3]['transaction_id']);
+        // console.log("last")
+        // console.log(data[data.length - 1]['transaction_id'])
+        last_transactions_id = data[data.length - 1]['transaction_id']
+        res.status(200).send(last_transactions_id);
     }
-    res.status(200).send("inserted");
+    else{
+        res.status(200).send("");
+    }
     res.end();
 });
 

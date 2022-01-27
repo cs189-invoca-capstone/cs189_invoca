@@ -29,6 +29,8 @@ function App() {
   };
   const clearUser = () => {
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('lastId');
+    sessionStorage.removeItem('callLog');
     setUser(null);
   };
   const getUser = () => {

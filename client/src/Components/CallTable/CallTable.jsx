@@ -19,8 +19,6 @@ export default function CallTable(props) {
     const [readOnly, setReadOnly] = useState(true);
     const [showEdit, setShowEdit] = useState(true);
 
-    const [lastId, setLastId] = useState("");
-
     const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
     const [transactions, setTransactions] = useState( [] );
@@ -33,26 +31,42 @@ export default function CallTable(props) {
         setShowEdit(true);
     }
 
+    const handleLastId = (lastId) => {
+        // console.log(lastId);
+        sessionStorage.setItem('lastId', JSON.stringify(lastId));
+      };
+
+    const getLastId = () => {
+        const lastId = sessionStorage.getItem('lastId');
+        if(lastId == null){
+            return "";
+        }
+        
+        const lastIdParsed = JSON.parse(lastId);
+        return lastIdParsed;
+      };
+
     // fetch call logs for table
     const getLogs = async () => {
         try{
-            console.log("inside getLogs");
-            // await axios.post('transactions');
-            await axios.post('transactions/invoca');
-            // console.log(currLastId);
-            // setLastId(currLastId);
+            let parsed = getLastId();
+            // console.log("inside getLogs");
+            // console.log("curr lastid");
+            // console.log(parsed);
+            let currLastId = await axios.post('transactions/invoca', { id: parsed});
+            // console.log("recieved lastid");
+            // console.log(currLastId.data);
+            if(currLastId.data != ""){
+                handleLastId(currLastId.data);
+            }
             let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
             const logs = await axios.get(tmp);
-            // console.log(logs);
-            console.log(logs.data);
             for (let i = 0; i < logs.data.length; i++){
                 let tmp1 = logs.data[i].transcript.toString();
-                console.log(tmp1);
                 logs.data[i].transcript = tmp1.split(",").join('\n');
 
                 let tmp2 = logs.data[i].keywords.toString();
                 logs.data[i].keywords = tmp2.split(",").join('\n');
-                console.log(logs.data[i].transcript);
             };
             // console.log(logs.data);                
             setTransactions(logs.data);
@@ -79,8 +93,8 @@ export default function CallTable(props) {
     }
 
     const handleEditClick = (data) => {
-        console.log("in handle edit");
-        console.log(data);
+        // console.log("in handle edit");
+        // console.log(data);
         props.handleCallLog(data);
         history.push("/editCall");
     }
@@ -111,7 +125,7 @@ export default function CallTable(props) {
         
     // shows all logs and adds logic to clicks
     const renderLogs = (transactions, index) => {
-        console.log(transactions.sentimentAnalysis)
+        // console.log(transactions.sentimentAnalysis)
         return(
             <tr Style="cursor: pointer;" key={index}>
                 <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions._id}</td>
@@ -148,7 +162,7 @@ export default function CallTable(props) {
             const logs = await axios.put("transactions/"+ tableData._id, {
                 transcript: tableData.transcript
             });
-            console.log(logs.data);
+            // console.log(logs.data);
         } catch(err){
             console.log(err);
         }
@@ -158,13 +172,17 @@ export default function CallTable(props) {
 
     // ensures that tableData.entireCall is editable
     const handleChange = (event) => {
-        console.log(event.target.name);
-        console.log(event.target.value);
+        // console.log(event.target.name);
+        // console.log(event.target.value);
         const name = event.target.name;
         const value = event.target.value;
         setTableData(values => ({...values, [name]: value}))
     }
 
+
+    /*
+    SEARCH BAR STUFF
+    */
     const handleDropdownChange = (e) => {
         setChoice(e.target.value);
     }
