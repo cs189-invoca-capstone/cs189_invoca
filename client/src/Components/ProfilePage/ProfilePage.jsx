@@ -50,6 +50,7 @@ function ProfilePage(props) {
                     <Player
                         autoplay
                         loop
+                        speed=".5"
                         src="https://assets5.lottiefiles.com/packages/lf20_yqzunqte.json"
                         style={{ height: '400px', width: '500px' }}
                         >
@@ -59,6 +60,9 @@ function ProfilePage(props) {
                     </div>
                     <div className='profileNumber'>
                         Phone: {props.user.invocaPhone}
+                    </div>
+                    <div className='profileEmail'>
+                        Email: {props.user.email}
                     </div>
                     <div>
                         <br></br>

@@ -9,9 +9,11 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import "./CallTable.css";
+import { useHistory } from 'react-router-dom';
 // import {Container, Row, Col} from 'react-bootstrap';
 
 export default function CallTable(props) {
+    const history = useHistory();
     const [show, setShow] = useState(false);
     const [showAllLogs, setShowAllLogs] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
@@ -72,6 +74,15 @@ export default function CallTable(props) {
     const handleTableClick = (data) => {
         setShow(true);
         setTableData(data);
+        props.clearCallLog();
+        props.handleCallLog(data);
+    }
+
+    const handleEditClick = (data) => {
+        console.log("in handle edit");
+        console.log(data);
+        props.handleCallLog(data);
+        history.push("/editCall");
     }
     
     // calls backend to delete row from table
@@ -120,6 +131,9 @@ export default function CallTable(props) {
         )
     }
     
+    /*
+        MODAL STUFF
+    */
     // hides edit button, shows save button
     const handleEdit = () => {
         setReadOnly(false)
@@ -183,7 +197,7 @@ export default function CallTable(props) {
                 <br></br>
             </div>
             <div className='hellotext'>
-                Hello {props.user.email}
+                Hello {props.user.name ? props.user.name : props.user.email}
             </div>
             <div>
                 <br></br>
@@ -235,23 +249,23 @@ export default function CallTable(props) {
 
             </div>
             <Container>
-            <div className='tablehold'>
-                <table data-testid="display-table" className="table table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Phone Call ID #</th>
-                            <th>Phone Number</th>
-                            <th  data-testid="summary-table" className="evenpercent">Summary</th>
-                            <th>Call Transcript</th>
-                            <th>Sentiment Analysis</th>
-                            <th>Delete?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {transactions.map(renderLogs)}
-                    </tbody>
-                </table>
-            </div>
+                <div className='tablehold'>
+                    <table data-testid="display-table" className="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Phone Call ID #</th>
+                                <th>Phone Number</th>
+                                <th  data-testid="summary-table" className="evenpercent">Summary</th>
+                                <th>Call Transcript</th>
+                                <th>Sentiment Analysis</th>
+                                <th>Delete?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {transactions.map(renderLogs)}
+                        </tbody>
+                    </table>
+                </div>
                     <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
                         <Modal.Header closeButton>
                             <Modal.Title>
@@ -267,15 +281,16 @@ export default function CallTable(props) {
                                         readOnly={readOnly} name="transcript"/>           
                             </Form.Group>
                             <Form.Group >
-                                <Form.Label>Sentiment Analysis:</Form.Label>
+                                <Form.Label>Sentiment Analysis: {tableData.sentiment}</Form.Label>
                                         
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>
                         
-                        {showEdit 
+                        <Button variant="primary" onClick={()=>handleEditClick(tableData)}> Edit </Button>
+                        {/* {showEdit 
                             ? <Button variant="primary" onClick={handleEdit}>Edit</Button> 
-                            : <Button variant="success" onClick={handleSave}>Save</Button>}
+                            : <Button variant="success" onClick={handleSave}>Save</Button>} */}
                         <Button variant="secondary" onClick={handleClose}> Close </Button>
                         </Modal.Footer>
                     </Modal>
@@ -283,7 +298,7 @@ export default function CallTable(props) {
             <div>
                 <br></br>
             </div>
-            <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => props.handleRouteChange('add-new')} href="">
+            <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => history.push('/add')}>
                 Add new call summary
             </Button>
         </div>
