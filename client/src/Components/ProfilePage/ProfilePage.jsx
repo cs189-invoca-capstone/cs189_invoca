@@ -1,6 +1,5 @@
 import React from 'react';
 import './ProfilePage.css';
-import profilepic from './blank-profile-picture.png'
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useHistory } from 'react-router-dom';
 
