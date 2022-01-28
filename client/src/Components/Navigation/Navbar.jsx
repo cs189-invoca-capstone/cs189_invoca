@@ -1,10 +1,8 @@
 import React from 'react';
 import './Navbar.css';
 import image1 from './index.png';
-import downarrow from './doublearrow.png';
-import Button from 'react-bootstrap/Button';
 
-import {Navbar as NavBar, Container, Nav, Col, NavDropdown} from 'react-bootstrap';
+import {Navbar as NavBar, Container, Nav, Col } from 'react-bootstrap';
 import { useHistory, Link } from 'react-router-dom';
 
 export default function Navbar(props) {

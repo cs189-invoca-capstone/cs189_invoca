@@ -1,6 +1,5 @@
 import React from 'react';
 import './LoginPage.css';
-import arrow from './arrow.svg';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
