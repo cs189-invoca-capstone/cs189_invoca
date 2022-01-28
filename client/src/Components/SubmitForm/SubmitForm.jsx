@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Button, Form, Container, Row} from 'react-bootstrap';
 import axios from 'axios';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './SubmitForm.css';
 
 export default function SubmitForm(props) {
@@ -25,12 +25,17 @@ export default function SubmitForm(props) {
             // and once the databse actually stores the user ID
             const logs = await axios.post("transactions/new", {
                 userId: props.user[Object.keys(props.user)[0]],
-                phoneNumber: inputs.phoneNumber,
-                entireCall: inputs.entireCall,
-                callSummary: inputs.callSummary,
-                sentimentAnalysis: inputs.sentimentAnalysis
+                calling_phone_number: inputs.phoneNumber,
+                transcript: inputs.entireCall,
+                summary: inputs.callSummary,
+                keywords: inputs.keywords,
+                sentiment: inputs.sentimentAnalysis
             });
             console.log(logs.data);
+            const transactions = sessionStorage.getItem('transactions');
+            const transactionsParsed = JSON.parse(transactions);
+            transactionsParsed.push(logs.data);
+            sessionStorage.setItem('transactions', JSON.stringify(transactionsParsed));
             history.push("/callLogs");
         }catch(err){
             console.log(err);
@@ -54,6 +59,10 @@ export default function SubmitForm(props) {
                         <Form.Group className="mb-3">
                             <Form.Label>Summary</Form.Label>
                             <Form.Control type="text" name="callSummary" value={inputs.callSummary} onChange={handleChange} placeholder="Enter call summary" />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Keywords</Form.Label>
+                            <Form.Control type="text" name="keywords" value={inputs.keywords} onChange={handleChange} placeholder="Enter keywords" />
                         </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Call Transcript</Form.Label>

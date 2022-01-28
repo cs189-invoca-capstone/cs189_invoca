@@ -380,7 +380,7 @@ router.put('/:id', async (req, res)=>{
         if("sentiment" in req.body) update.sentiment = req.body.sentiment;
         let updatedRecord = await Transactions.findOneAndUpdate(filter, update, opts);
 
-        res.status(200);
+        res.status(200).send(updatedRecord);
         console.log(updatedRecord);
     }
     catch(err){
@@ -396,18 +396,22 @@ router.post('/new', async (req, res)=>{
         console.log("in post");
         let call = new Transactions();
         console.log(req.body);
-        if(req.body.userId == undefined || req.body.phoneNumber == undefined || req.body.entireCall == undefined || req.body.callSummary == undefined || req.body.sentimentAnalysis == undefined){
+        if(req.body.userId == undefined || req.body.calling_phone_number == undefined 
+            || req.body.transcript == undefined || req.body.summary == undefined 
+            || req.body.keywords == undefined || req.body.sentiment == undefined) {
             throw "Missing a required parameter";
         }
         call.userId = req.body.userId;
-        call.calling_phone_number = req.body.phoneNumber;
-        call.transcript = req.body.entireCall;
-        call.callSummary = req.body.callSummary;
-        call.sentimentAnalysis = req.body.sentimentAnalysis;
+        call.calling_phone_number = req.body.calling_phone_number;
+        call.transcript = req.body.transcript;
+        call.summary = req.body.summary;
+        call.keywords = req.body.keywords;
+        call.sentiment = req.body.sentiment;
 
-        await call.save();
+        let tmp = await call.save();
+        console.log(tmp);
         console.log("inserted")
-        res.status(200).send("Data Inserted");
+        res.status(200).send(tmp);
     }
     catch(err){
         console.log(err);

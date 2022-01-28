@@ -17,8 +17,8 @@ export default function CallTable(props) {
     const [show, setShow] = useState(false);
     const [showAllLogs, setShowAllLogs] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
-    const [showEdit, setShowEdit] = useState(true);
-
+    // const [showEdit, setShowEdit] = useState(true);
+    
     const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", status:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
     const [transactions, setTransactions] = useState( [] );
@@ -28,7 +28,7 @@ export default function CallTable(props) {
     const handleClose = () => {
         setReadOnly(true);
         setShow(false);
-        setShowEdit(true);
+        // setShowEdit(true);
     }
 
     const handleLastId = (lastId) => {
@@ -58,7 +58,6 @@ export default function CallTable(props) {
         if(transactionsParsed!=null){
             setTransactions(transactionsParsed);
         }
-        
       };
 
     // fetch call logs for table
@@ -74,7 +73,7 @@ export default function CallTable(props) {
             // console.log(currLastId.data);
 
             // if the current table already has all the logs necessary
-            if(currLastId.data != ""){
+            if(currLastId.data !== ""){
                 handleLastId(currLastId.data);
                 let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
                 const logs = await axios.get(tmp);
@@ -170,7 +169,7 @@ export default function CallTable(props) {
                 <td onClick={() => handleTableClick(transactions)}>{transactions.summary}</td>
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.keywords}</td> */}
                 
-                <td className="hidden" onClick={() => handleTableClick(transactions)} className='tableStyle'>{transactions.transcript}</td>
+                <td className="hidden tableStyle" onClick={() => handleTableClick(transactions)} >{transactions.transcript}</td>
                 <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.sentiment}</td>
                 <td className="hidden" onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
@@ -185,26 +184,26 @@ export default function CallTable(props) {
         MODAL STUFF
     */
     // hides edit button, shows save button
-    const handleEdit = () => {
-        setReadOnly(false)
-        setShowEdit(false)
-    }
+    // const handleEdit = () => {
+    //     setReadOnly(false)
+    //     // setShowEdit(false)
+    // }
 
     // calls put method to save new data into database
-    const handleSave = async () => {
-        setReadOnly(true)
-        setShowEdit(true)
-        try{
-            const logs = await axios.put("transactions/"+ tableData._id, {
-                transcript: tableData.transcript
-            });
-            // console.log(logs.data);
-        } catch(err){
-            console.log(err);
-        }
-        getLogs();
-        handleClose();
-    }
+    // const handleSave = async () => {
+    //     setReadOnly(true)
+    //     // setShowEdit(true)
+    //     try{
+    //         const logs = await axios.put("transactions/"+ tableData._id, {
+    //             transcript: tableData.transcript
+    //         });
+    //         // console.log(logs.data);
+    //     } catch(err){
+    //         console.log(err);
+    //     }
+    //     getLogs();
+    //     handleClose();
+    // }
 
     // ensures that tableData.entireCall is editable
     const handleChange = (event) => {

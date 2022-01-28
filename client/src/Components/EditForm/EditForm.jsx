@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Button, Form, Container, Row} from 'react-bootstrap';
 import axios from 'axios';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './EditForm.css';
 
 
@@ -32,16 +32,23 @@ export default function EditForm(props) {
                 keywords: inputs.keywords
             });
             console.log(logs.data);
-            // let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
-            // const logs = await axios.get(tmp);
-            // for (let i = 0; i < logs.data.length; i++){
-            //     let tmp1 = logs.data[i].transcript.toString();
-            //     logs.data[i].transcript = tmp1.split(",").join('\n');
+            const transactions = sessionStorage.getItem('transactions');
+            const transactionsParsed = JSON.parse(transactions);
+            console.log(transactionsParsed);
 
-            //     let tmp2 = logs.data[i].keywords.toString();
-            //     logs.data[i].keywords = tmp2.split(",").join('\n');
-            // };
-            // sessionStorage.setItem('transactions', JSON.stringify(logs.data));
+            if(transactionsParsed!=null){
+                for(let i = 0; i < transactionsParsed.length; i++){
+                    if(transactionsParsed[i]._id == props.currCallLog._id){
+                        console.log(transactionsParsed[i]);
+                        console.log(logs.data);
+                        transactionsParsed[i] = logs.data;
+                        console.log(transactionsParsed[i]);
+                        sessionStorage.setItem('transactions', JSON.stringify(transactionsParsed));
+                        break;
+                    }
+                }
+            }
+            
             history.push("/callLogs");
         }catch(err){
             console.log(err);
