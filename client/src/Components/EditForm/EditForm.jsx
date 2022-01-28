@@ -32,6 +32,16 @@ export default function EditForm(props) {
                 keywords: inputs.keywords
             });
             console.log(logs.data);
+            // let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
+            // const logs = await axios.get(tmp);
+            // for (let i = 0; i < logs.data.length; i++){
+            //     let tmp1 = logs.data[i].transcript.toString();
+            //     logs.data[i].transcript = tmp1.split(",").join('\n');
+
+            //     let tmp2 = logs.data[i].keywords.toString();
+            //     logs.data[i].keywords = tmp2.split(",").join('\n');
+            // };
+            // sessionStorage.setItem('transactions', JSON.stringify(logs.data));
             history.push("/callLogs");
         }catch(err){
             console.log(err);

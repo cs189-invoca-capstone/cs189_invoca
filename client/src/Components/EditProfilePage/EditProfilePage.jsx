@@ -1,5 +1,6 @@
 import React from 'react';
 import "./EditProfilePage.css";
+import "../ProfilePage/ProfilePage.css";
 import arrow from '../LoginPage/arrow.svg';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';

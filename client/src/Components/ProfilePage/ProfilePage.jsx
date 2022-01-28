@@ -7,42 +7,8 @@ import { useHistory } from 'react-router-dom';
 function ProfilePage(props) {
     const history = useHistory();
     console.log(props.user)
-    // const { email, invocaPhone } = props.user;
-    // console.log(email, invocaPhone)
 
     return (
-        // <div class="h-screen w-screen">
-        //     <div className='backgroundprofile'>
-        //         <div className='loginsquare'>
-        //             <div id='circle2'>
-        //                 <img src={profilepic} alt="profile" className='picture'/>
-        //             </div>
-        //             <Player
-        //                 autoplay
-        //                 loop
-        //                 src="https://assets5.lottiefiles.com/packages/lf20_yqzunqte.json"
-        //                 style={{ height: '300px', width: '300px' }}
-        //                 >
-        //             </Player>
-        //             <div className='logintext'>
-        //                 Joe Doe
-        //             </div>
-        //             <div className=''>
-        //                 Email: {props.user.email}
-        //             </div>
-        //             <div className=''>
-        //                 {/* Phone: {invocaPhone} */}
-        //                 Phone: {props.user.invocaPhone}
-        //             </div>
-        //             <div>
-        //                 <br></br>
-        //             </div>
-        //             <div className='editbutton'>
-        //                 <div className='dumb'>Edit</div>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </div>
         <div class="h-screen w-screen">
             <div className='backgroundprofile'>
                 <div className='profileInfo'>
@@ -61,7 +27,7 @@ function ProfilePage(props) {
                     <div className='profileNumber'>
                         Phone: {props.user.invocaPhone}
                     </div>
-                    <div className='profileEmail'>
+                    <div className='profileNumber'>
                         Email: {props.user.email}
                     </div>
                     <div>
