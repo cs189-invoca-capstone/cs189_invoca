@@ -170,7 +170,7 @@ export default function CallTable(props) {
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.keywords}</td> */}
                 
                 <td className="hidden tableStyle" onClick={() => handleTableClick(transactions)} >{transactions.transcript}</td>
-                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.sentiment}</td>
+                <td className={`${(transactions.sentiment === "Very Negative") ? 'very-neg' : (transactions.sentiment === "Negative" ? 'neg' : (transactions.sentiment === "Very Positive" ? ("very-pos"): (transactions.sentiment === "Positive" ? 'pos':'neutral')))} hidden` } onClick={() => handleTableClick(transactions)}>{transactions.sentiment}</td>
                 <td className="hidden" onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
                         Delete
@@ -272,7 +272,7 @@ export default function CallTable(props) {
                                     <option value="calling_phone_number">Phone Number</option>
                                     <option value="callSummary">Summary</option>
                                     <option value="transcript">Call Transcript</option>
-                                    <option value="sentimentAnalysis">Sentiment</option>
+                                    <option value="sentiment">Sentiment</option>
                                 </Form.Select>
                             </Form.Group>
                         </Col>
@@ -310,7 +310,7 @@ export default function CallTable(props) {
                                 <th>Phone Number</th>
                                 <th  data-testid="summary-table" className="evenpercent">Summary</th>
                                 <th>Call Transcript</th>
-                                <th>Sentiment Analysis</th>
+                                <th>Sentiment</th>
                                 <th>Delete?</th>
                             </tr>
                         </thead>
@@ -351,7 +351,7 @@ export default function CallTable(props) {
             <div>
                 <br></br>
             </div>
-            <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => history.push('/add')}>
+            <Button variant="primary" Style="width:24%; margin-left:38%; margin-right:38%;" onClick = {() => history.push('/add')}>
                 Add new call summary
             </Button>
         </div>
