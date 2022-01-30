@@ -38,7 +38,7 @@ export default function EditForm(props) {
 
             if(transactionsParsed!=null){
                 for(let i = 0; i < transactionsParsed.length; i++){
-                    if(transactionsParsed[i]._id == props.currCallLog._id){
+                    if(transactionsParsed[i]._id === props.currCallLog._id){
                         console.log(transactionsParsed[i]);
                         console.log(logs.data);
                         transactionsParsed[i] = logs.data;
