@@ -397,16 +397,15 @@ router.post('/new', async (req, res)=>{
         let call = new Transactions();
         console.log(req.body);
         if(req.body.userId == undefined || req.body.calling_phone_number == undefined 
-            || req.body.transcript == undefined || req.body.summary == undefined 
-            || req.body.keywords == undefined || req.body.sentiment == undefined) {
+            || req.body.transcript == undefined) {
             throw "Missing a required parameter";
         }
         call.userId = req.body.userId;
         call.calling_phone_number = req.body.calling_phone_number;
         call.transcript = req.body.transcript;
-        call.summary = req.body.summary;
-        call.keywords = req.body.keywords;
-        call.sentiment = req.body.sentiment;
+        call.summary = "summary";
+        call.keywords = ["key words"];
+        call.sentiment = "Positive";
 
         let tmp = await call.save();
         console.log(tmp);
