@@ -163,14 +163,15 @@ export default function CallTable(props) {
         // console.log(transactions.sentimentAnalysis)
         return(
             <tr Style="cursor: pointer;" key={index}>
-                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions._id}</td>
+                {/* <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions._id}</td> */}
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.transaction_id}</td> */}
                 <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.calling_phone_number}</td>
+                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.keywords}</td>
+                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.sentiment}</td>
                 <td onClick={() => handleTableClick(transactions)}>{transactions.summary}</td>
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.keywords}</td> */}
                 
-                <td className="hidden tableStyle" onClick={() => handleTableClick(transactions)} >{transactions.transcript}</td>
-                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.sentiment}</td>
+                {/* <td className="hidden tableStyle" onClick={() => handleTableClick(transactions)} >{transactions.transcript}</td> */}
                 <td className="hidden" onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
                         Delete
@@ -246,7 +247,7 @@ export default function CallTable(props) {
 
     return (
         <div className='homepagebackground'>
-            <div>
+            {/* <div>
                 <br></br>
             </div>
             <div className='hellotext'>
@@ -257,18 +258,17 @@ export default function CallTable(props) {
             </div>
             <div className='welcometext'>
                 Welcome Back!
-            </div>
-            <div>
+            </div> */}
+            <div className="breakheight">
                 <br></br>
             </div>
             <Container>
                 <Form className="mb-3"> 
                     <Row>
-                        <Col lg={2}/>
+                        <Col lg={1}/>
                         <Col lg={2}>
                             <Form.Group>
                                 <Form.Select name="choice" value={choice} onChange={handleDropdownChange} className='dropdownbar'>
-                                    <option value="id">Phone Call ID #</option>
                                     <option value="calling_phone_number">Phone Number</option>
                                     <option value="callSummary">Summary</option>
                                     <option value="transcript">Call Transcript</option>
@@ -276,7 +276,7 @@ export default function CallTable(props) {
                                 </Form.Select>
                             </Form.Group>
                         </Col>
-                        <Col lg={4}>
+                        <Col lg={5}>
                             <Form.Group>
                                 <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange} className='searchbar'/>
                             </Form.Group>
@@ -289,7 +289,9 @@ export default function CallTable(props) {
                                     </Button>
                                 : <Button variant="primary" 
                                         onClick={handleSearchSubmit} 
-                                        disabled={!choice || !searchText}>
+                                        disabled={!choice || !searchText}
+                                        className = "CallTableSearchButton"
+                                        >
                                     Search
                                     </Button> }
                             </Form.Group>
@@ -301,17 +303,16 @@ export default function CallTable(props) {
             <br></br>
 
             </div>
-            <Container>
+            <Container className="temptest">
                 <div className='tablehold'>
                     <table data-testid="display-table" className="table table-hover table-bordered">
                         <thead>
                             <tr>
-                                <th>Phone Call ID #</th>
-                                <th>Phone Number</th>
+                                <th className="smallcolumn">Phone Number</th>
+                                <th className="smallcolumn">Keywords</th>
+                                <th className="smallcolumn">Sentiment Analysis</th>
                                 <th  data-testid="summary-table" className="evenpercent">Summary</th>
-                                <th>Call Transcript</th>
-                                <th>Sentiment Analysis</th>
-                                <th>Delete?</th>
+                                <th style={{width: '10%'}}>Delete?</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -320,22 +321,37 @@ export default function CallTable(props) {
                     </table>
                 </div>
                     <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>
-                                <h4>{tableData.calling_phone_number}: {tableData.callSummary}</h4>
-                            </Modal.Title>
-                        </Modal.Header>
                         <Modal.Body>
                             <Form.Group >
                                 <Form.Label>Call Transcript:</Form.Label>
-                                <Form.Control as="textarea" rows={5} 
+                                <Form.Control as="textarea" rows={10} 
                                         type="text" onChange={handleChange} 
                                         value={tableData.transcript} placeholder="Call transcription" 
                                         readOnly={readOnly} name="transcript"/>           
                             </Form.Group>
                             <Form.Group >
-                                <Form.Label>Sentiment Analysis: {tableData.sentiment}</Form.Label>
-                                        
+                                <Form.Label>Summary:</Form.Label>
+                                <Form.Control as="textarea" rows={2} 
+                                        type="text" onChange={handleChange} 
+                                        value={tableData.summary} placeholder="summary" 
+                                        readOnly={readOnly} name="summary"/>          
+                            </Form.Group>
+                            <Form.Group >
+                                <Form.Label>Keywords: </Form.Label>
+                                <Form.Control as="textarea" rows={2} 
+                                        type="text" onChange={handleChange} 
+                                        value={tableData.keywords} placeholder="keywords" 
+                                        readOnly={readOnly} name="Keywords"/>          
+                            </Form.Group>
+                            <Form.Group >
+                                <Form.Label>Sentiment Analysis:</Form.Label>
+                                <Form.Select name="choice" value={tableData.keywords} onChange={handleDropdownChange} readOnly={readOnly}>
+                                    <option value="Very Negative">Very Negative</option>
+                                    <option value="Negative">Negative</option>
+                                    <option value="Neutral">Neutral</option>
+                                    <option value="Positive">Positive</option>
+                                    <option value="Very Positive">Very Positive</option>
+                                </Form.Select>        
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>
