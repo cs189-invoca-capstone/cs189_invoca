@@ -80,3 +80,23 @@
 table{
     table-layout: fixed;
 }
+
+.table .very-neg {
+    color: #e65149;
+}
+
+.table .neg {
+    color: #f29691;
+}
+
+.table .neutral {
+    color: #d9d136;
+}
+
+.table .pos {
+    color: #68d959;
+}
+
+.table .very-pos {
+    color: #36bf34;
+}
