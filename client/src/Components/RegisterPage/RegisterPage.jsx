@@ -41,19 +41,19 @@ function RegisterPage(props){
                 <div className='registersquare'>
                     <div className='logintext'>Register</div>
                     <div style={{padding: 20}}>
-                        <div className='smalltext'>Full Name</div>
+                        <div className='registersmalltext'>Full Name</div>
                         <input className="filloutbars" type="text" id="name" />
                     </div>
                     <div style={{padding: 20}}>
-                        <div className='smalltext'>Email Address</div>
+                        <div className='registersmalltext'>Email Address</div>
                         <input className="filloutbars" type="text" id="gmail" />
                     </div>
                     <div style={{padding: 20}}>
-                        <div className='smalltext'>Phone Number</div>
+                        <div className='registersmalltext'>Phone Number</div>
                         <input className="filloutbars" type="text" pattern="[0-9]*" id="phone"/>
                     </div>
                     <div style={{padding: 20}}>
-                        <div className='smalltext'>Password</div>
+                        <div className='registersmalltext'>Password</div>
                         <input className="filloutbars" type="password" id="password"/>
                     </div>
                     <div className='createrow'>

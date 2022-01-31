@@ -62,8 +62,8 @@ html, body, #app, #app>div {
     color: #000000;
 }
 
-.smalltext{
-    padding-left: 50px;
+.loginsmalltext{
+    margin-left: 15px;
     font-style: normal;
     font-weight: normal;
     font-size: 13px;

@@ -34,11 +34,11 @@ function LoginPage(props){
                 <div className='loginelements'>
                     <div className='logintext'>Login</div>
                     <div style={{padding: 20}}>
-                        <div className='smalltext'>Email Address</div>
+                        <div className='loginsmalltext'>Email Address</div>
                         <input className="filloutbars" type="text" id="gmail"/>
                     </div>
                     <div style={{padding: 20}}>
-                        <div className='smalltext'>Password</div>
+                        <div className='loginsmalltext'>Password</div>
                         <input className="filloutbars" type="password" id="password" />
                     </div>
                     <div className='createrow'>

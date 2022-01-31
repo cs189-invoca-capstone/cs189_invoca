@@ -46,9 +46,9 @@
     color: #000000;
 }
 
-.smalltext{
-    padding-left: 50px;
-    font-style: italic;
+.registersmalltext{
+    margin-left: 50px;
+    font-style: normal;
     font-weight: normal;
     font-size: 13px;
     line-height: 15px;
