@@ -17,9 +17,9 @@ export default function CallTable(props) {
     const [show, setShow] = useState(false);
     const [showAllLogs, setShowAllLogs] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
-    // const [showEdit, setShowEdit] = useState(true);
+    const [showEdit, setShowEdit] = useState(true);
     
-    const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", status:"default"}]
+    const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", SVGFEPointLightElement:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
     const [transactions, setTransactions] = useState( [] );
     const [choice, setChoice] = useState("");
@@ -28,7 +28,7 @@ export default function CallTable(props) {
     const handleClose = () => {
         setReadOnly(true);
         setShow(false);
-        // setShowEdit(true);
+        setShowEdit(true);
     }
 
     const handleLastId = (lastId) => {
@@ -127,12 +127,12 @@ export default function CallTable(props) {
         props.handleCallLog(data);
     }
 
-    const handleEditClick = (data) => {
-        // console.log("in handle edit");
-        // console.log(data);
-        props.handleCallLog(data);
-        history.push("/editCall");
-    }
+    // const handleEditClick = (data) => {
+    //     // console.log("in handle edit");
+    //     // console.log(data);
+    //     props.handleCallLog(data);
+    //     history.push("/editCall");
+    // }
     
     // calls backend to delete row from table
     const handleDelete = (data) => {
@@ -185,26 +185,29 @@ export default function CallTable(props) {
         MODAL STUFF
     */
     // hides edit button, shows save button
-    // const handleEdit = () => {
-    //     setReadOnly(false)
-    //     // setShowEdit(false)
-    // }
+    const handleEdit = () => {
+        setReadOnly(false)
+        setShowEdit(false)
+    }
 
     // calls put method to save new data into database
-    // const handleSave = async () => {
-    //     setReadOnly(true)
-    //     // setShowEdit(true)
-    //     try{
-    //         const logs = await axios.put("transactions/"+ tableData._id, {
-    //             transcript: tableData.transcript
-    //         });
-    //         // console.log(logs.data);
-    //     } catch(err){
-    //         console.log(err);
-    //     }
-    //     getLogs();
-    //     handleClose();
-    // }
+    const handleSave = async () => {
+        setReadOnly(true)
+        setShowEdit(true)
+        try{
+            const logs = await axios.put("transactions/"+ tableData._id, {
+                transcript: tableData.transcript,
+                sentiment: choice,
+                summary: tableData.summary,
+                keywords: tableData.keywords,
+            });
+            console.log("saving data: ", logs.data);
+        } catch(err){
+            console.log(err);
+        }
+        getLogs();
+        handleClose();
+    }
 
     // ensures that tableData.entireCall is editable
     const handleChange = (event) => {
@@ -326,26 +329,26 @@ export default function CallTable(props) {
                                 <Form.Label>Call Transcript:</Form.Label>
                                 <Form.Control as="textarea" rows={10} 
                                         type="text" onChange={handleChange} 
-                                        value={tableData.transcript} placeholder="Call transcription" 
+                                        defaultValue={tableData.transcript} placeholder="Call transcription" 
                                         readOnly={readOnly} name="transcript"/>           
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Summary:</Form.Label>
                                 <Form.Control as="textarea" rows={2} 
                                         type="text" onChange={handleChange} 
-                                        value={tableData.summary} placeholder="summary" 
+                                        defaultValue={tableData.summary} placeholder="summary" 
                                         readOnly={readOnly} name="summary"/>          
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Keywords: </Form.Label>
                                 <Form.Control as="textarea" rows={2} 
                                         type="text" onChange={handleChange} 
-                                        value={tableData.keywords} placeholder="keywords" 
-                                        readOnly={readOnly} name="Keywords"/>          
+                                        defaultValue={tableData.keywords} placeholder="keywords" 
+                                        readOnly={readOnly} name="keywords"/>          
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Sentiment Analysis:</Form.Label>
-                                <Form.Select name="choice" value={tableData.keywords} onChange={handleDropdownChange} readOnly={readOnly}>
+                                <Form.Select name="sentiment" defaultValue={tableData.keywords} onChange={handleDropdownChange} readOnly={readOnly}>
                                     <option value="Very Negative">Very Negative</option>
                                     <option value="Negative">Negative</option>
                                     <option value="Neutral">Neutral</option>
@@ -356,10 +359,10 @@ export default function CallTable(props) {
                         </Modal.Body>
                         <Modal.Footer>
                         
-                        <Button variant="primary" onClick={()=>handleEditClick(tableData)}> Edit </Button>
-                        {/* {showEdit 
+                        {/* <Button variant="primary" onClick={()=>handleEditClick(tableData)}> Edit </Button> */}
+                        {showEdit 
                             ? <Button variant="primary" onClick={handleEdit}>Edit</Button> 
-                            : <Button variant="success" onClick={handleSave}>Save</Button>} */}
+                            : <Button variant="success" onClick={handleSave}>Save</Button>}
                         <Button variant="secondary" onClick={handleClose}> Close </Button>
                         </Modal.Footer>
                     </Modal>
