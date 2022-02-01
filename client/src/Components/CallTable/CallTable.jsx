@@ -19,10 +19,11 @@ export default function CallTable(props) {
     const [readOnly, setReadOnly] = useState(true);
     const [showEdit, setShowEdit] = useState(true);
     
-    const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", SVGFEPointLightElement:"default"}]
+    const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", sentiment:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
     const [transactions, setTransactions] = useState( [] );
-    const [choice, setChoice] = useState("");
+    const [choice, setChoice] = useState("calling_phone_number");
+    const [sentiment, setSentiment] = useState("");
     const [searchText, setSearchText] = useState("");
 
     const handleClose = () => {
@@ -90,7 +91,7 @@ export default function CallTable(props) {
             // console.log(logs.data);       
             setShowAllLogs(false);
             setSearchText("");
-            setChoice("");
+            setChoice("calling_phone_number");
         }catch(err){
             console.log(err);
         }
@@ -197,7 +198,7 @@ export default function CallTable(props) {
         try{
             const logs = await axios.put("transactions/"+ tableData._id, {
                 transcript: tableData.transcript,
-                sentiment: choice,
+                sentiment: sentiment,
                 summary: tableData.summary,
                 keywords: tableData.keywords,
             });
@@ -218,6 +219,9 @@ export default function CallTable(props) {
         setTableData(values => ({...values, [name]: value}))
     }
 
+    const handleSentimentChange = (e) => {
+        setSentiment(e.target.value);
+    }
 
     /*
     SEARCH BAR STUFF
@@ -233,15 +237,15 @@ export default function CallTable(props) {
     const handleSearchSubmit = async () => {
         try{
             let tmp = "transactions/search/" + props.user[Object.keys(props.user)[0]];
-                const logs = await axios.get(tmp, {
-                    params: {
-                        searchType: choice,
-                        searchQuery: searchText
-                    }              
-                }
+            const logs = await axios.get(tmp, {
+                params: {
+                    searchType: choice,
+                    searchQuery: searchText
+                }              
+            }
             );
+            console.log("search submit params:", choice, searchText);
             setTransactions(logs.data);
-            // console.log(logs.data);
             setShowAllLogs(true);
         }catch(err){
             console.log(err);
@@ -268,18 +272,18 @@ export default function CallTable(props) {
             <Container>
                 <Form className="mb-3"> 
                     <Row>
-                        <Col lg={1}/>
                         <Col lg={2}>
                             <Form.Group>
-                                <Form.Select name="choice" value={choice} onChange={handleDropdownChange} className='dropdownbar'>
+                                <Form.Select name="choice" defaultValue={choice} onChange={handleDropdownChange} className='dropdownbar'>
                                     <option value="calling_phone_number">Phone Number</option>
-                                    <option value="callSummary">Summary</option>
+                                    <option value="keywords">Keywords</option>
+                                    <option value="sentiment">Sentiment</option>
+                                    <option value="summary">Summary</option>
                                     <option value="transcript">Call Transcript</option>
-                                    <option value="sentimentAnalysis">Sentiment</option>
                                 </Form.Select>
                             </Form.Group>
                         </Col>
-                        <Col lg={5}>
+                        <Col lg={4}>
                             <Form.Group>
                                 <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange} className='searchbar'/>
                             </Form.Group>
@@ -287,17 +291,24 @@ export default function CallTable(props) {
                         <Col lg={3}>
                             <Form.Group>
                                 {showAllLogs 
-                                ? <Button variant="outline-secondary" onClick={getLogs}>
+                                ? <Button variant="outline-secondary" 
+                                    className = "CallTableReturnButton"
+                                    onClick={getLogs}>
                                     Return
                                     </Button>
                                 : <Button variant="primary" 
                                         onClick={handleSearchSubmit} 
-                                        disabled={!choice || !searchText}
+                                        disabled={!searchText}
                                         className = "CallTableSearchButton"
                                         >
                                     Search
-                                    </Button> }
+                                    </Button> }     
                             </Form.Group>
+                        </Col>
+                        <Col lg={3}>
+                            <Button variant="primary" onClick={() => history.push('/add')}>
+                                Add Call
+                            </Button>
                         </Col>
                     </Row>
                 </Form>
@@ -348,7 +359,7 @@ export default function CallTable(props) {
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Sentiment Analysis:</Form.Label>
-                                <Form.Select name="sentiment" defaultValue={tableData.keywords} onChange={handleDropdownChange} readOnly={readOnly}>
+                                <Form.Select name="sentiment" defaultValue={tableData.keywords} onChange={handleSentimentChange} readOnly={readOnly}>
                                     <option value="Very Negative">Very Negative</option>
                                     <option value="Negative">Negative</option>
                                     <option value="Neutral">Neutral</option>
@@ -370,9 +381,9 @@ export default function CallTable(props) {
             <div>
                 <br></br>
             </div>
-            <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => history.push('/add')}>
-                Add new call summary
-            </Button>
+            {/* <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => history.push('/add')}>
+                Add Call
+            </Button> */}
         </div>
     )
 }
