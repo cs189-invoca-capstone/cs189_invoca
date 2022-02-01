@@ -17,23 +17,26 @@ router.delete('/all', async (req, res) =>{
     await Transactions.deleteMany({});
 });
 
-router.post('/invoca/tmp', async (req, res)=>{
+router.post('/invoca', async (req, res)=>{
     // await Transactions.deleteMany({});
     // console.log(last_transactions_id);
 
     // data will be all of the transactions that are stored on invoca
     let data = [];
+    start_last_id = req.body.id;
+    console.log("recieved id");
+    console.log(req.body.id);
 
     // call invoca transactions api
-    let tmp = 'https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp&start_after_transaction_id='+last_transactions_id;
+    let tmp = 'https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp&start_after_transaction_id='+start_last_id;
     await axios.get(tmp)
         .then(res => {
             data = res.data;
         })
         .catch(err => {
             console.log(err);
-            res.status(400);
-            res.send("Error");
+            // res.status(400);
+            // res.send("Error");
         });
     
     // go through all of the transactions that have been retrieved from invoca
@@ -190,21 +193,23 @@ router.post('/invoca/tmp', async (req, res)=>{
     // console.log(data[data.length - 1]['transaction_id'])
     if(data.length > 0){
         last_transactions_id = data[data.length - 1]['transaction_id']
-        console.log(data[data.length - 1]['transaction_id']);
+        res.status(200).send(last_transactions_id);
     }
-    res.status(200).send("inserted");
+    else{
+        res.status(200).send("");
+    }
     res.end();
 });
 
-router.post('/invoca', async (req, res)=>{
+router.post('/invoca/tmp', async (req, res)=>{
     // await Transactions.deleteMany({});
     // console.log(last_transactions_id);
 
     // data will be all of the transactions that are stored on invoca
     let data = [];
     start_last_id = req.body.id;
-    // console.log("recieved id");
-    // console.log(req.body.id);
+    console.log("recieved id");
+    console.log(req.body.id);
     // call invoca transactions api
     let tmp = 'https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp&start_after_transaction_id='+start_last_id;
     await axios.get(tmp)
@@ -338,7 +343,7 @@ router.get('/search/:userId', async (req, res)=>{
         if(type == undefined || query == undefined){
             throw "Missing Parameters";
         }
-        if(type != "id" && type != "calling_phone_number" && type != "callSummary" && type != "transcript" && type != "sentimentAnalysis")
+        if(type != "id" && type != "calling_phone_number" && type != "summary" && type != "transcript" && type != "sentiment" && type != "keywords")
             throw "Search Type not valid";
         const allTransactions = await Transactions.find(
             { [type] : { "$regex": query, "$options": "i" } , userId: req.params.userId}

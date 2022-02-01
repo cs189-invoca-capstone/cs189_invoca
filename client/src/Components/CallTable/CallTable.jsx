@@ -17,18 +17,19 @@ export default function CallTable(props) {
     const [show, setShow] = useState(false);
     const [showAllLogs, setShowAllLogs] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
-    // const [showEdit, setShowEdit] = useState(true);
+    const [showEdit, setShowEdit] = useState(true);
     
-    const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", status:"default"}]
+    const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", sentiment:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
     const [transactions, setTransactions] = useState( [] );
-    const [choice, setChoice] = useState("");
+    const [choice, setChoice] = useState("calling_phone_number");
+    const [sentiment, setSentiment] = useState("");
     const [searchText, setSearchText] = useState("");
 
     const handleClose = () => {
         setReadOnly(true);
         setShow(false);
-        // setShowEdit(true);
+        setShowEdit(true);
     }
 
     const handleLastId = (lastId) => {
@@ -58,7 +59,7 @@ export default function CallTable(props) {
         if(transactionsParsed!=null){
             setTransactions(transactionsParsed);
         }
-      };
+    };
 
     // fetch call logs for table
     const getLogs = async () => {
@@ -90,7 +91,7 @@ export default function CallTable(props) {
             // console.log(logs.data);       
             setShowAllLogs(false);
             setSearchText("");
-            setChoice("");
+            setChoice("calling_phone_number");
         }catch(err){
             console.log(err);
         }
@@ -127,12 +128,12 @@ export default function CallTable(props) {
         props.handleCallLog(data);
     }
 
-    const handleEditClick = (data) => {
-        // console.log("in handle edit");
-        // console.log(data);
-        props.handleCallLog(data);
-        history.push("/editCall");
-    }
+    // const handleEditClick = (data) => {
+    //     // console.log("in handle edit");
+    //     // console.log(data);
+    //     props.handleCallLog(data);
+    //     history.push("/editCall");
+    // }
     
     // calls backend to delete row from table
     const handleDelete = (data) => {
@@ -150,6 +151,7 @@ export default function CallTable(props) {
                 deletePost();
                 let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
                 const newLogs = await axios.get(tmp);
+                sessionStorage.setItem('transactions', JSON.stringify(newLogs.data));
                 setTransactions(newLogs.data);
             }catch(err){
                 console.log(err);
@@ -163,13 +165,15 @@ export default function CallTable(props) {
         // console.log(transactions.sentimentAnalysis)
         return(
             <tr Style="cursor: pointer;" key={index}>
-                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions._id}</td>
+                {/* <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions._id}</td> */}
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.transaction_id}</td> */}
                 <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.calling_phone_number}</td>
+                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.keywords}</td>
                 <td onClick={() => handleTableClick(transactions)}>{transactions.summary}</td>
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.keywords}</td> */}
                 
-                <td className="hidden tableStyle" onClick={() => handleTableClick(transactions)} >{transactions.transcript}</td>
+
+                {/* <td className="hidden tableStyle" onClick={() => handleTableClick(transactions)} >{transactions.transcript}</td> */}
                 <td className={`${(transactions.sentiment === "Very Negative") ? 'very-neg' : (transactions.sentiment === "Negative" ? 'neg' : (transactions.sentiment === "Very Positive" ? ("very-pos"): (transactions.sentiment === "Positive" ? 'pos':'neutral')))} hidden` } onClick={() => handleTableClick(transactions)}>{transactions.sentiment}</td>
                 <td className="hidden" onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
@@ -184,26 +188,44 @@ export default function CallTable(props) {
         MODAL STUFF
     */
     // hides edit button, shows save button
-    // const handleEdit = () => {
-    //     setReadOnly(false)
-    //     // setShowEdit(false)
-    // }
+    const handleEdit = () => {
+        setReadOnly(false)
+        setShowEdit(false)
+    }
 
     // calls put method to save new data into database
-    // const handleSave = async () => {
-    //     setReadOnly(true)
-    //     // setShowEdit(true)
-    //     try{
-    //         const logs = await axios.put("transactions/"+ tableData._id, {
-    //             transcript: tableData.transcript
-    //         });
-    //         // console.log(logs.data);
-    //     } catch(err){
-    //         console.log(err);
-    //     }
-    //     getLogs();
-    //     handleClose();
-    // }
+    const handleSave = async () => {
+        setReadOnly(true)
+        setShowEdit(true)
+        try{
+            const logs = await axios.put("transactions/"+ tableData._id, {
+                transcript: tableData.transcript,
+                sentiment: sentiment,
+                summary: tableData.summary,
+                keywords: tableData.keywords,
+            });
+            const transactions = sessionStorage.getItem('transactions');
+            const transactionsParsed = JSON.parse(transactions);
+            console.log(transactionsParsed);
+            if(transactionsParsed!=null){
+                for(let i = 0; i < transactionsParsed.length; i++){
+                    if(transactionsParsed[i]._id === logs.data._id){
+                        console.log(transactionsParsed[i]);
+                        console.log(logs.data);
+                        transactionsParsed[i] = logs.data;
+                        console.log(transactionsParsed[i]);
+                        sessionStorage.setItem('transactions', JSON.stringify(transactionsParsed));
+                        break;
+                    }
+                }
+            }
+            console.log("saving data: ", logs.data);
+        } catch(err){
+            console.log(err);
+        }
+        getLogs();
+        handleClose();
+    }
 
     // ensures that tableData.entireCall is editable
     const handleChange = (event) => {
@@ -214,6 +236,9 @@ export default function CallTable(props) {
         setTableData(values => ({...values, [name]: value}))
     }
 
+    const handleSentimentChange = (e) => {
+        setSentiment(e.target.value);
+    }
 
     /*
     SEARCH BAR STUFF
@@ -229,15 +254,15 @@ export default function CallTable(props) {
     const handleSearchSubmit = async () => {
         try{
             let tmp = "transactions/search/" + props.user[Object.keys(props.user)[0]];
-                const logs = await axios.get(tmp, {
-                    params: {
-                        searchType: choice,
-                        searchQuery: searchText
-                    }              
-                }
+            const logs = await axios.get(tmp, {
+                params: {
+                    searchType: choice,
+                    searchQuery: searchText
+                }              
+            }
             );
+            console.log("search submit params:", choice, searchText);
             setTransactions(logs.data);
-            // console.log(logs.data);
             setShowAllLogs(true);
         }catch(err){
             console.log(err);
@@ -246,7 +271,7 @@ export default function CallTable(props) {
 
     return (
         <div className='homepagebackground'>
-            <div>
+            {/* <div>
                 <br></br>
             </div>
             <div className='hellotext'>
@@ -257,42 +282,51 @@ export default function CallTable(props) {
             </div>
             <div className='welcometext'>
                 Welcome Back!
-            </div>
-            <div>
+            </div> */}
+            <div className="breakheight">
                 <br></br>
             </div>
             <Container>
                 <Form className="mb-3"> 
                     <Row>
-                        <Col lg={2}/>
-                        <Col lg={2}>
+                        <Col md={2} lg={2}>
                             <Form.Group>
-                                <Form.Select name="choice" value={choice} onChange={handleDropdownChange} className='dropdownbar'>
-                                    <option value="id">Phone Call ID #</option>
+                                <Form.Select  Style="width: 100%" name="choice" defaultValue={choice} onChange={handleDropdownChange} className='dropdownbar'>
                                     <option value="calling_phone_number">Phone Number</option>
-                                    <option value="callSummary">Summary</option>
-                                    <option value="transcript">Call Transcript</option>
+                                    <option value="keywords">Keywords</option>
                                     <option value="sentiment">Sentiment</option>
+                                    <option value="summary">Summary</option>
+                                    <option value="transcript">Call Transcript</option>
                                 </Form.Select>
                             </Form.Group>
                         </Col>
-                        <Col lg={4}>
+                        <Col md={6} lg={6}>
                             <Form.Group>
-                                <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange} className='searchbar'/>
+                                <Form.Control  Style="width: 100%" type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange} className='searchbar'/>
                             </Form.Group>
                         </Col>
-                        <Col lg={3}>
+                        <Col md={2} lg={2}>
                             <Form.Group>
                                 {showAllLogs 
-                                ? <Button variant="outline-secondary" onClick={getLogs}>
+                                ? <Button variant="outline-secondary" 
+                                    className = "CallTableReturnButton"
+                                    onClick={getLogs}  Style="width: 100%">
                                     Return
                                     </Button>
                                 : <Button variant="primary" 
                                         onClick={handleSearchSubmit} 
-                                        disabled={!choice || !searchText}>
+                                        disabled={!searchText}
+                                        className = "CallTableSearchButton"
+                                        Style="width: 100%"
+                                        >
                                     Search
-                                    </Button> }
+                                    </Button> }     
                             </Form.Group>
+                        </Col>
+                        <Col md={2} lg={2}>
+                            <Button variant="success" className="CallTableAddButton" Style="width: 100%" onClick={() => history.push('/add')}>
+                                Add Call
+                            </Button>
                         </Col>
                     </Row>
                 </Form>
@@ -301,17 +335,16 @@ export default function CallTable(props) {
             <br></br>
 
             </div>
-            <Container>
+            <Container className="temptest">
                 <div className='tablehold'>
                     <table data-testid="display-table" className="table table-hover table-bordered">
                         <thead>
                             <tr>
-                                <th>Phone Call ID #</th>
-                                <th>Phone Number</th>
+                                <th className="smallcolumn">Phone Number</th>
+                                <th className="smallcolumn">Keywords</th>
                                 <th  data-testid="summary-table" className="evenpercent">Summary</th>
-                                <th>Call Transcript</th>
-                                <th>Sentiment</th>
-                                <th>Delete?</th>
+                                <th className="smallcolumn">Sentiment</th>
+                                <th style={{width: '10%'}}>Delete?</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -319,31 +352,49 @@ export default function CallTable(props) {
                         </tbody>
                     </table>
                 </div>
-                    <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>
-                                <h4>{tableData.calling_phone_number}: {tableData.callSummary}</h4>
-                            </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
+                    <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true} >
+                        <Modal.Body Style="background: #63B8A7; border:none">
                             <Form.Group >
                                 <Form.Label>Call Transcript:</Form.Label>
-                                <Form.Control as="textarea" rows={5} 
+                                <Form.Control as="textarea" rows={10} 
                                         type="text" onChange={handleChange} 
-                                        value={tableData.transcript} placeholder="Call transcription" 
+                                        defaultValue={tableData.transcript} placeholder="Call transcription" 
                                         readOnly={readOnly} name="transcript"/>           
+                                <br />     
                             </Form.Group>
                             <Form.Group >
-                                <Form.Label>Sentiment Analysis: {tableData.sentiment}</Form.Label>
-                                        
+                                <Form.Label>Summary:</Form.Label>
+                                <Form.Control as="textarea" rows={2} 
+                                        type="text" onChange={handleChange} 
+                                        defaultValue={tableData.summary} placeholder="summary" 
+                                        readOnly={readOnly} name="summary"/>     
+                                <br />     
+                            </Form.Group>
+                            <Form.Group >
+                                <Form.Label>Keywords: </Form.Label>
+                                <Form.Control as="textarea" rows={2} 
+                                        type="text" onChange={handleChange} 
+                                        defaultValue={tableData.keywords} placeholder="keywords" 
+                                        readOnly={readOnly} name="keywords"/>          
+                                <br />     
+                            </Form.Group>
+                            <Form.Group >
+                                <Form.Label>Sentiment Analysis:</Form.Label>
+                                <Form.Select name="sentiment" defaultValue={tableData.sentiment} onChange={handleSentimentChange} disabled={readOnly}>
+                                    <option value="Very Negative">Very Negative</option>
+                                    <option value="Negative">Negative</option>
+                                    <option value="Neutral">Neutral</option>
+                                    <option value="Positive">Positive</option>
+                                    <option value="Very Positive">Very Positive</option>
+                                </Form.Select>        
                             </Form.Group>
                         </Modal.Body>
-                        <Modal.Footer>
+                        <Modal.Footer Style="background: #63B8A7; border:none">
                         
-                        <Button variant="primary" onClick={()=>handleEditClick(tableData)}> Edit </Button>
-                        {/* {showEdit 
+                        {/* <Button variant="primary" onClick={()=>handleEditClick(tableData)}> Edit </Button> */}
+                        {showEdit 
                             ? <Button variant="primary" onClick={handleEdit}>Edit</Button> 
-                            : <Button variant="success" onClick={handleSave}>Save</Button>} */}
+                            : <Button variant="success" onClick={handleSave}>Save</Button>}
                         <Button variant="secondary" onClick={handleClose}> Close </Button>
                         </Modal.Footer>
                     </Modal>
@@ -351,9 +402,7 @@ export default function CallTable(props) {
             <div>
                 <br></br>
             </div>
-            <Button variant="primary" Style="width:24%; margin-left:38%; margin-right:38%;" onClick = {() => history.push('/add')}>
-                Add new call summary
-            </Button>
+
         </div>
     )
 }
