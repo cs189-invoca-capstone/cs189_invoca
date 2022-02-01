@@ -168,12 +168,11 @@ export default function CallTable(props) {
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.transaction_id}</td> */}
                 <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.calling_phone_number}</td>
                 <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.keywords}</td>
-                <td className="hidden" onClick={() => handleTableClick(transactions)}>{transactions.sentiment}</td>
                 <td onClick={() => handleTableClick(transactions)}>{transactions.summary}</td>
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.keywords}</td> */}
                 
 
-                <td className="hidden tableStyle" onClick={() => handleTableClick(transactions)} >{transactions.transcript}</td>
+                {/* <td className="hidden tableStyle" onClick={() => handleTableClick(transactions)} >{transactions.transcript}</td> */}
                 <td className={`${(transactions.sentiment === "Very Negative") ? 'very-neg' : (transactions.sentiment === "Negative" ? 'neg' : (transactions.sentiment === "Very Positive" ? ("very-pos"): (transactions.sentiment === "Positive" ? 'pos':'neutral')))} hidden` } onClick={() => handleTableClick(transactions)}>{transactions.sentiment}</td>
                 <td className="hidden" onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
@@ -342,8 +341,8 @@ export default function CallTable(props) {
                             <tr>
                                 <th className="smallcolumn">Phone Number</th>
                                 <th className="smallcolumn">Keywords</th>
-                                <th className="smallcolumn">Sentiment Analysis</th>
                                 <th  data-testid="summary-table" className="evenpercent">Summary</th>
+                                <th className="smallcolumn">Sentiment</th>
                                 <th style={{width: '10%'}}>Delete?</th>
                             </tr>
                         </thead>
