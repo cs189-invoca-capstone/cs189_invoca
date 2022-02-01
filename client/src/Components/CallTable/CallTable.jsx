@@ -151,6 +151,7 @@ export default function CallTable(props) {
                 deletePost();
                 let tmp = "transactions/all/" + props.user[Object.keys(props.user)[0]];
                 const newLogs = await axios.get(tmp);
+                sessionStorage.setItem('transactions', JSON.stringify(newLogs.data));
                 setTransactions(newLogs.data);
             }catch(err){
                 console.log(err);

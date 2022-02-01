@@ -17,7 +17,7 @@ router.delete('/all', async (req, res) =>{
     await Transactions.deleteMany({});
 });
 
-router.post('/invoca/tmp', async (req, res)=>{
+router.post('/invoca', async (req, res)=>{
     // await Transactions.deleteMany({});
     // console.log(last_transactions_id);
 
@@ -201,7 +201,7 @@ router.post('/invoca/tmp', async (req, res)=>{
     res.end();
 });
 
-router.post('/invoca', async (req, res)=>{
+router.post('/invoca/tmp', async (req, res)=>{
     // await Transactions.deleteMany({});
     // console.log(last_transactions_id);
 
