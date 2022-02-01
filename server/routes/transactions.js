@@ -461,14 +461,18 @@ router.post('/new', async (req, res)=>{
                 if(entity.type == "PERSON" || entity.type == "LOCATION" || entity.type == "ORGANIZATION" || entity.type == "EVENT") {
                     console.log(entity.name);
                     console.log(` - Type: ${entity.type}`);
-                    call.keywords.push(entity.name);
+                    if(entity.name != "caller" && entity.name != "agent"){
+                        call.keywords.push(" " + entity.name);
+                    }
                     
                 } else {
                     
                     if(other_count < 3 && call.keywords.indexOf(entity.name) == -1) {
                     console.log(entity.name);
                     console.log(` - Type: ${entity.type}`);
-                    call.keywords.push(entity.name);
+                    if(entity.name != "caller" && entity.name != "agent"){
+                        call.keywords.push(" " + entity.name);
+                    }
                     other_count++;
                     }
                 }
