@@ -65,7 +65,7 @@ function LandingPage(){
                         Generate the most used and successful <strong>Keywords</strong> with our artificial intelligence platform, and watch as your profits grow!
                     </p>
                 </div>
-            </div>
+            </ div>
         </div>
     );
 }

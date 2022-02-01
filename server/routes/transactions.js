@@ -338,7 +338,7 @@ router.get('/search/:userId', async (req, res)=>{
         if(type == undefined || query == undefined){
             throw "Missing Parameters";
         }
-        if(type != "id" && type != "calling_phone_number" && type != "callSummary" && type != "transcript" && type != "sentimentAnalysis")
+        if(type != "id" && type != "calling_phone_number" && type != "summary" && type != "transcript" && type != "sentiment" && type != "keywords")
             throw "Search Type not valid";
         const allTransactions = await Transactions.find(
             { [type] : { "$regex": query, "$options": "i" } , userId: req.params.userId}
