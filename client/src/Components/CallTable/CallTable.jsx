@@ -204,6 +204,21 @@ export default function CallTable(props) {
                 summary: tableData.summary,
                 keywords: tableData.keywords,
             });
+            const transactions = sessionStorage.getItem('transactions');
+            const transactionsParsed = JSON.parse(transactions);
+            console.log(transactionsParsed);
+            if(transactionsParsed!=null){
+                for(let i = 0; i < transactionsParsed.length; i++){
+                    if(transactionsParsed[i]._id === logs.data._id){
+                        console.log(transactionsParsed[i]);
+                        console.log(logs.data);
+                        transactionsParsed[i] = logs.data;
+                        console.log(transactionsParsed[i]);
+                        sessionStorage.setItem('transactions', JSON.stringify(transactionsParsed));
+                        break;
+                    }
+                }
+            }
             console.log("saving data: ", logs.data);
         } catch(err){
             console.log(err);
