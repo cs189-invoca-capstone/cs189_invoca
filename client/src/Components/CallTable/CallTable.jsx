@@ -363,7 +363,7 @@ export default function CallTable(props) {
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Sentiment Analysis:</Form.Label>
-                                <Form.Select name="sentiment" defaultValue={tableData.keywords} onChange={handleSentimentChange} disabled={readOnly}>
+                                <Form.Select name="sentiment" defaultValue={tableData.sentiment} onChange={handleSentimentChange} disabled={readOnly}>
                                     <option value="Very Negative">Very Negative</option>
                                     <option value="Negative">Negative</option>
                                     <option value="Neutral">Neutral</option>
