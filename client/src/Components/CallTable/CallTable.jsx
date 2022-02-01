@@ -172,7 +172,9 @@ export default function CallTable(props) {
                 <td onClick={() => handleTableClick(transactions)}>{transactions.summary}</td>
                 {/* <td onClick={() => handleTableClick(transactions)}>{transactions.keywords}</td> */}
                 
-                {/* <td className="hidden tableStyle" onClick={() => handleTableClick(transactions)} >{transactions.transcript}</td> */}
+
+                <td className="hidden tableStyle" onClick={() => handleTableClick(transactions)} >{transactions.transcript}</td>
+                <td className={`${(transactions.sentiment === "Very Negative") ? 'very-neg' : (transactions.sentiment === "Negative" ? 'neg' : (transactions.sentiment === "Very Positive" ? ("very-pos"): (transactions.sentiment === "Positive" ? 'pos':'neutral')))} hidden` } onClick={() => handleTableClick(transactions)}>{transactions.sentiment}</td>
                 <td className="hidden" onClick={() => handleDelete(transactions)}>    
                     <Button variant="outline-danger">
                         Delete
@@ -385,9 +387,7 @@ export default function CallTable(props) {
             <div>
                 <br></br>
             </div>
-            {/* <Button Style="width:24%; margin-left:38%; margin-right:38%;" variant="primary" onClick = {() => history.push('/add')}>
-                Add Call
-            </Button> */}
+
         </div>
     )
 }

@@ -101,6 +101,7 @@ table{
     table-layout: fixed;
 }
 
+
 .temptest{
     display: flex;
     align-items: center;
@@ -115,4 +116,24 @@ table{
 
 .breakheight{
     height: 100px;
+}
+
+.table .very-neg {
+    color: #e65149;
+}
+
+.table .neg {
+    color: #f29691;
+}
+
+.table .neutral {
+    color: #d9d136;
+}
+
+.table .pos {
+    color: #68d959;
+}
+
+.table .very-pos {
+    color: #36bf34;
 }
