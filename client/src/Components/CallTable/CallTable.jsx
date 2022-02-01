@@ -59,7 +59,7 @@ export default function CallTable(props) {
         if(transactionsParsed!=null){
             setTransactions(transactionsParsed);
         }
-      };
+    };
 
     // fetch call logs for table
     const getLogs = async () => {
@@ -272,9 +272,9 @@ export default function CallTable(props) {
             <Container>
                 <Form className="mb-3"> 
                     <Row>
-                        <Col lg={2}>
+                        <Col md={2} lg={2}>
                             <Form.Group>
-                                <Form.Select name="choice" defaultValue={choice} onChange={handleDropdownChange} className='dropdownbar'>
+                                <Form.Select  Style="width: 100%" name="choice" defaultValue={choice} onChange={handleDropdownChange} className='dropdownbar'>
                                     <option value="calling_phone_number">Phone Number</option>
                                     <option value="keywords">Keywords</option>
                                     <option value="sentiment">Sentiment</option>
@@ -283,30 +283,31 @@ export default function CallTable(props) {
                                 </Form.Select>
                             </Form.Group>
                         </Col>
-                        <Col lg={4}>
+                        <Col md={6} lg={6}>
                             <Form.Group>
-                                <Form.Control type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange} className='searchbar'/>
+                                <Form.Control  Style="width: 100%" type="text" placeholder="Search call logs" name="search"  value={searchText} onChange={handleTextChange} className='searchbar'/>
                             </Form.Group>
                         </Col>
-                        <Col lg={3}>
+                        <Col md={2} lg={2}>
                             <Form.Group>
                                 {showAllLogs 
                                 ? <Button variant="outline-secondary" 
                                     className = "CallTableReturnButton"
-                                    onClick={getLogs}>
+                                    onClick={getLogs}  Style="width: 100%">
                                     Return
                                     </Button>
                                 : <Button variant="primary" 
                                         onClick={handleSearchSubmit} 
                                         disabled={!searchText}
                                         className = "CallTableSearchButton"
+                                        Style="width: 100%"
                                         >
                                     Search
                                     </Button> }     
                             </Form.Group>
                         </Col>
-                        <Col lg={3}>
-                            <Button variant="primary" onClick={() => history.push('/add')}>
+                        <Col md={2} lg={2}>
+                            <Button variant="success" className="CallTableAddButton" Style="width: 100%" onClick={() => history.push('/add')}>
                                 Add Call
                             </Button>
                         </Col>
@@ -334,21 +335,23 @@ export default function CallTable(props) {
                         </tbody>
                     </table>
                 </div>
-                    <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true}>
-                        <Modal.Body>
+                    <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true} >
+                        <Modal.Body Style="background: #63B8A7; border:none">
                             <Form.Group >
                                 <Form.Label>Call Transcript:</Form.Label>
                                 <Form.Control as="textarea" rows={10} 
                                         type="text" onChange={handleChange} 
                                         defaultValue={tableData.transcript} placeholder="Call transcription" 
                                         readOnly={readOnly} name="transcript"/>           
+                                <br />     
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Summary:</Form.Label>
                                 <Form.Control as="textarea" rows={2} 
                                         type="text" onChange={handleChange} 
                                         defaultValue={tableData.summary} placeholder="summary" 
-                                        readOnly={readOnly} name="summary"/>          
+                                        readOnly={readOnly} name="summary"/>     
+                                <br />     
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Keywords: </Form.Label>
@@ -356,10 +359,11 @@ export default function CallTable(props) {
                                         type="text" onChange={handleChange} 
                                         defaultValue={tableData.keywords} placeholder="keywords" 
                                         readOnly={readOnly} name="keywords"/>          
+                                <br />     
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Sentiment Analysis:</Form.Label>
-                                <Form.Select name="sentiment" defaultValue={tableData.keywords} onChange={handleSentimentChange} readOnly={readOnly}>
+                                <Form.Select name="sentiment" defaultValue={tableData.keywords} onChange={handleSentimentChange} disabled={readOnly}>
                                     <option value="Very Negative">Very Negative</option>
                                     <option value="Negative">Negative</option>
                                     <option value="Neutral">Neutral</option>
@@ -368,7 +372,7 @@ export default function CallTable(props) {
                                 </Form.Select>        
                             </Form.Group>
                         </Modal.Body>
-                        <Modal.Footer>
+                        <Modal.Footer Style="background: #63B8A7; border:none">
                         
                         {/* <Button variant="primary" onClick={()=>handleEditClick(tableData)}> Edit </Button> */}
                         {showEdit 
