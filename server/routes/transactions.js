@@ -397,16 +397,91 @@ router.post('/new', async (req, res)=>{
         let call = new Transactions();
         console.log(req.body);
         if(req.body.userId == undefined || req.body.calling_phone_number == undefined 
-            || req.body.transcript == undefined || req.body.summary == undefined 
-            || req.body.keywords == undefined || req.body.sentiment == undefined) {
+            || req.body.transcript == undefined) {
             throw "Missing a required parameter";
         }
         call.userId = req.body.userId;
         call.calling_phone_number = req.body.calling_phone_number;
         call.transcript = req.body.transcript;
-        call.summary = req.body.summary;
-        call.keywords = req.body.keywords;
-        call.sentiment = req.body.sentiment;
+        //call.summary = "summary";
+        //call.keywords = ["keywords"];
+        //call.sentiment = "Positive";
+
+        
+
+       const document = {
+            content: call.transcript.join(". "),
+            type: 'PLAIN_TEXT',
+        };
+
+        await client.analyzeSentiment({document})
+            .then(result => {
+                const sentiment = result[0].documentSentiment;
+                // set the sentiment value extracted
+                transaction_sentiment = ""
+                if (sentiment.score <= -0.35) {
+                    transaction_sentiment = "Very Negative"
+                } else if (sentiment.score <= -0.1) {
+                    transaction_sentiment = "Negative"
+                } else if (sentiment.score >= 0.35) {
+                    transaction_sentiment = "Very Positive"
+                } else if (sentiment.score >= 0.1) {
+                    transaction_sentiment = "Positive"
+                } else if (sentiment.score < 0.1 && -0.1 < sentiment.score) {
+                    transaction_sentiment = "Neutral"
+                } else {
+                    transaction_sentiment = "ERROR IN TRANSACTIONS.JS"
+                }
+            call.sentiment = transaction_sentiment;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+        const joined_transactions = call.transcript.join(". ");
+       // const joined_transactions_entities = joined_transcripts.join(". ");
+       const entity_document = {
+        content: joined_transactions,
+        type: 'PLAIN_TEXT',
+    };
+    
+
+    await client.analyzeEntities({document: entity_document})
+        .then(result => {
+            const entities = result[0].entities;
+            console.log('Entities:');
+            var other_count = 0;
+
+            entities.forEach(entity => {
+                if(entity.type == "PERSON" || entity.type == "LOCATION" || entity.type == "ORGANIZATION" || entity.type == "EVENT") {
+                    console.log(entity.name);
+                    console.log(` - Type: ${entity.type}`);
+                    call.keywords.push(entity.name);
+                    
+                } else {
+                    
+                    if(other_count < 3 && call.keywords.indexOf(entity.name) == -1) {
+                    console.log(entity.name);
+                    console.log(` - Type: ${entity.type}`);
+                    call.keywords.push(entity.name);
+                    other_count++;
+                    }
+                }
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+        await summarizeClient.summarization(joined_transactions)
+            .then(result => {
+                console.log(result);
+                let summary = result.data.summary_text;
+                call.summary = summary;
+            })
+        .catch(err=>{
+            console.log(err);
+        });
 
         let tmp = await call.save();
         console.log(tmp);

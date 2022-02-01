@@ -33,6 +33,18 @@
     background: url("../assets/background.png");
 }
 
+.registersquareSubmit{
+    width: 500px;
+    height: 540px;
+    flex-direction: 'column';
+    display: 'flex';
+    align-items: 'center';
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 39px;
+}
+
 .loginsquareSubmit{
     width: 900px;
     height: 382px;
@@ -42,13 +54,23 @@
     border-radius: 39px;
 }
 
-.filloutbarsSubmit{
-    width: 291px;
+.filloutbarsSub{
+    width: 400px;
     height: 40px;
     background: #97CFC0;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     margin-left:11%;
+}
+
+.transcriptSubmit{
+    width: 400px;
+    height: 200px;
+    background: #97CFC0;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    margin-left:11%;
+    margin-bottom: 5%;
 }
 
 .logintextSubmit{
