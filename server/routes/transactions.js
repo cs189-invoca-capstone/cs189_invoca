@@ -203,8 +203,8 @@ router.post('/invoca', async (req, res)=>{
     // data will be all of the transactions that are stored on invoca
     let data = [];
     start_last_id = req.body.id;
-    // console.log("recieved id");
-    // console.log(req.body.id);
+    console.log("recieved id");
+    console.log(req.body.id);
     // call invoca transactions api
     let tmp = 'https://ucsbcapstone.invoca.net/api/2020-10-01/networks/transactions/2041.json?include_columns=transaction_id,transaction_type,call_source_description,city,region,calling_phone_number,mobile,duration,connect_duration,start_time_local,start_time_utc,recording,complete_call_id,destination_phone_number&oauth_token=Mp-5qdWhM6L72M1Zx2m0MfMaI5gBkQtp&start_after_transaction_id='+start_last_id;
     await axios.get(tmp)
