@@ -56,7 +56,7 @@ export default function SubmitForm(props) {
                         </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Call Transcript</Form.Label>
-                        <Form.Control className="transcriptSubmit" type="text" name="entireCall" value={inputs.entireCall} onChange={handleChange} placeholder="" />
+                        <Form.Control className="transcriptSubmit" as="textarea" rows={10} type="text" name="entireCall" value={inputs.entireCall} onChange={handleChange} placeholder="" />
                     </Form.Group>
 
 

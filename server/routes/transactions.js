@@ -91,7 +91,7 @@ router.post('/invoca', async (req, res)=>{
                         Object.entries(result.data[i]).map(([key, value]) => {
                             let tmp = key + ": " + value;
                             if (key === "caller") {
-                            	caller_only.push(tmp);
+                                caller_only.push(tmp);
                             }
                             joined_transcripts.push(value);
                             out.push(tmp);
