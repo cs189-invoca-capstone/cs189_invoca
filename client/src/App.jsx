@@ -15,9 +15,7 @@ import SubmitForm from './Components/SubmitForm/SubmitForm';
 import EditForm from "./Components/EditForm/EditForm";
 import CallTable from './Components/CallTable/CallTable';
 import LandingPage from './Components/LandingPage/LandingPage';
-// import Sidebar from './Components/Sidebar/Sidebar';
-// import {Container, Row, Col} from 'react-bootstrap';
-// import Table from './Components/Table/Table'
+
 
 
 function App() {
