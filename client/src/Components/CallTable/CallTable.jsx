@@ -10,6 +10,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import "./CallTable.css";
 import { useHistory } from 'react-router-dom';
+import { Player } from '@lottiefiles/react-lottie-player';
 // import {Container, Row, Col} from 'react-bootstrap';
 
 export default function CallTable(props) {
@@ -18,6 +19,7 @@ export default function CallTable(props) {
     const [showAllLogs, setShowAllLogs] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
     const [showEdit, setShowEdit] = useState(true);
+    const [done, setDone] = useState(false)
     
     const defaultInfo = [{callerID: "Bryan", calling_phone_number:"12345", callSummary:"dummy data", sentiment:"default"}]
     const [tableData, setTableData] = useState(defaultInfo);
@@ -25,6 +27,7 @@ export default function CallTable(props) {
     const [choice, setChoice] = useState("calling_phone_number");
     const [sentiment, setSentiment] = useState("");
     const [searchText, setSearchText] = useState("");
+    const [saving, setSaving] = useState(false);
 
     const handleClose = () => {
         setReadOnly(true);
@@ -92,6 +95,7 @@ export default function CallTable(props) {
             setShowAllLogs(false);
             setSearchText("");
             setChoice("calling_phone_number");
+            setDone(true);
         }catch(err){
             console.log(err);
         }
@@ -195,8 +199,9 @@ export default function CallTable(props) {
 
     // calls put method to save new data into database
     const handleSave = async () => {
-        setReadOnly(true)
-        setShowEdit(true)
+        setReadOnly(true);
+        setShowEdit(true);
+        setSaving(true);
         try{
             const logs = await axios.put("transactions/"+ tableData._id, {
                 transcript: tableData.transcript,
@@ -225,6 +230,7 @@ export default function CallTable(props) {
         }
         getLogs();
         handleClose();
+        setSaving(false);
     }
 
     // ensures that tableData.entireCall is editable
@@ -337,6 +343,15 @@ export default function CallTable(props) {
             </div>
             <Container className="temptest">
                 <div className='tablehold'>
+                    {!done ? (
+                        <Player
+                            autoplay
+                            loop
+                            speed = ".5"
+                            src= "https://assets2.lottiefiles.com/packages/lf20_h1cidhml.json"
+                            style = {{height: '400px'}}
+                            />
+                    ) : (
                     <table data-testid="display-table" className="table table-hover table-bordered">
                         <thead>
                             <tr>
@@ -351,9 +366,10 @@ export default function CallTable(props) {
                             {transactions.map(renderLogs)}
                         </tbody>
                     </table>
+                    )}
                 </div>
                     <Modal size="lg" show={show} onHide={handleClose} info={tableData} scrollable={true} >
-                        <Modal.Body Style="background: #63B8A7; border:none">
+                        {!saving ? (<Modal.Body Style="background: #63B8A7; border:none">
                             <Form.Group >
                                 <Form.Label>Call Transcript:</Form.Label>
                                 <Form.Control as="textarea" rows={10} 
@@ -388,7 +404,16 @@ export default function CallTable(props) {
                                     <option value="Very Positive">Very Positive</option>
                                 </Form.Select>        
                             </Form.Group>
-                        </Modal.Body>
+                        </Modal.Body>) :
+                        (
+                            <Player
+                            autoplay
+                            loop
+                            speed = ".5"
+                            src= "https://assets2.lottiefiles.com/packages/lf20_h1cidhml.json"
+                            style = {{height: '400px'}}
+                            />
+                        )}
                         <Modal.Footer Style="background: #63B8A7; border:none">
                         
                         {/* <Button variant="primary" onClick={()=>handleEditClick(tableData)}> Edit </Button> */}
