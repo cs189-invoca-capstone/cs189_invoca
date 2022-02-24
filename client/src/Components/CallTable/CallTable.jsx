@@ -128,6 +128,7 @@ export default function CallTable(props) {
     const handleTableClick = (data) => {
         setShow(true);
         setTableData(data);
+        setSentiment(data.sentiment)
         props.clearCallLog();
         props.handleCallLog(data);
     }
@@ -244,6 +245,7 @@ export default function CallTable(props) {
 
     const handleSentimentChange = (e) => {
         setSentiment(e.target.value);
+        console.log('sentiment = ', sentiment);
     }
 
     /*
@@ -384,7 +386,7 @@ export default function CallTable(props) {
                                         type="text" onChange={handleChange} 
                                         defaultValue={tableData.summary} placeholder="summary" 
                                         readOnly={readOnly} name="summary"/>     
-                                <br />     
+                                <br />     ready
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Keywords: </Form.Label>
@@ -396,7 +398,7 @@ export default function CallTable(props) {
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Sentiment Analysis:</Form.Label>
-                                <Form.Select name="sentiment" defaultValue={tableData.sentiment} onChange={handleSentimentChange} disabled={readOnly}>
+                                <Form.Select name="sentiment" defaultValue={tableData.sentiment} onChange={handleSentimentChange} name="sentiment" disabled={readOnly}>
                                     <option value="Very Negative">Very Negative</option>
                                     <option value="Negative">Negative</option>
                                     <option value="Neutral">Neutral</option>
