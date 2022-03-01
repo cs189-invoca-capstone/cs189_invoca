@@ -386,7 +386,7 @@ export default function CallTable(props) {
                                         type="text" onChange={handleChange} 
                                         defaultValue={tableData.summary} placeholder="summary" 
                                         readOnly={readOnly} name="summary"/>     
-                                <br />     ready
+                                <br />
                             </Form.Group>
                             <Form.Group >
                                 <Form.Label>Keywords: </Form.Label>

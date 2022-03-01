@@ -62,7 +62,7 @@ export default function SubmitForm(props) {
 
                     </Row>
                     <Row>
-                        <Button Style="width:35%; margin-left:13%; display:inline; margin-right: 10%; background:#08406B" variant="primary" type="submit" disabled={!inputs.phoneNumber || !inputs.entireCall}>
+                        <Button Style="width:35%; margin-left:11%; display:inline; margin-right: 10%; background:#08406B" variant="primary" type="submit" disabled={!inputs.phoneNumber || !inputs.entireCall}>
                             Submit
                         </Button>
                         <Button Style="width:35%; display:inline; background: #9C9C9C" variant="secondary" onClick = {() => history.push("/callLogs")}>

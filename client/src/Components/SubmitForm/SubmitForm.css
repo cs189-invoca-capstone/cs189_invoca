@@ -1,171 +1,176 @@
-.backgroundSubmit{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    /* position: absolute; */
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: screen;
-    height: screen;
+.backgroundSubmit {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* position: absolute; */
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: screen;
+  height: 100vh;
 
-    background: linear-gradient(180deg, rgba(7, 255, 32, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%), linear-gradient(0deg, rgba(7, 255, 32, 0.12), rgba(7, 255, 32, 0.12));
+  background: linear-gradient(
+      180deg,
+      rgba(7, 255, 32, 0.2) 0%,
+      rgba(255, 255, 255, 0.2) 100%
+    ),
+    linear-gradient(0deg, rgba(7, 255, 32, 0.12), rgba(7, 255, 32, 0.12));
 }
 
-.boxSubmit{
-    position: absolute;
-    width: 70%;
-    height: 50%;
+.boxSubmit {
+  position: absolute;
+  width: 70%;
+  height: 50%;
 
-    background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 83px;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 83px;
 }
-.backgroundregisterSubmit{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: screen;
-    height: 748px;
+.backgroundregisterSubmit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: screen;
+  height: 100vh;
 
-    background: url("../assets/background.png");
-}
-
-.registersquareSubmit{
-    width: 500px;
-    height: 540px;
-    flex-direction: 'column';
-    display: 'flex';
-    align-items: 'center';
-
-    background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 39px;
+  background: url("../assets/background.png");
 }
 
-.loginsquareSubmit{
-    width: 900px;
-    height: 382px;
-    display: flex;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 39px;
+.registersquareSubmit {
+  width: 500px;
+  height: 540px;
+  flex-direction: "column";
+  display: "flex";
+  align-items: "center";
+
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 39px;
 }
 
-.filloutbarsSub{
-    width: 400px;
-    height: 40px;
-    background: #97CFC0;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    margin-left:11%;
+.loginsquareSubmit {
+  width: 900px;
+  height: 382px;
+  display: flex;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 39px;
 }
 
-.transcriptSubmit{
-    width: 400px;
-    height: 200px;
-    background: #97CFC0;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    margin-left:11%;
-    margin-bottom: 5%;
+.filloutbarsSub {
+  width: 400px;
+  height: 40px;
+  background: #97cfc0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  margin-left: 8%;
 }
 
-.logintextSubmit{
-    margin-top: 20px;
-    margin-bottom: 10px;
-    text-align: center;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 36px;
-    line-height: 44px;
-    color: #000000;
+.transcriptSubmit {
+  width: 400px;
+  height: 200px;
+  background: #97cfc0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  margin-left: 8%;
+  margin-bottom: 5%;
 }
 
-.welcometextSubmit{
-    font-style: italic;
-    font-weight: normal;
-    font-size: 13px;
-    line-height: 15px;
-    text-align: center;
-
-    color: #000000;
+.logintextSubmit {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 44px;
+  color: #000000;
 }
 
-.smalltextSubmit{
-    padding-left: 50px;
-    font-style: italic;
-    font-weight: normal;
-    font-size: 13px;
-    line-height: 15px;
-    text-align: left;
+.welcometextSubmit {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 15px;
+  text-align: center;
 
-    color: #6B6B6B;
+  color: #000000;
 }
 
-.createrowSubmit{
-    margin-top: 10px;
-    display: flex;
-    align-items: top;
-    justify-content: center;
+.smalltextSubmit {
+  padding-left: 50px;
+  font-style: italic;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 15px;
+  text-align: left;
+
+  color: #6b6b6b;
 }
 
-.createcolumnSubmit{
-    flex-direction: 'column';
-    display: 'flex';
-    position: absolute;
+.createrowSubmit {
+  margin-top: 10px;
+  display: flex;
+  align-items: top;
+  justify-content: center;
 }
 
-.newaccountSubmit{
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 14px;
-    text-align: center;
-    cursor: pointer;
-    color: #000000;
-    margin-bottom: 10px;
-    text-decoration: underline;
+.createcolumnSubmit {
+  flex-direction: "column";
+  display: "flex";
+  position: absolute;
+}
+
+.newaccountSubmit {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+  text-align: center;
+  cursor: pointer;
+  color: #000000;
+  margin-bottom: 10px;
+  text-decoration: underline;
 }
 
 #circle {
-    width: 32px;
-    height: 32px;
-    background: rgba(7, 255, 32, 0.16);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    border-radius: 50%;
-    margin-right: 20px;
-    cursor: pointer;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 32px;
+  height: 32px;
+  background: rgba(7, 255, 32, 0.16);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 20px;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 #circle:hover {
-    background: rgba(7, 255, 32, 0.20);
-    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
+  background: rgba(7, 255, 32, 0.2);
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
 }
 
-.ellipse{
-    width: 25px;
-    height: 25px;
+.ellipse {
+  width: 25px;
+  height: 25px;
 }
 
-.jankfix{
-    width: 395px;
-    height: 10px;
-    display: flex;
-    align-items: right;
-    justify-content: right;
+.jankfix {
+  width: 395px;
+  height: 10px;
+  display: flex;
+  align-items: right;
+  justify-content: right;
 }
 
-.dropdownbarSubmit{
-    margin-left: 11%;
-    width: 291px;
-    background: #97CFC0;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
+.dropdownbarSubmit {
+  margin-left: 11%;
+  width: 291px;
+  background: #97cfc0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
 }

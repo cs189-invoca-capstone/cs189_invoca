@@ -4,7 +4,7 @@
     align-items: center;
     text-align: center;
     width: screen;
-    height: 748px;
+    height: 100vh;
 
     background: url("../assets/background.png");
 }
