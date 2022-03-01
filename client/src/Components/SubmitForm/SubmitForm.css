@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: center;
   width: screen;
-  height: screen;
+  height: 100vh;
 
   background: linear-gradient(
       180deg,
@@ -33,7 +33,7 @@
   align-items: center;
   text-align: center;
   width: screen;
-  height: 748px;
+  height: 100vh;
 
   background: url("../assets/background.png");
 }

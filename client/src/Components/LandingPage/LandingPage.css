@@ -3,7 +3,7 @@
     /* position: absolute; */
     flex-direction: row;
     width: screen;
-    height: screen;
+    height: 100vh;
     z-index: 0;
 }
 

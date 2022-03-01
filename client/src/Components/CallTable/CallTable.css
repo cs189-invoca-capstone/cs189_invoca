@@ -31,7 +31,7 @@
 
 .homepagebackground{
     width: screen;
-    height: 800px;
+    height: 100vh;
     background: url("../assets/background.png");
 }
 
@@ -85,7 +85,7 @@
 
 .tablehold{
     width: 90%;
-    height: 500px;
+    height: 70vh;
     overflow: scroll;
 
     background: white;
